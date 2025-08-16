@@ -1,6 +1,6 @@
 const express = require('express');
-const { Pool } = require('pg');
 const cors = require('cors');
+const { Pool } = require('pg');
 require('dotenv').config();
 
 const app = express();
@@ -8,12 +8,13 @@ app.use(cors());
 app.use(express.json());
 
 // Pool kết nối PostgreSQL (Render sẽ cung cấp DATABASE_URL)
+
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: { rejectUnauthorized: false }
 });
 
-// ✅ API đăng ký
+// API đăng ký
 app.post('/api/register', async (req, res) => {
     const { username, email, phone, password } = req.body;
 
@@ -41,15 +42,15 @@ app.post('/api/register', async (req, res) => {
     }
 });
 
-// ✅ API đăng nhập
+// API đăng nhập
 app.post('/api/login', async (req, res) => {
     const { identifier, password } = req.body;
 
     try {
         const result = await pool.query(
             `SELECT * FROM Users 
-       WHERE (email=$1 OR phone=$1 OR username=$1) 
-       AND password=$2`,
+            WHERE (email=$1 OR phone=$1 OR username=$1) 
+            AND password=$2`,
             [identifier, password]
         );
 
@@ -64,7 +65,7 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
-// ✅ API lấy danh sách người dùng
+// API lấy danh sách người dùng
 app.get('/api/Users', async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM Users');
@@ -75,6 +76,7 @@ app.get('/api/Users', async (req, res) => {
     }
 });
 
-// 🚀 Run server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server is running at port ${PORT}`));
+const PORT = process.env.PORT || 4000; // đổi thành 4000
+app.listen(PORT, () => {
+    console.log(`Server đang chạy tại http://localhost:${PORT}`);
+});

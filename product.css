@@ -1,0 +1,143 @@
+/* ========== HEADER ========== */
+
+.main-header {
+    width: 100%;
+    background-color: var(--white);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0px;
+    z-index: 1000;
+    height: 85px;
+}
+
+.main-header .container {
+    display: flex;
+    justify-content: center;
+    /* Căn giữa nội dung */
+    align-items: center;
+    position: relative;
+    height: 85px;
+}
+
+/* Logo nằm bên trái */
+.main-header .logo {
+    position: absolute;
+    left: 90px;
+    top: -48px;
+    display: flex;
+    align-items: center;
+}
+
+.main-header .logo a {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+/* Menu điều hướng */
+.main-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.main-nav ul li {
+    margin-left: 50px;
+    position: relative;
+}
+
+.main-nav ul li a {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: var(--dark-text);
+    text-decoration: none;
+    /* Bỏ gạch chân mặc định */
+    padding: 5px 0;
+    position: relative;
+}
+
+/* Gạch chân khi hover */
+.main-nav ul li a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0%;
+    height: 10px;
+    background-color: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+.main-nav ul li a:hover::after {
+    width: 100%;
+}
+
+.main-nav ul li a:hover {
+    color: var(--primary-color);
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    /* Màu nền nhẹ nhàng */
+    color: #333;
+    /* Màu chữ tối */
+    margin: 0;
+    padding: 0;
+}
+
+
+/* Nội dung sẽ chiếm hết không gian còn lại giữa header và footer */
+.product-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 40px;
+    padding: 60px;
+    flex-wrap: wrap;
+}
+
+.product-image img {
+    max-width: 500px;
+    width: 100%;
+    height: 420px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.product-info {
+    max-width: 250px;
+}
+
+.color-options {
+    display: flex;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.color {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    cursor: pointer;
+}
+
+.color:hover {
+    border-color: #000;
+}
+
+
+/* Footer ở dưới cùng */
+footer {
+    width: 100%;
+    background-color: black;
+    text-align: center;
+    padding: 20px 0;
+    font-size: 14px;
+    color: white;
+    border-top: 1px solid #ddd;
+}

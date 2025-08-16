@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Liên Hệ - AnhEm Motor</title>
+    <link rel="stylesheet" href="contact.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container">
+            <!-- Logo -->
+            <div class="logo">
+                <a href="index.html">
+                    <h1><img fetchpriority="high" decoding="async" src="image/logo-removebg-preview.png" height="100"
+                            alt="Yamaha revs your heart" style="margin-top: 40px;"> </h1>
+                </a>
+            </div>
+
+            <!-- Menu -->
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Trang Chủ</a></li>
+                    <li><a href="listings.html">Sản Phẩm</a></li>
+                    <li><a href="about.html">Giới Thiệu</a></li>
+                    <li><a href="promotion.html">Khuyến Mãi</a></li>
+                    <li><a href="contact.html">Liên Hệ</a></li>
+                    <li><a href="service.html">Dịch Vụ</a></li>
+                </ul>
+            </nav>
+
+
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="form-wrapper">
+            <div class="info-section">
+                <h2>Liên Hệ Với Chúng Tôi</h2>
+                <p>
+                    Chuyên cung cấp và mua bán các loại xe máy chính hãng với giá tốt nhất thị trường. Đội ngũ tư vấn
+                    chuyên nghiệp sẵn sàng hỗ trợ bạn 24/7.
+                </p>
+
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>123 Đường ABC, Quận 1, TP.HCM</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>0901 234 567</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>info@anhemmotor.vn</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <span>8:00 - 22:00 (Hàng ngày)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>Gửi Yêu Cầu Tư Vấn</h3>
+                <p class="subtitle">Điền thông tin để nhận tư vấn miễn phí</p>
+
+                <form id="contactForm" novalidate>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="customerName" class="required">Họ và tên</label>
+                            <input type="text" id="customerName" name="customerName" required>
+                            <div class="error-message" id="customerName-error">Vui lòng nhập họ và tên</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone" class="required">Số điện thoại</label>
+                            <input type="tel" id="phone" name="phone" required>
+                            <div class="error-message" id="phone-error">Vui lòng nhập số điện thoại hợp lệ</div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email">
+                            <div class="error-message" id="email-error">Email không hợp lệ</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inquiryType" class="required">Loại yêu cầu</label>
+                            <select id="inquiryType" name="inquiryType" required>
+                                <option value="">-- Chọn loại yêu cầu --</option>
+                                <option value="mua-xe">Mua xe máy</option>
+                                <option value="ban-xe">Bán xe máy</option>
+                                <option value="bao-hanh">Bảo hành/Sửa chữa</option>
+                                <option value="tu-van">Tư vấn chung</option>
+                                <option value="khac">Khác</option>
+                            </select>
+                            <div class="error-message" id="inquiryType-error">Vui lòng chọn loại yêu cầu</div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bikeType">Loại xe quan tâm</label>
+                            <select id="bikeType" name="bikeType">
+                                <option value="">-- Chọn loại xe --</option>
+                                <option value="xe-so">Xe số (Honda Wave, Yamaha Sirius...)</option>
+                                <option value="xe-ga">Xe ga (Honda SH, Yamaha Janus...)</option>
+                                <option value="xe-con-tay">Xe côn tay (Exciter, Winner...)</option>
+                                <option value="xe-phan-khoi-lon">Xe phân khối lớn (CBR, R15...)</option>
+                                <option value="xe-dien">Xe điện</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="budget">Ngân sách dự kiến</label>
+                            <select id="budget" name="budget">
+                                <option value="">-- Chọn mức giá --</option>
+                                <option value="duoi-20tr">Dưới 20 triệu</option>
+                                <option value="20-40tr">20 - 40 triệu</option>
+                                <option value="40-60tr">40 - 60 triệu</option>
+                                <option value="60-100tr">60 - 100 triệu</option>
+                                <option value="tren-100tr">Trên 100 triệu</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Tin nhắn chi tiết</label>
+                        <textarea id="message" name="message" rows="4"
+                            placeholder="Mô tả chi tiết yêu cầu của bạn (tình trạng xe, thời gian mong muốn, yêu cầu đặc biệt...)"></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        <span class="loading-spinner" id="loadingSpinner"></span>
+                        <span id="submitText">GỬI YÊU CẦU TƯ VẤN</span>
+                    </button>
+
+                    <div class="form-status" id="formStatus"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+
+            © 2025 AnhEm Moto. Mọi quyền được bảo lưu.
+
+        </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('contactForm');
+            const formStatus = document.getElementById('formStatus');
+            const submitBtn = document.getElementById('submitBtn');
+            const submitText = document.getElementById('submitText');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+
+            const validators = {
+                email: value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
+                tel: value => /^[0-9+\-\s()]{10,}$/.test(value.replace(/\s/g, '')),
+                customerName: value => value.length >= 2
+            };
+
+            const errorMessages = {
+                required: 'Trường này là bắt buộc',
+                email: 'Email không hợp lệ',
+                tel: 'Số điện thoại không hợp lệ',
+                customerName: 'Họ tên phải có ít nhất 2 ký tự'
+            };
+
+            function validateField(field) {
+                const value = field.value.trim();
+                const fieldName = field.name;
+                const errorElement = document.getElementById(`${fieldName}-error`);
+                let isValid = true;
+                let errorMessage = '';
+
+                field.classList.remove('error');
+                if (errorElement) errorElement.style.display = 'none';
+
+                if (field.required && !value) {
+                    isValid = false;
+                    errorMessage = errorMessages.required;
+                } else if (value && validators[field.type] && !validators[field.type](value)) {
+                    isValid = false;
+                    errorMessage = errorMessages[field.type];
+                } else if (value && validators[fieldName] && !validators[fieldName](value)) {
+                    isValid = false;
+                    errorMessage = errorMessages[fieldName];
+                }
+
+                if (!isValid && errorElement) {
+                    field.classList.add('error');
+                    errorElement.textContent = errorMessage;
+                    errorElement.style.display = 'block';
+                }
+
+                return isValid;
+            }
+
+            function validateForm() {
+                const fields = [...form.querySelectorAll('[required]'), ...form.querySelectorAll('#email')];
+                return fields.every(field => !field.value.trim() || validateField(field));
+            }
+
+            function showStatus(message, type) {
+                formStatus.textContent = message;
+                formStatus.className = `form-status ${type}`;
+                formStatus.style.display = 'block';
+                if (type === 'success') {
+                    setTimeout(() => formStatus.style.display = 'none', 5000);
+                }
+            }
+
+            function setLoadingState(isLoading) {
+                submitBtn.disabled = isLoading;
+                loadingSpinner.style.display = isLoading ? 'inline-block' : 'none';
+                submitText.textContent = isLoading ? 'Đang gửi...' : 'GỬI YÊU CẦU TƯ VẤN';
+                if (isLoading) showStatus('Đang xử lý yêu cầu của bạn...', 'loading');
+            }
+
+            // Event listeners
+            form.querySelectorAll('input, textarea, select').forEach(field => {
+                field.addEventListener('blur', () => validateField(field));
+                field.addEventListener('input', () => {
+                    if (field.classList.contains('error')) validateField(field);
+                });
+            });
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                if (!validateForm()) {
+                    showStatus('Vui lòng kiểm tra và điền đầy đủ thông tin bắt buộc', 'error');
+                    return;
+                }
+
+                setLoadingState(true);
+
+                // Simulate form submission
+                setTimeout(() => {
+                    setLoadingState(false);
+                    showStatus('Gửi yêu cầu thành công! Chúng tôi sẽ liên hệ với bạn trong vòng 24h. Cảm ơn bạn đã quan tâm đến dịch vụ của chúng tôi!', 'success');
+                    form.reset();
+                    form.querySelectorAll('.error').forEach(field => {
+                        field.classList.remove('error');
+                        const errorElement = document.getElementById(`${field.name}-error`);
+                        if (errorElement) errorElement.style.display = 'none';
+                    });
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Đăng nhập</title>
+    <link rel="stylesheet" href="login-style.css">
+</head>
+
+<body>
+    <div class="login-card">
+        <h1>🔐 Đăng nhập</h1>
+        <p class="subtitle">Truy cập hệ thống của bạn</p>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <input type="text" id="identifier" placeholder="Email / Số điện thoại / Username" required>
+            </div>
+            <div class="form-group" style="position: relative;">
+                <input type="password" id="password" placeholder="Mật khẩu" required>
+                <span id="togglePassword" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+                             cursor: pointer; font-size: 18px;">👁️</span>
+            </div>
+
+            <button type="submit" class="btn">Đăng nhập</button>
+        </form>
+
+        <div id="message"></div>
+    </div>
+
+    <script>
+        // ===== Toggle ẩn/hiện mật khẩu =====
+        document.getElementById('togglePassword').addEventListener('click', function () {
+            const passwordInput = document.getElementById('password');
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                this.textContent = "🙈"; // đổi icon khi hiển thị
+            } else {
+                passwordInput.type = "password";
+                this.textContent = "👁️"; // đổi icon khi ẩn
+            }
+        });
+
+        // ===== Xử lý form login =====
+        document.getElementById('loginForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const identifier = document.getElementById('identifier').value.trim();
+            const password = document.getElementById('password').value;
+            const msg = document.getElementById('message');
+
+            msg.textContent = "⏳ Đang xử lý...";
+
+            // ===== ADMIN CỨNG =====
+            const ADMIN_USER = "admin";
+            const ADMIN_PASS = "123456";
+
+            if (identifier === ADMIN_USER && password === ADMIN_PASS) {
+                msg.style.color = "green";
+                msg.textContent = "✅ Đăng nhập thành công (Admin)!";
+                sessionStorage.setItem("loggedInUser", JSON.stringify({ username: ADMIN_USER, role: "admin" }));
+                setTimeout(() => { window.location.href = "index.html"; }, 1000);
+                return; // ⛔ dừng lại, không gọi API nữa
+            }
+
+            // ===== USER THƯỜNG (API) =====
+            try {
+                const res = await fetch("http://localhost:3000/api/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ identifier, password })
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    msg.style.color = "green";
+                    msg.textContent = "✅ Đăng nhập thành công!";
+                    sessionStorage.setItem("loggedInUser", JSON.stringify(data.user));
+                    setTimeout(() => { window.location.href = "index.html"; }, 1000);
+                } else {
+                    msg.style.color = "red";
+                    msg.textContent = data.message || "❌ Sai tài khoản hoặc mật khẩu!";
+                }
+            } catch (error) {
+                msg.style.color = "red";
+                msg.textContent = "🚨 Lỗi kết nối server!";
+            }
+        });
+    </script>
+
+</body>
+
+</html>

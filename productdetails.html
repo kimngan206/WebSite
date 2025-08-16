@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yamaha PG-1</title>
+    <link rel="stylesheet" href="product.css" />
+</head>
+
+<body class="layout">
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                    <h1><img fetchpriority="high" decoding="async" src="image/logo-removebg-preview.png" height="100"
+                            alt="Yamaha revs your heart"> </h1>
+                </a>
+            </div>
+
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Trang Chủ</a></li>
+                    <li><a href="listings.html">Sản Phẩm</a></li>
+                    <li><a href="about.html">Giới Thiệu</a></li>
+                    <li><a href="promotion.html">Khuyến Mãi</a></li>
+                    <li><a href="contact.html">Liên Hệ</a></li>
+                    <li><a href="service.html">Dịch Vụ</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <!-- Nội dung chính -->
+    <div class="product-container">
+        <!-- Hình ảnh bên trái -->
+
+        <div class="product-image">
+            <img id="productImage" src="image/PG1-Cyan-004-1024x860.png" alt="Yamaha PG-1" />
+        </div>
+
+        <!-- Thông tin bên phải -->
+        <div class="product-info">
+            <h2>PG-1</h2>
+            <p>Giá bán lẻ đề xuất:</p>
+            <h4><strong>30.437.000 VNĐ</strong></h4>
+            <p><strong>Màu sắc:</strong> <span id="selectedColor">Xanh dương</span></p>
+
+            <div class="color-options">
+                <span class="color" style="background-color: #ADD8E6" data-color="PG1-Cyan-004-1024x860"
+                    data-name="Xanh dương"></span>
+                <span class="color" style="background-color: #FFD700" data-color="PG1-yellow-004-1024x860"
+                    data-name="Vàng"></span>
+
+                <span class="color" style="background-color: #f49a1d" data-color="PG1-orange-004-1024x860"
+                    data-name="Cam"></span>
+                <span class="color" style="background-color: #b17c64" data-color="PG1-milky-004-1024x860"
+                    data-name="Nâu Cát"></span>
+                <span class="color" style="background-color: #2f562c" data-color="PG1-Green-Pastel-004-1024x860"
+                    data-name="Xanh Rêu"></span>
+
+                <span class="color" style="background-color: #000" data-color="PG1-Black-004-1024x860"
+                    data-name="Đen"></span>
+            </div>
+
+            <p class="description">
+                Yamaha PG-1 là sự kết hợp từ sự vận hành dễ dàng của một chiếc xe đô thị cùng khả năng off-road của một
+                mẫu xe việt dã. Chiếc xe này vừa mang lại sự tiện lợi khi di chuyển trong nội đô, vừa có hiệu suất đủ
+                tốt để đáp ứng những hành trình xa, mang lại cảm hứng lái xe khác biệt.
+            </p>
+        </div>
+    </div>
+    <footer>
+
+        <p>&copy; 2024 Cửa Hàng Xe Máy AnhEm Motor. Tất cả quyền được bảo lưu.</p>
+
+    </footer>
+    <script>const colors = document.querySelectorAll(".color");
+        const productImage = document.getElementById("productImage");
+        const selectedColorText = document.getElementById("selectedColor");
+
+        colors.forEach((color) => {
+            color.addEventListener("click", () => {
+                const colorName = color.getAttribute("data-name");
+                const colorFile = color.getAttribute("data-color");
+
+                // Update text
+                selectedColorText.textContent = colorName;
+
+                // Update image source
+                productImage.src = `image/${colorFile}.png`;
+            });
+        });
+    </script>
+</body>
+
+</html>

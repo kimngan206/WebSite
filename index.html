@@ -1,0 +1,217 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AnhEm Motor</title>
+    <link rel="stylesheet" href="index-style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+</head>
+
+<body>
+    <header class="main-header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                    <h1>
+                        <img fetchpriority="high" decoding="async" src="image/logo-removebg-preview.png" height="100"
+                            alt="AnhEm Motor" />
+                    </h1>
+                </a>
+            </div>
+
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="listings.html">Sản Phẩm</a></li>
+                    <li><a href="about.html">Giới Thiệu</a></li>
+                    <li><a href="promotion.html">Khuyến Mãi</a></li>
+                    <li><a href="contact.html">Liên Hệ</a></li>
+                    <li><a href="service.html">Dịch Vụ</a></li>
+                </ul>
+            </nav>
+
+            <div id="user-actions-container" class="user-actions">
+                <a href="login.html">Đăng Nhập</a>
+                <a href="register.html">Đăng Ký</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Script phân quyền hiển thị header -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const userActions = document.getElementById('user-actions-container');
+            const userSession = sessionStorage.getItem('loggedInUser');
+
+            if (userSession) {
+                const user = JSON.parse(userSession);
+
+                // Xóa nút Đăng nhập/Đăng ký
+                userActions.innerHTML = '';
+
+                // Nếu là admin thì thêm nút Quản trị
+                if (user.role === 'admin') {
+                    const adminBtn = document.createElement('a');
+                    adminBtn.href = 'admin.html';
+                    adminBtn.textContent = 'Quản Trị';
+                    userActions.appendChild(adminBtn);
+                }
+
+                // Hiển thị tên + logout
+                const nameSpan = document.createElement('span');
+                nameSpan.textContent = `👤 ${user.username}`;
+                nameSpan.style.margin = '0 10px';
+
+                const logoutBtn = document.createElement('a');
+                logoutBtn.href = '#';
+                logoutBtn.textContent = 'Đăng Xuất';
+                logoutBtn.onclick = () => {
+                    sessionStorage.removeItem('loggedInUser');
+                    location.reload();
+                };
+
+                userActions.appendChild(nameSpan);
+                userActions.appendChild(logoutBtn);
+            }
+        });
+    </script>
+
+
+    <main>
+        <section id="hero" class="hero-section">
+            <div class="container">
+                <h1>Tìm Chiếc Xe Máy Mơ Ước Của Bạn</h1>
+                <p>Khám phá bộ sưu tập xe máy đa dạng.</p>
+
+                <div class="search-bar">
+                    <input type="text" id="searchInput" placeholder="Tìm kiếm theo hãng, mẫu xe, năm..." />
+                    <button id="searchButton"><i class="fas fa-search"></i> Tìm Kiếm</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="listings" class="listings-section container">
+            <h2>Xe Máy Mới Nhất</h2>
+
+            <div class="filters">
+                <select id="brandFilter">
+                    <option value="">Tất cả hãng</option>
+                    <option value="Honda">Honda</option>
+                    <option value="Yamaha">Yamaha</option>
+                    <option value="Suzuki">Suzuki</option>
+                    <option value="Kawasaki">Kawasaki</option>
+                </select>
+
+                <select id="priceFilter">
+                    <option value="">Tất cả giá</option>
+                    <option value="0-50">Dưới 50 triệu</option>
+                    <option value="50-100">50 - 100 triệu</option>
+                    <option value="100-200">100 - 200 triệu</option>
+                    <option value="200-500">200 - 500 triệu</option>
+                    <option value="500+">Trên 500 triệu</option>
+                </select>
+            </div>
+
+            <div id="motorcycleListings" class="motorcycle-grid"></div>
+        </section>
+
+        <section id="about" class="about-section container">
+            <div class="about-content">
+                <div class="about-image">
+                    <img src="https://yamaha-motor.com.vn/wp/wp-content/uploads/2025/06/KV_YMH_MOLOIMOTTOIMOI.jpg"
+                        alt="Ảnh giới thiệu" />
+                </div>
+                <div class="about-text">
+                    <h2>Về Chúng Tôi</h2>
+                    <p>
+                        Chuyên cung cấp các dòng xe máy chính hãng đến từ những thương hiệu hàng đầu như Honda, Yamaha,
+                        Suzuki và nhiều hãng khác.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-col">
+                <h3>Thông Tin Liên Hệ</h3>
+                <p>Địa chỉ: 193 Đỗ Văn Thi, Phường Trấn Biên, TP. Biên Hoà, Tỉnh Đồng Nai</p>
+                <p>Điện thoại: 012 3456 7890</p>
+                <p>Email: anhemmotor@gmail.com</p>
+            </div>
+            <div class="footer-col">
+                <h3>Liên Kết Hữu Ích</h3>
+                <ul>
+                    <li><a href="#">Về Chúng Tôi</a></li>
+                    <li><a href="#">Chính Sách Bảo Mật</a></li>
+                    <li><a href="#">Điều Khoản Sử Dụng</a></li>
+                    <li><a href="#">Sitemap</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Theo Dõi Chúng Tôi</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2025 AnhEm Motor. Mọi quyền được bảo lưu.
+        </div>
+    </footer>
+
+    <div id="motorcycleModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <div id="modalBody" class="modal-body"></div>
+        </div>
+    </div>
+
+    <!-- Script chính xử lý sản phẩm -->
+    <script src="index-js.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const userActions = document.getElementById('user-actions-container');
+            const userSession = sessionStorage.getItem('loggedInUser');
+
+            if (userSession) {
+                const user = JSON.parse(userSession);
+
+                // Xóa nút Đăng nhập/Đăng ký
+                userActions.innerHTML = '';
+
+                // Nếu là admin thì thêm nút Quản trị
+                if (user.role === 'admin') {
+                    const adminBtn = document.createElement('a');
+                    adminBtn.href = 'admin.html';
+                    adminBtn.textContent = 'Quản Trị';
+                    userActions.appendChild(adminBtn);
+                }
+
+                // Hiển thị tên + logout
+                const nameSpan = document.createElement('span');
+                nameSpan.textContent = `Xin chào ${user.username}`;
+                nameSpan.style.margin = '0 10px';
+
+                const logoutBtn = document.createElement('a');
+                logoutBtn.href = '#';
+                logoutBtn.textContent = 'Đăng Xuất';
+                logoutBtn.onclick = () => {
+                    sessionStorage.removeItem('loggedInUser');
+                    location.reload();
+                };
+
+                userActions.appendChild(nameSpan);
+                userActions.appendChild(logoutBtn);
+            }
+        });
+    </script>
+
+</body>
+
+</html>

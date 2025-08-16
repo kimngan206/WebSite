@@ -1,77 +1,60 @@
 const express = require('express');
-const sql = require('mssql');
+const { Pool } = require('pg');
 const cors = require('cors');
+require('dotenv').config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Cấu hình kết nối SQL Server
-const config = {
-    user: 'sa',
-    password: '123456789', // ← thay đúng mật khẩu
-    server: 'localhost\\ADMINCUTE',
-    port: 1433,          // thêm dòng này nếu cần
-    database: 'Web_User', // ← thay tên thật của DB bạn đang dùng
-    options: {
-        encrypt: false,
-        trustServerCertificate: true
-    }
-};
+// Pool kết nối PostgreSQL (Render sẽ cung cấp DATABASE_URL)
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: { rejectUnauthorized: false }
+});
 
-// Kết nối SQL
-sql.connect(config)
-    .then(() => console.log("✔️ Connected to SQL Server"))
-    .catch(err => console.error("❌ SQL Connection Error: ", err));
-
-// API đăng ký
+// ✅ API đăng ký
 app.post('/api/register', async (req, res) => {
     const { username, email, phone, password } = req.body;
 
     try {
-        const pool = await sql.connect(config);
-
         // Kiểm tra trùng email/sđt
-        const check = await pool.request()
-            .input('email', sql.VarChar, email)
-            .input('phone', sql.VarChar, phone)
-            .query(`SELECT * FROM Users WHERE email = @email OR phone = @phone`);
+        const check = await pool.query(
+            'SELECT * FROM Users WHERE email = $1 OR phone = $2',
+            [email, phone]
+        );
 
-        if (check.recordset.length > 0) {
+        if (check.rows.length > 0) {
             return res.json({ success: false, message: 'Email hoặc số điện thoại đã tồn tại!' });
         }
 
         // Insert user
-        await pool.request()
-            .input('username', sql.NVarChar, username)
-            .input('email', sql.NVarChar, email)
-            .input('phone', sql.NVarChar, phone)
-            .input('password', sql.NVarChar, password)
-            .query(`
-        INSERT INTO Users (username, email, phone, password)
-        VALUES (@username, @email, @phone, @password)
-      `);
+        await pool.query(
+            'INSERT INTO Users (username, email, phone, password) VALUES ($1, $2, $3, $4)',
+            [username, email, phone, password]
+        );
 
         return res.json({ success: true, message: 'Đăng ký thành công!' });
-
-    } catch (e) {
-        console.error(e);
+    } catch (err) {
+        console.error(err);
         res.json({ success: false, message: 'Lỗi server!' });
     }
 });
+
+// ✅ API đăng nhập
 app.post('/api/login', async (req, res) => {
     const { identifier, password } = req.body;
-    try {
-        const pool = await sql.connect(config);
-        const result = await pool.request()
-            .input('identifier', sql.VarChar, identifier)
-            .input('password', sql.VarChar, password)
-            .query(`SELECT * FROM Users 
-              WHERE (email=@identifier OR phone=@identifier OR username=@identifier) 
-                    AND password=@password`);
 
-        if (result.recordset.length > 0) {
-            res.json({ success: true, user: result.recordset[0] });
+    try {
+        const result = await pool.query(
+            `SELECT * FROM Users 
+       WHERE (email=$1 OR phone=$1 OR username=$1) 
+       AND password=$2`,
+            [identifier, password]
+        );
+
+        if (result.rows.length > 0) {
+            res.json({ success: true, user: result.rows[0] });
         } else {
             res.json({ success: false, message: 'Thông tin đăng nhập không đúng!' });
         }
@@ -81,19 +64,17 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
-// API lấy danh sách tất cả người dùng
-app.get('/api/users', async (req, res) => {
+// ✅ API lấy danh sách người dùng
+app.get('/api/Users', async (req, res) => {
     try {
-        const pool = await sql.connect(config);
-        const result = await pool.request().query('SELECT * FROM Users');
-        res.json(result.recordset);
+        const result = await pool.query('SELECT * FROM Users');
+        res.json(result.rows);
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Lỗi server' });
     }
 });
 
-
-// Chạy server
-const PORT = 3000;
-app.listen(PORT, () => console.log(`Server is running at http://localhost:${PORT}`));
+// 🚀 Run server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server is running at port ${PORT}`));

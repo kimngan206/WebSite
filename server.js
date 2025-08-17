@@ -70,7 +70,7 @@ app.post('/api/login', async (req, res) => {
 });
 
 // API lấy danh sách người dùng
-app.get('/api/users', async (req, res) => {
+app.get('/api/admin', async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM users');
         res.json(result.rows);

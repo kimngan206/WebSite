@@ -104,8 +104,8 @@
     <script>
         async function loadUsers() {
             try {
-                const res = await fetch('http://localhost:4000/api/users');
-                const users = await res.json();
+// Thay thế bằng URL backend của bạn
+const res = await fetch('https://backend-xolq.onrender.com/api/users');                const users = await res.json();
                 const tbody = document.getElementById('userTableBody');
                 tbody.innerHTML = '';
                 users.forEach(u => {

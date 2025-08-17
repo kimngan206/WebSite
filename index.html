@@ -38,44 +38,7 @@
         </div>
     </header>
 
-    <!-- Script phân quyền hiển thị header -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const userActions = document.getElementById('user-actions-container');
-            const userSession = sessionStorage.getItem('loggedInUser');
-
-            if (userSession) {
-                const user = JSON.parse(userSession);
-
-                // Xóa nút Đăng nhập/Đăng ký
-                userActions.innerHTML = '';
-
-                // Nếu là admin thì thêm nút Quản trị
-                if (user.role === 'admin') {
-                    const adminBtn = document.createElement('a');
-                    adminBtn.href = 'admin.html';
-                    adminBtn.textContent = 'Quản Trị';
-                    userActions.appendChild(adminBtn);
-                }
-
-                // Hiển thị tên + logout
-                const nameSpan = document.createElement('span');
-                nameSpan.textContent = `👤 ${user.username}`;
-                nameSpan.style.margin = '0 10px';
-
-                const logoutBtn = document.createElement('a');
-                logoutBtn.href = '#';
-                logoutBtn.textContent = 'Đăng Xuất';
-                logoutBtn.onclick = () => {
-                    sessionStorage.removeItem('loggedInUser');
-                    location.reload();
-                };
-
-                userActions.appendChild(nameSpan);
-                userActions.appendChild(logoutBtn);
-            }
-        });
-    </script>
+  
 
 
     <main>

@@ -279,16 +279,16 @@
             submitBtn.disabled = true;
             loading.style.display = 'block';
 
-            try {
-                // ĐẢM BẢO URL NÀY CHÍNH XÁC VÀ ĐANG HOẠT ĐỘNG!
-                const res = await fetch("https://backend-xolq.onrender.com/api/login", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        identifier: identifier,
-                        password: password
-                    })
-                });
+           try {
+        // Đảm bảo URL này chính xác là /api/login
+        const res = await fetch("https://backend-xolq.onrender.com/api/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                identifier: identifier,
+                password: password
+            })
+        });
 
                 const data = await res.json();
                 if (data.success) {

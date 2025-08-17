@@ -2,350 +2,357 @@
 <html lang="vi">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Đăng Nhập</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet" />
-    <style>
-        /* CSS styles (có thể copy từ register.html hoặc điều chỉnh cho phù hợp) */
-        * {
-            box-sizing: border-box;
-        }
+       
+    <meta charset="UTF-8" />
+       
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Đăng Nhập</title>
+       
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet" />
+        <style>
+        /* CSS styles (có thể copy từ register.html hoặc điều chỉnh cho phù hợp) */
+        * {
+            box-sizing: border-box;
+        }
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #fff1f0, #ffe6e6);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            color: #333;
-        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #fff1f0, #ffe6e6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
 
-        .card {
-            background: #fff;
-            padding: 35px 40px;
-            border-radius: 16px;
-            max-width: 450px;
-            width: 100%;
-            box-shadow: 0 8px 24px rgba(231, 76, 60, 0.2);
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeIn 0.8s ease-out forwards;
-        }
+        .card {
+            background: #fff;
+            padding: 35px 40px;
+            border-radius: 16px;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: 0 8px 24px rgba(231, 76, 60, 0.2);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.8s ease-out forwards;
+        }
 
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-        h1 {
-            text-align: center;
-            color: #e74c3c;
-            margin-bottom: 30px;
-            font-size: 2.2rem;
-        }
+        h1 {
+            text-align: center;
+            color: #e74c3c;
+            margin-bottom: 30px;
+            font-size: 2.2rem;
+        }
 
-        .form-group {
-            position: relative;
-            margin-bottom: 18px;
-        }
+        .form-group {
+            position: relative;
+            margin-bottom: 18px;
+        }
 
-        input[type="text"],
-        input[type="email"],
-        input[type="password"] {
-            width: 100%;
-            padding: 15px 18px;
-            margin: 0;
-            border: 2px solid #e1e5e9;
-            border-radius: 12px;
-            font-size: 15px;
-            transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.9);
-        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 15px 18px;
+            margin: 0;
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
 
-        input:focus {
-            border-color: #e74c3c;
-            box-shadow: 0 0 15px rgba(231, 76, 60, 0.2);
-            transform: translateY(-2px);
-            outline: none;
-        }
+        input:focus {
+            border-color: #e74c3c;
+            box-shadow: 0 0 15px rgba(231, 76, 60, 0.2);
+            transform: translateY(-2px);
+            outline: none;
+        }
 
-        .error-message {
-            color: #e74c3c;
-            font-size: 13px;
-            margin-top: 8px;
-            display: none;
-            font-weight: 500;
-        }
+        .error-message {
+            color: #e74c3c;
+            font-size: 13px;
+            margin-top: 8px;
+            display: none;
+            font-weight: 500;
+        }
 
-        .error-message.visible {
-            display: block;
-        }
+        .error-message.visible {
+            display: block;
+        }
 
-        .success-message {
-            color: #27ae60;
-            font-size: 13px;
-            margin-top: 8px;
-            display: none;
-            font-weight: 500;
-        }
+        .success-message {
+            color: #27ae60;
+            font-size: 13px;
+            margin-top: 8px;
+            display: none;
+            font-weight: 500;
+        }
 
-        .success-message.visible {
-            display: block;
-        }
+        .success-message.visible {
+            display: block;
+        }
 
-        .btn {
-            width: 100%;
-            padding: 16px;
-            background: linear-gradient(45deg, #e74c3c, #c0392b);
-            color: white;
-            border: none;
-            font-size: 16px;
-            font-weight: 600;
-            border-radius: 12px;
-            margin-top: 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
+        .btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 12px;
+            margin-top: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
 
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.5s;
-        }
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
 
-        .btn:hover::before {
-            left: 100%;
-        }
+        .btn:hover::before {
+            left: 100%;
+        }
 
-        .btn:hover {
-            background: linear-gradient(45deg, #c0392b, #a52a22);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.4);
-        }
+        .btn:hover {
+            background: linear-gradient(45deg, #c0392b, #a52a22);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.4);
+        }
 
-        .btn:active {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
-        }
+        .btn:active {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
+        }
 
-        .btn:disabled {
-            background: #bdc3c7;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
+        .btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
 
-        #global-feedback {
-            margin-bottom: 25px;
-            padding: 15px 20px;
-            border-radius: 12px;
-            font-size: 14px;
-            text-align: center;
-            font-weight: 600;
-            background-color: #fcebeb;
-            color: #e74c3c;
-            border: 2px solid #fadbd8;
-            transition: all 0.3s ease;
-        }
+        #global-feedback {
+            margin-bottom: 25px;
+            padding: 15px 20px;
+            border-radius: 12px;
+            font-size: 14px;
+            text-align: center;
+            font-weight: 600;
+            background-color: #fcebeb;
+            color: #e74c3c;
+            border: 2px solid #fadbd8;
+            transition: all 0.3s ease;
+        }
 
-        #global-feedback:empty {
-            display: none;
-        }
+        #global-feedback:empty {
+            display: none;
+        }
 
-        #global-feedback.success {
-            background-color: #e8f9f0;
-            color: #27ae60;
-            border-color: #a9dfbf;
-        }
+        #global-feedback.success {
+            background-color: #e8f9f0;
+            color: #27ae60;
+            border-color: #a9dfbf;
+        }
 
-        .loading {
-            display: none;
-            text-align: center;
-            margin-top: 15px;
-        }
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 15px;
+        }
 
-        .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #e74c3c;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #e74c3c;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
 
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
 
-            100% {
-                transform: rotate(360deg);
-            }
-        }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
 
-        .form-header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
+        .form-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
 
-        .form-header p {
-            color: #666;
-            margin-top: 10px;
-            font-size: 14px;
-        }
-    </style>
+        .form-header p {
+            color: #666;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="card">
-        <div class="form-header">
-            <h1>🔒 Đăng Nhập</h1>
-            <p>Truy cập hệ thống của bạn</p>
-        </div>
+        <div class="card">
+                <div class="form-header">
+                        <h1>🔒 Đăng Nhập</h1>
+                        <p>Truy cập hệ thống của bạn</p>
+                    </div>
 
-        <div id="global-feedback"></div>
+                <div id="global-feedback"></div>
 
-        <form id="login-form">
-            <div class="form-group">
-                <!-- identifier có thể là email, số điện thoại hoặc username -->
-                <input type="text" id="identifier" placeholder="Email/SĐT/Tên người dùng *" autocomplete="username" />
-            </div>
-            <div class="form-group" style="position: relative;">
-                <input type="password" id="password" placeholder="Mật khẩu *" autocomplete="current-password" />
-                <span class="togglePassword" data-target="password" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
-                    cursor: pointer; font-size: 18px;">👁️</span>
-            </div>
-            
-            <button type="submit" class="btn" id="submitBtn">Đăng Nhập</button>
+                <form id="login-form">
+                        <div class="form-group">
+                                <!-- identifier có thể là email, số điện thoại hoặc username -->
+                                <input type="text" id="identifier" placeholder="Email/SĐT/Tên người dùng *"
+                    autocomplete="username" />
+                            </div>
+                        <div class="form-group" style="position: relative;">
+                                <input type="password" id="password" placeholder="Mật khẩu *"
+                    autocomplete="current-password" />
+                                <span class="togglePassword" data-target="password"
+                    style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 18px;">👁️</span>
+                            </div>
+                        
+                        <button type="submit" class="btn" id="submitBtn">Đăng Nhập</button>
 
-            <div class="loading" id="loading">
-                <div class="spinner"></div>
-                <p>Đang xử lý đăng nhập...</p>
-            </div>
-        </form>
+                        <div class="loading" id="loading">
+                                <div class="spinner"></div>
+                                <p>Đang xử lý đăng nhập...</p>
+                            </div>
+                    </form>
 
-        <div style="text-align: center; margin-top: 20px; font-size: 14px; color: #666;">
-            Chưa có tài khoản? <a href="register.html" style="color: #e74c3c; font-weight: 600; text-decoration: none;">Đăng ký ngay</a>
-        </div>
-    </div>
+                <div style="text-align: center; margin-top: 20px; font-size: 14px; color: #666;">
+                        Chưa có tài khoản? <a href="register.html"
+                style="color: #e74c3c; font-weight: 600; text-decoration: none;">Đăng ký ngay</a>
+                    </div>
+            </div>
 
-    <script>
-        // Toggle ẩn/hiện mật khẩu
-        document.querySelectorAll('.togglePassword').forEach(icon => {
-            icon.addEventListener('click', function () {
-                const targetId = this.getAttribute('data-target');
-                const input = document.getElementById(targetId);
+       
+    <script>
+        // Toggle ẩn/hiện mật khẩu
+        document.querySelectorAll('.togglePassword').forEach(icon => {
+            icon.addEventListener('click', function () {
+                const targetId = this.getAttribute('data-target');
+                const input = document.getElementById(targetId);
 
-                if (input.type === "password") {
-                    input.type = "text";
-                    this.textContent = "🙈"; 
-                } else {
-                    input.type = "password";
-                    this.textContent = "👁️"; 
-                }
-            });
-        });
+                if (input.type === "password") {
+                    input.type = "text";
+                    this.textContent = "🙈";
+                } else {
+                    input.type = "password";
+                    this.textContent = "👁️";
+                }
+            });
+        });
 
-        const form = document.getElementById("login-form");
-        const submitBtn = document.getElementById("submitBtn");
-        const loading = document.getElementById("loading");
-        const feedback = document.getElementById("global-feedback");
+        const form = document.getElementById("login-form");
+        const submitBtn = document.getElementById("submitBtn");
+        const loading = document.getElementById("loading");
+        const feedback = document.getElementById("global-feedback");
 
-        function showFeedback(msg, ok) {
-            feedback.textContent = msg;
-            feedback.style.display = "block";
-            feedback.className = ok ? "success" : ""; // Đặt class cho CSS
-            setTimeout(() => {
-                feedback.style.display = "none";
-                feedback.textContent = ""; // Xóa nội dung khi ẩn
-            }, 4000);
-        }
+        function showFeedback(msg, ok) {
+            feedback.textContent = msg;
+            feedback.style.display = "block";
+            feedback.className = ok ? "success" : ""; // Đặt class cho CSS
+            setTimeout(() => {
+                feedback.style.display = "none";
+                feedback.textContent = ""; // Xóa nội dung khi ẩn
+            }, 4000);
+        }
 
-        form.addEventListener("submit", async (e) => {
-            e.preventDefault();
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
 
-            const identifier = document.getElementById("identifier").value.trim();
-            const password = document.getElementById("password").value;
+            const identifier = document.getElementById("identifier").value.trim();
+            const password = document.getElementById("password").value;
 
-            // Basic validation
-            if (!identifier || !password) {
-                return showFeedback("Vui lòng nhập đầy đủ thông tin đăng nhập!", false);
-            }
+            // Basic validation
+            if (!identifier || !password) {
+                return showFeedback("Vui lòng nhập đầy đủ thông tin đăng nhập!", false);
+            }
 
-            submitBtn.disabled = true;
-            loading.style.display = 'block';
+            submitBtn.disabled = true;
+            loading.style.display = 'block';
 
-            // --- Kiểm tra tài khoản Admin cứng tại frontend ---
-            // CẢNH BÁO: Rủi ro bảo mật cao vì thông tin admin bị hardcode ở client-side
-            const HARDCODED_ADMIN_IDENTIFIER_FRONTEND = 'admin';
-            const HARDCODED_ADMIN_PASSWORD_FRONTEND = 'admin123'; // Mật khẩu plaintext
+            // --- Kiểm tra tài khoản Admin cứng tại frontend ---
+            // CẢNH BÁO: Rủi ro bảo mật cao vì thông tin admin bị hardcode ở client-side
+            const HARDCODED_ADMIN_IDENTIFIER_FRONTEND = 'admin';
+            const HARDCODED_ADMIN_PASSWORD_FRONTEND = 'admin123'; // Mật khẩu plaintext
 
-            if (identifier === HARDCODED_ADMIN_IDENTIFIER_FRONTEND && password === HARDCODED_ADMIN_PASSWORD_FRONTEND) {
-                console.log("Đăng nhập Admin (frontend) thành công. Đang chuyển hướng...");
-                showFeedback("✅ Đăng nhập Admin thành công!", true);
+            if (identifier === HARDCODED_ADMIN_IDENTIFIER_FRONTEND && password === HARDCODED_ADMIN_PASSWORD_FRONTEND) {
+                console.log("Đăng nhập Admin (frontend) thành công. Đang chuyển hướng...");
+                showFeedback("✅ Đăng nhập Admin thành công!", true);
                 // Lưu thông tin admin vào sessionStorage
-                sessionStorage.setItem('loggedInUser', JSON.stringify({ 
-                    username: 'Administrator', 
-                    role: 'admin' 
+                sessionStorage.setItem('loggedInUser', JSON.stringify({
+                    username: 'Administrator',
+                    role: 'admin'
                 }));
-                form.reset();
-                setTimeout(() => window.location.href = "index.html", 1500); 
-                submitBtn.disabled = false;
-                loading.style.display = 'none';
-                return; // Ngừng xử lý thêm nếu là admin
-            }
-            // --- Kết thúc kiểm tra Admin cứng tại frontend ---
+                form.reset();
+                setTimeout(() => window.location.href = "index.html", 1500);
+                submitBtn.disabled = false;
+                loading.style.display = 'none';
+                return; // Ngừng xử lý thêm nếu là admin
+            }
+            // --- Kết thúc kiểm tra Admin cứng tại frontend ---
 
-           try {
-        // Đảm bảo URL này chính xác là /api/login
-        const res = await fetch("https://backend-xolq.onrender.com/api/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                identifier: identifier,
-                password: password
-            })
-        });
+            try {
+                // Đảm bảo URL này chính xác là /api/login
+                const res = await fetch("https://backend-xolq.onrender.com/api/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        identifier: identifier,
+                        password: password
+                    })
+                });
 
-                const data = await res.json();
-                if (data.success) {
-                    showFeedback("✅ Đăng nhập thành công!", true);
+                const data = await res.json();
+                if (data.success) {
+                    showFeedback("✅ Đăng nhập thành công!", true);
                     // Lưu thông tin người dùng từ DB vào sessionStorage với role mặc định
-                    sessionStorage.setItem('loggedInUser', JSON.stringify({ 
-                        id: data.user.id, 
-                        username: data.user.username, 
-                        email: data.user.email, 
-                        phone: data.user.phone, 
+                    sessionStorage.setItem('loggedInUser', JSON.stringify({
+                        id: data.user.id,
+                        username: data.user.username,
+                        email: data.user.email,
+                        phone: data.user.phone,
                         role: 'user' // Mặc định là user
                     }));
-                    form.reset();
-                    setTimeout(() => window.location.href = "index.html", 1500); 
-                } else {
-                    showFeedback(data.message || "Thông tin đăng nhập không đúng!", false);
-                }
-            } catch (err) {
-                console.error("Lỗi khi kết nối server hoặc xử lý phản hồi:", err);
-                showFeedback("Lỗi kết nối server! Vui lòng thử lại sau.", false);
-            } finally {
-                submitBtn.disabled = false;
-                loading.style.display = 'none';
-            }
-        });
-    </script>
+                    form.reset();
+                    setTimeout(() => window.location.href = "index.html", 1500);
+                } else {
+                    showFeedback(data.message || "Thông tin đăng nhập không đúng!", false);
+                }
+            } catch (err) {
+                console.error("Lỗi khi kết nối server hoặc xử lý phản hồi:", err);
+                showFeedback("Lỗi kết nối server! Vui lòng thử lại sau.", false);
+            } finally {
+                submitBtn.disabled = false;
+                loading.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 
 </html>

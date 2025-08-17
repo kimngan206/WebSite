@@ -2,11 +2,14 @@
 <html lang="vi">
 
 <head>
+       
     <meta charset="UTF-8" />
+       
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Đăng Nhập</title>
+        <title>Đăng Nhập</title>
+       
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet" />
-    <style>
+        <style>
         /* CSS styles (có thể copy từ register.html hoặc điều chỉnh cho phù hợp) */
         * {
             box-sizing: border-box;
@@ -57,7 +60,8 @@
 
         input[type="text"],
         input[type="email"],
-        input[type="password"] { /* Đã bỏ type="tel" vì không cần cho login */
+        input[type="password"] {
+            /* Đã bỏ type="tel" vì không cần cho login */
             width: 100%;
             padding: 15px 18px;
             margin: 0;
@@ -211,38 +215,41 @@
 </head>
 
 <body>
-    <div class="card">
-        <div class="form-header">
-            <h1>🔒 Đăng Nhập</h1>
-            <p>Truy cập hệ thống của bạn</p>
-        </div>
+        <div class="card">
+                <div class="form-header">
+                        <h1>🔒 Đăng Nhập</h1>
+                        <p>Truy cập hệ thống của bạn</p>
+                    </div>
 
-        <div id="global-feedback"></div>
+                <div id="global-feedback"></div>
 
-        <form id="login-form">
-            <div class="form-group">
-                <!-- identifier có thể là email, số điện thoại hoặc username -->
-                <input type="text" id="identifier" placeholder="Email/SĐT/Tên người dùng *" autocomplete="username" />
-            </div>
-            <div class="form-group" style="position: relative;">
-                <input type="password" id="password" placeholder="Mật khẩu *" autocomplete="current-password" />
-                <span class="togglePassword" data-target="password" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
-                    cursor: pointer; font-size: 18px;">👁️</span>
-            </div>
-            
-            <button type="submit" class="btn" id="submitBtn">Đăng Nhập</button>
+                <form id="login-form">
+                        <div class="form-group">
+                                <!-- identifier có thể là email, số điện thoại hoặc username -->
+                                <input type="text" id="identifier" placeholder="Email/SĐT/Tên người dùng *"
+                    autocomplete="username" />
+                            </div>
+                        <div class="form-group" style="position: relative;">
+                                <input type="password" id="password" placeholder="Mật khẩu *"
+                    autocomplete="current-password" />
+                                <span class="togglePassword" data-target="password" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%);cursor: pointer ;; font-size: 18px;">👁️</span>
+                            </div>
+                        
+                        <button type="submit" class="btn" id="submitBtn">Đăng Nhập</button>
 
-            <div class="loading" id="loading">
-                <div class="spinner"></div>
-                <p>Đang xử lý đăng nhập...</p>
-            </div>
-        </form>
+                        <div class="loading" id="loading">
+                                <div class="spinner"></div>
+                                <p>Đang xử lý đăng nhập...</p>
+                            </div>
+                    </form>
 
-        <div style="text-align: center; margin-top: 20px; font-size: 14px; color: #666;">
-            Chưa có tài khoản? <a href="register.html" style="color: #e74c3c; font-weight: 600; text-decoration: none;">Đăng ký ngay</a>
-        </div>
-    </div>
+                <div style="text-align: center; margin-top: 20px; font-size: 14px; color: #666;">
+                        Chưa có tài khoản? <a href="register.html"
+                style="color: #e74c3c; font-weight: 600; text-decoration: none;">Đăng ký ngay</a>
+                    </div>
+            </div>
 
+       
     <script>
         // Toggle ẩn/hiện mật khẩu
         document.querySelectorAll('.togglePassword').forEach(icon => {
@@ -252,10 +259,10 @@
 
                 if (input.type === "password") {
                     input.type = "text";
-                    this.textContent = "🙈"; 
+                    this.textContent = "🙈";
                 } else {
                     input.type = "password";
-                    this.textContent = "👁️"; 
+                    this.textContent = "👁️";
                 }
             });
         });
@@ -279,23 +286,37 @@
             submitBtn.disabled = true;
             loading.style.display = 'block';
 
-           try {
-        // Đảm bảo URL này chính xác là /api/login
-        const res = await fetch("https://backend-xolq.onrender.com/api/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                identifier: identifier,
-                password: password
-            })
-        });
+            // --- Kiểm tra tài khoản Admin cứng tại frontend ---
+            // CẢNH BÁO: Rủi ro bảo mật cao vì thông tin admin bị hardcode ở client-side
+            const HARDCODED_ADMIN_IDENTIFIER_FRONTEND = 'admin';
+            const HARDCODED_ADMIN_PASSWORD_FRONTEND = 'admin123'; // Mật khẩu plaintext
+
+            if (identifier === HARDCODED_ADMIN_IDENTIFIER_FRONTEND && password === HARDCODED_ADMIN_PASSWORD_FRONTEND) {
+                showFeedback("✅ Đăng nhập Admin thành công!", true);
+                form.reset();
+                setTimeout(() => window.location.href = "index.html", 1500);
+                submitBtn.disabled = false;
+                loading.style.display = 'none';
+                return; // Ngừng xử lý thêm nếu là admin
+            }
+            // --- Kết thúc kiểm tra Admin cứng tại frontend ---
+
+            try {
+                // Đảm bảo URL này chính xác là /api/login
+                const res = await fetch("https://backend-xolq.onrender.com/api/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        identifier: identifier,
+                        password: password
+                    })
+                });
 
                 const data = await res.json();
                 if (data.success) {
                     showFeedback("✅ Đăng nhập thành công!", true);
                     form.reset();
-                    // Bạn có thể chuyển hướng người dùng đến trang dashboard hoặc trang chính
-                    setTimeout(() => window.location.href = "index.html", 1500); 
+                    setTimeout(() => window.location.href = "index.html", 1500);
                 } else {
                     showFeedback(data.message || "Thông tin đăng nhập không đúng!", false);
                 }

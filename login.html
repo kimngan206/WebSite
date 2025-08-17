@@ -3,91 +3,318 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>Đăng nhập</title>
-    <link rel="stylesheet" href="login-style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng Nhập</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet" />
+    <style>
+        /* CSS styles (có thể copy từ register.html hoặc điều chỉnh cho phù hợp) */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #fff1f0, #ffe6e6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .card {
+            background: #fff;
+            padding: 35px 40px;
+            border-radius: 16px;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: 0 8px 24px rgba(231, 76, 60, 0.2);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            text-align: center;
+            color: #e74c3c;
+            margin-bottom: 30px;
+            font-size: 2.2rem;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 18px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] { /* Đã bỏ type="tel" vì không cần cho login */
+            width: 100%;
+            padding: 15px 18px;
+            margin: 0;
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        input:focus {
+            border-color: #e74c3c;
+            box-shadow: 0 0 15px rgba(231, 76, 60, 0.2);
+            transform: translateY(-2px);
+            outline: none;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 13px;
+            margin-top: 8px;
+            display: none;
+            font-weight: 500;
+        }
+
+        .error-message.visible {
+            display: block;
+        }
+
+        .success-message {
+            color: #27ae60;
+            font-size: 13px;
+            margin-top: 8px;
+            display: none;
+            font-weight: 500;
+        }
+
+        .success-message.visible {
+            display: block;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 12px;
+            margin-top: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            background: linear-gradient(45deg, #c0392b, #a52a22);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
+        }
+
+        .btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        #global-feedback {
+            margin-bottom: 25px;
+            padding: 15px 20px;
+            border-radius: 12px;
+            font-size: 14px;
+            text-align: center;
+            font-weight: 600;
+            background-color: #fcebeb;
+            color: #e74c3c;
+            border: 2px solid #fadbd8;
+            transition: all 0.3s ease;
+        }
+
+        #global-feedback:empty {
+            display: none;
+        }
+
+        #global-feedback.success {
+            background-color: #e8f9f0;
+            color: #27ae60;
+            border-color: #a9dfbf;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #e74c3c;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .form-header p {
+            color: #666;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="login-card">
-        <h1>🔐 Đăng nhập</h1>
-        <p class="subtitle">Truy cập hệ thống của bạn</p>
+    <div class="card">
+        <div class="form-header">
+            <h1>🔒 Đăng Nhập</h1>
+            <p>Truy cập hệ thống của bạn</p>
+        </div>
 
-        <form id="loginForm">
+        <div id="global-feedback"></div>
+
+        <form id="login-form">
             <div class="form-group">
-                <input type="text" id="identifier" placeholder="Email / Số điện thoại / Username" required>
+                <!-- identifier có thể là email, số điện thoại hoặc username -->
+                <input type="text" id="identifier" placeholder="Email/SĐT/Tên người dùng *" autocomplete="username" />
             </div>
             <div class="form-group" style="position: relative;">
-                <input type="password" id="password" placeholder="Mật khẩu" required>
-                <span id="togglePassword" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
-                             cursor: pointer; font-size: 18px;">👁️</span>
+                <input type="password" id="password" placeholder="Mật khẩu *" autocomplete="current-password" />
+                <span class="togglePassword" data-target="password" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+                    cursor: pointer; font-size: 18px;">👁️</span>
             </div>
+            
+            <button type="submit" class="btn" id="submitBtn">Đăng Nhập</button>
 
-            <button type="submit" class="btn">Đăng nhập</button>
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Đang xử lý đăng nhập...</p>
+            </div>
         </form>
 
-        <div id="message"></div>
+        <div style="text-align: center; margin-top: 20px; font-size: 14px; color: #666;">
+            Chưa có tài khoản? <a href="register.html" style="color: #e74c3c; font-weight: 600; text-decoration: none;">Đăng ký ngay</a>
+        </div>
     </div>
 
     <script>
-        // ===== Toggle ẩn/hiện mật khẩu =====
-        document.getElementById('togglePassword').addEventListener('click', function () {
-            const passwordInput = document.getElementById('password');
-            if (passwordInput.type === "password") {
-                passwordInput.type = "text";
-                this.textContent = "🙈"; // đổi icon khi hiển thị
-            } else {
-                passwordInput.type = "password";
-                this.textContent = "👁️"; // đổi icon khi ẩn
-            }
+        // Toggle ẩn/hiện mật khẩu
+        document.querySelectorAll('.togglePassword').forEach(icon => {
+            icon.addEventListener('click', function () {
+                const targetId = this.getAttribute('data-target');
+                const input = document.getElementById(targetId);
+
+                if (input.type === "password") {
+                    input.type = "text";
+                    this.textContent = "🙈"; 
+                } else {
+                    input.type = "password";
+                    this.textContent = "👁️"; 
+                }
+            });
         });
 
-        // ===== Xử lý form login =====
-        document.getElementById('loginForm').addEventListener('submit', async function (e) {
+        const form = document.getElementById("login-form");
+        const submitBtn = document.getElementById("submitBtn");
+        const loading = document.getElementById("loading");
+        const feedback = document.getElementById("global-feedback");
+
+        form.addEventListener("submit", async (e) => {
             e.preventDefault();
-            const identifier = document.getElementById('identifier').value.trim();
-            const password = document.getElementById('password').value;
-            const msg = document.getElementById('message');
 
-            msg.textContent = "⏳ Đang xử lý...";
+            const identifier = document.getElementById("identifier").value.trim();
+            const password = document.getElementById("password").value;
 
-            // ===== ADMIN CỨNG =====
-            const ADMIN_USER = "admin";
-            const ADMIN_PASS = "123456";
-
-            if (identifier === ADMIN_USER && password === ADMIN_PASS) {
-                msg.style.color = "green";
-                msg.textContent = "✅ Đăng nhập thành công (Admin)!";
-                sessionStorage.setItem("loggedInUser", JSON.stringify({ username: ADMIN_USER, role: "admin" }));
-                setTimeout(() => { window.location.href = "index.html"; }, 1000);
-                return; // ⛔ dừng lại, không gọi API nữa
+            // Basic validation
+            if (!identifier || !password) {
+                return showFeedback("Vui lòng nhập đầy đủ thông tin đăng nhập!", false);
             }
 
-            // ===== USER THƯỜNG (API) =====
+            submitBtn.disabled = true;
+            loading.style.display = 'block';
+
             try {
-                const res = await fetch("https://backend-xolq.onrender.com", {
+                // ĐẢM BẢO URL NÀY CHÍNH XÁC VÀ ĐANG HOẠT ĐỘNG!
+                const res = await fetch("https://backend-xolq.onrender.com/api/login", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ identifier, password })
+                    body: JSON.stringify({
+                        identifier: identifier,
+                        password: password
+                    })
                 });
 
                 const data = await res.json();
-
-                if (res.ok) {
-                    msg.style.color = "green";
-                    msg.textContent = "✅ Đăng nhập thành công!";
-                    sessionStorage.setItem("loggedInUser", JSON.stringify(data.user));
-                    setTimeout(() => { window.location.href = "index.html"; }, 1000);
+                if (data.success) {
+                    showFeedback("✅ Đăng nhập thành công!", true);
+                    form.reset();
+                    // Bạn có thể chuyển hướng người dùng đến trang dashboard hoặc trang chính
+                    // setTimeout(() => window.location.href = "dashboard.html", 1500); 
                 } else {
-                    msg.style.color = "red";
-                    msg.textContent = data.message || "❌ Sai tài khoản hoặc mật khẩu!";
+                    showFeedback(data.message || "Thông tin đăng nhập không đúng!", false);
                 }
-            } catch (error) {
-                msg.style.color = "red";
-                msg.textContent = "🚨 Lỗi kết nối server!";
+            } catch (err) {
+                console.error("Lỗi khi kết nối server hoặc xử lý phản hồi:", err);
+                showFeedback("Lỗi kết nối server! Vui lòng thử lại sau.", false);
+            } finally {
+                submitBtn.disabled = false;
+                loading.style.display = 'none';
             }
         });
-    </script>
 
+        function showFeedback(msg, ok) {
+            feedback.textContent = msg;
+            feedback.style.display = "block";
+            feedback.className = ok ? "success" : ""; // Đặt class cho CSS
+            setTimeout(() => feedback.style.display = "none", 4000);
+        }
+    </script>
 </body>
 
 </html>

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Quản lý sản phẩm</title>
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="product_manage.css">
+</head>
+
+<body>
+    <div class="table-wrapper">
+        <h1>📦 Quản lý sản phẩm</h1>
+
+        <!-- Nút để mở form thêm sản phẩm -->
+        <button class="btn btn-open-add-form" id="showAddProductFormBtn">Thêm sản phẩm mới</button>
+
+        <!-- Form để thêm/sửa sản phẩm (sẽ hoạt động như một alert/modal) -->
+        <div class="add-product-form" id="addProductFormModal">
+            <h2 id="formTitle">Thêm sản phẩm mới</h2>
+            <form id="productForm">
+                <input type="hidden" id="productId">
+                <div class="form-group">
+                    <label for="productName">Tên sản phẩm:</label>
+                    <input type="text" id="productName" required>
+                </div>
+                <div class="form-group">
+                    <label for="productPrice">Giá:</label>
+                    <input type="number" id="productPrice" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="productDescription">Mô tả:</label>
+                    <textarea id="productDescription" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="productImage">URL hình ảnh:</label>
+                    <input type="url" id="productImage" placeholder="https://example.com/image.jpg" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-add" id="submitProductBtn">Thêm sản phẩm</button>
+                    <button type="button" class="btn btn-cancel-edit" id="cancelEditBtn">Hủy</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Overlay cho form thêm/sửa sản phẩm -->
+        <div class="form-overlay" id="formOverlay"></div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Hình ảnh</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Giá</th>
+                    <th>Mô tả</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody id="productTableBody"></tbody>
+        </table>
+    </div>
+
+    <!-- Confirmation Modal (cho việc xóa) -->
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <h3>Xác nhận xóa sản phẩm</h3>
+            <p>Bạn có chắc chắn muốn xóa sản phẩm này không?</p>
+            <div class="modal-buttons">
+                <button class="confirm-btn" id="confirmDeleteBtn">Xóa</button>
+                <button class="cancel-btn" id="cancelDeleteBtn">Hủy</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Global Feedback Message -->
+    <div id="globalFeedback" class="global-feedback"></div>
+
+
+    <script>
+        // Modal elements (for delete confirmation)
+        const confirmationModal = document.getElementById('confirmationModal');
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+        const cancelDeleteBtnForConfirmation = document.getElementById('cancelDeleteBtn'); // Đổi tên để tránh trùng lặp ID
+        let productIdToDelete = null; // Variable to store the ID of the product to be deleted
+
+        // Form elements (for add/edit product)
+        const addProductFormModal = document.getElementById('addProductFormModal'); // Form modal itself
+        const formOverlay = document.getElementById('formOverlay'); // Overlay element
+        const showAddProductFormBtn = document.getElementById('showAddProductFormBtn'); // Button to open the form modal
+
+        const productForm = document.getElementById('productForm');
+        const productIdInput = document.getElementById('productId');
+        const productNameInput = document.getElementById('productName');
+        const productPriceInput = document.getElementById('productPrice');
+        const productDescriptionInput = document.getElementById('productDescription');
+        const productImageInput = document.getElementById('productImage');
+        const submitProductBtn = document.getElementById('submitProductBtn');
+        const cancelEditBtn = document.getElementById('cancelEditBtn'); // Nút Hủy trong form thêm/sửa
+        const formTitle = document.getElementById('formTitle');
+        const productTableBody = document.getElementById('productTableBody');
+
+        // Feedback element
+        const globalFeedback = document.getElementById('globalFeedback');
+
+        // Base API URL (replace with your actual product API endpoint)
+        const API_URL = 'https://backend-xolq.onrender.com/api/manage_product'; // Assuming products endpoint
+
+        // --- Global Feedback Functions ---
+        function showGlobalFeedback(message, isSuccess) {
+            globalFeedback.textContent = message;
+            globalFeedback.className = 'global-feedback'; // Reset classes
+            if (isSuccess) {
+                globalFeedback.classList.add('success');
+            } else {
+                globalFeedback.classList.add('error');
+            }
+            globalFeedback.style.display = 'block';
+            globalFeedback.style.opacity = 1;
+
+            setTimeout(() => {
+                globalFeedback.style.opacity = 0;
+                setTimeout(() => {
+                    globalFeedback.style.display = 'none';
+                }, 500); // Wait for fade out to complete
+            }, 3000); // Show for 3 seconds
+        }
+
+        // --- Form Modal (Alert) Functions ---
+        function showProductFormModal() {
+            addProductFormModal.style.display = 'block'; // Hiển thị form
+            formOverlay.style.display = 'block'; // Hiển thị overlay
+            productForm.reset(); // Xóa form khi mở
+            productIdInput.value = '';
+            formTitle.textContent = 'Thêm sản phẩm mới';
+            submitProductBtn.textContent = 'Thêm sản phẩm';
+            submitProductBtn.classList.replace('btn-update', 'btn-add');
+            cancelEditBtn.style.display = 'inline-block'; // Đảm bảo nút hủy luôn hiện khi form được mở
+        }
+
+        function hideProductFormModal() {
+            addProductFormModal.style.display = 'none'; // Ẩn form
+            formOverlay.style.display = 'none'; // Ẩn overlay
+            productForm.reset(); // Xóa form
+            productIdInput.value = '';
+            formTitle.textContent = 'Thêm sản phẩm mới';
+            submitProductBtn.textContent = 'Thêm sản phẩm';
+            submitProductBtn.classList.replace('btn-update', 'btn-add');
+        }
+
+        // Event listener for the new "Thêm sản phẩm mới" button
+        showAddProductFormBtn.addEventListener('click', showProductFormModal);
+
+        // Event listener for the "Hủy" button inside the form modal
+        cancelEditBtn.addEventListener('click', hideProductFormModal);
+
+        // Event listener for overlay click to close form modal
+        formOverlay.addEventListener('click', hideProductFormModal);
+
+
+        // --- Confirmation Modal (for delete) Functions ---
+        function showConfirmationModal(productId) {
+            productIdToDelete = productId;
+            confirmationModal.style.display = 'flex'; // Use flex to center the modal content
+        }
+
+        function hideConfirmationModal() {
+            productIdToDelete = null;
+            confirmationModal.style.display = 'none';
+        }
+
+        cancelDeleteBtnForConfirmation.addEventListener('click', hideConfirmationModal); // Sử dụng tên mới
+        confirmDeleteBtn.addEventListener('click', () => {
+            if (productIdToDelete) {
+                deleteProduct(productIdToDelete);
+            }
+        });
+
+        // --- CRUD Operations ---
+
+        // Load Products
+        async function loadProducts() {
+            try {
+                const res = await fetch(API_URL);
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+                const products = await res.json();
+                productTableBody.innerHTML = ''; // Clear existing rows
+                products.forEach(p => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${p.id}</td>
+                        <td><img src="${p.image}" alt="${p.name}" class="product-image" onerror="this.onerror=null;this.src='https://placehold.co/80x80/cccccc/000000?text=No+Image';"></td>
+                        <td>${p.name}</td>
+                        <td>${p.price.toLocaleString('vi-VN')} VNĐ</td>
+                        <td>${p.description || 'N/A'}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn btn-edit" onclick="editProduct(${p.id})">Sửa</button>
+                                <button class="btn btn-delete" onclick="showConfirmationModal(${p.id})">Xóa</button>
+                            </div>
+                        </td>
+                    `;
+                    productTableBody.appendChild(tr);
+                });
+            } catch (err) {
+                console.error('Lỗi khi tải dữ liệu sản phẩm:', err);
+                productTableBody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:red;">Không thể tải dữ liệu sản phẩm. Vui lòng thử lại sau.</td></tr>';
+                showGlobalFeedback('Không thể tải dữ liệu sản phẩm. Vui lòng thử lại sau.', false);
+            }
+        }
+
+        // Add/Update Product
+        productForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const productData = {
+                name: productNameInput.value,
+                price: parseFloat(productPriceInput.value),
+                description: productDescriptionInput.value,
+                image: productImageInput.value
+            };
+
+            const productId = productIdInput.value;
+            let successMessage = '';
+            let errorMessage = '';
+
+            try {
+                let res;
+                if (productId) {
+                    // Update existing product
+                    res = await fetch(`${API_URL}/${productId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(productData),
+                    });
+                    successMessage = 'Sản phẩm đã được cập nhật thành công!';
+                    errorMessage = 'Lỗi khi cập nhật sản phẩm.';
+                } else {
+                    // Add new product
+                    res = await fetch(API_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(productData),
+                    });
+                    successMessage = 'Sản phẩm đã được thêm thành công!';
+                    errorMessage = 'Lỗi khi thêm sản phẩm.';
+                }
+
+                if (!res.ok) {
+                    const errorDetails = await res.json();
+                    throw new Error(errorDetails.message || errorMessage);
+                }
+
+                showGlobalFeedback(successMessage, true);
+                hideProductFormModal(); // Ẩn form sau khi thêm/sửa thành công
+                loadProducts(); // Reload products table
+
+            } catch (err) {
+                console.error('Lỗi khi thêm/cập nhật sản phẩm:', err);
+                showGlobalFeedback(err.message || 'Có lỗi xảy ra, vui lòng thử lại.', false);
+            }
+        });
+
+        // Edit Product (populate form)
+        window.editProduct = async (productId) => {
+            try {
+                const res = await fetch(`${API_URL}/${productId}`);
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+                const product = await res.json();
+
+                productIdInput.value = product.id;
+                productNameInput.value = product.name;
+                productPriceInput.value = product.price;
+                productDescriptionInput.value = product.description;
+                productImageInput.value = product.image;
+
+                formTitle.textContent = 'Sửa thông tin sản phẩm';
+                submitProductBtn.textContent = 'Cập nhật sản phẩm';
+                submitProductBtn.classList.replace('btn-add', 'btn-update'); // Change button style
+                cancelEditBtn.style.display = 'inline-block'; // Show cancel button
+
+                showProductFormModal(); // Hiển thị form để chỉnh sửa
+
+            } catch (err) {
+                console.error('Lỗi khi tải thông tin sản phẩm để sửa:', err);
+                showGlobalFeedback('Không thể tải thông tin sản phẩm để sửa.', false);
+            }
+        };
+
+        // Delete Product
+        async function deleteProduct(productId) {
+            hideConfirmationModal(); // Hide modal immediately after confirmation
+
+            try {
+                const res = await fetch(`${API_URL}/${productId}`, {
+                    method: 'DELETE',
+                });
+
+                if (!res.ok) {
+                    const errorData = await res.json();
+                    throw new Error(errorData.message || 'Không thể xóa sản phẩm.');
+                }
+
+                showGlobalFeedback(`Sản phẩm với ID ${productId} đã được xóa thành công.`, true);
+                loadProducts(); // Reload the table to reflect the changes
+            } catch (err) {
+                console.error('Lỗi khi xóa sản phẩm:', err);
+                showGlobalFeedback(err.message || 'Không thể xóa sản phẩm.', false);
+            }
+        }
+
+        // Initial load
+        document.addEventListener('DOMContentLoaded', loadProducts);
+    </script>
+</body>
+
+</html>

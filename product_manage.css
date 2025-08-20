@@ -1,0 +1,196 @@
+ /* CSS cụ thể cho trang sản phẩm */
+ .product-image {
+     width: 80px;
+     height: 80px;
+     object-fit: cover;
+     border-radius: 4px;
+ }
+
+ .action-buttons {
+     display: flex;
+     gap: 8px;
+ }
+
+ .btn-edit {
+     background-color: #3498db;
+     /* Giữ màu xanh dương cho nút sửa để phân biệt */
+ }
+
+ .btn-edit:hover {
+     background-color: #2980b9;
+ }
+
+ .add-product-form {
+     /* Ban đầu ẩn form, sẽ hiển thị khi bấm nút "Thêm sản phẩm mới" */
+     display: none;
+     /* Changed from block to none */
+     position: fixed;
+     /* Để nó hiển thị như một modal/alert */
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%, -50%);
+     width: 90%;
+     max-width: 600px;
+     background: #ffffff;
+     padding: 30px;
+     border-radius: 16px;
+     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+     border-top: 8px solid #e74c3c;
+     /* Đồng bộ màu với tiêu đề và bảng */
+     z-index: 1000;
+     /* Đảm bảo nó nằm trên các nội dung khác */
+     box-sizing: border-box;
+     /* Đảm bảo padding không làm tăng kích thước */
+ }
+
+ /* Overlay khi form thêm/sửa sản phẩm hiện ra */
+ .form-overlay {
+     display: none;
+     /* Ban đầu ẩn overlay */
+     position: fixed;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     background-color: rgba(0, 0, 0, 0.5);
+     /* Nền mờ */
+     z-index: 999;
+     /* Nằm dưới form nhưng trên các nội dung khác */
+ }
+
+
+ .add-product-form h2 {
+     color: #e74c3c;
+     /* Đồng bộ màu với tiêu đề chính */
+     margin-bottom: 20px;
+     text-align: center;
+ }
+
+ .form-group {
+     margin-bottom: 15px;
+ }
+
+ .form-group label {
+     display: block;
+     margin-bottom: 8px;
+     font-weight: 600;
+     color: #555;
+ }
+
+ .form-group input[type="text"],
+ .form-group input[type="number"],
+ .form-group input[type="url"],
+ .form-group textarea {
+     width: calc(100% - 20px);
+     padding: 10px;
+     border: 1px solid #ddd;
+     border-radius: 6px;
+     font-size: 1em;
+     transition: border-color 0.3s;
+ }
+
+ .form-group input:focus,
+ .form-group textarea:focus {
+     border-color: #e74c3c;
+     /* Đồng bộ màu border focus */
+     outline: none;
+ }
+
+ .form-actions {
+     text-align: right;
+     margin-top: 20px;
+ }
+
+ .btn-add,
+ .btn-update,
+ .btn-cancel-edit {
+     padding: 10px 20px;
+     border-radius: 6px;
+     cursor: pointer;
+     font-size: 1em;
+     transition: background-color 0.2s;
+     color: white;
+     border: none;
+ }
+
+ .btn-add {
+     background-color: #e74c3c;
+     /* Đồng bộ màu với nút xóa */
+ }
+
+ .btn-add:hover {
+     background-color: #c0392b;
+     /* Đồng bộ màu hover */
+ }
+
+ .btn-update {
+     background-color: #e74c3c;
+     /* Đồng bộ màu với nút xóa */
+ }
+
+ .btn-update:hover {
+     background-color: #c0392b;
+     /* Đồng bộ màu hover */
+ }
+
+ .btn-cancel-edit {
+     background-color: #6c757d;
+     /* Giữ màu xám cho nút hủy */
+     margin-left: 10px;
+ }
+
+ .btn-cancel-edit:hover {
+     background-color: #5a6268;
+ }
+
+ /* Global feedback message styles */
+ .global-feedback {
+     position: fixed;
+     top: 20px;
+     right: 20px;
+     padding: 15px 25px;
+     border-radius: 8px;
+     color: white;
+     font-weight: bold;
+     display: none;
+     /* Hidden by default */
+     z-index: 1001;
+     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+     opacity: 0;
+     transition: opacity 0.5s ease-in-out;
+ }
+
+ .global-feedback.success {
+     background-color: #e74c3c;
+     /* Thay đổi màu thông báo thành công sang màu chính */
+ }
+
+ .global-feedback.error {
+     background-color: #dc3545;
+     /* Giữ màu đỏ cho lỗi */
+ }
+
+ /* Nút mở form thêm sản phẩm mới */
+ .btn-open-add-form {
+     background-color: #e74c3c;
+     /* Màu xanh lá nổi bật cho nút thêm mới */
+     color: white;
+     padding: 12px 25px;
+     border-radius: 8px;
+     border: none;
+     cursor: pointer;
+     font-size: 1.1em;
+     transition: background-color 0.3s ease;
+     margin-bottom: 20px;
+     display: block;
+     min-width: 200px;
+     /* Nút sẽ không nhỏ hơn 200px */
+     width: fit-content;
+     /* Vẫn giữ fit-content */
+     margin-left: auto;
+     margin-right: auto;
+ }
+
+ .btn-open-add-form:hover {
+     background-color: red;
+ }

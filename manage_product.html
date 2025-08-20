@@ -34,8 +34,11 @@
                     <textarea id="productDescription" rows="3"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="productImage">URL hình ảnh:</label>
-                    <input type="url" id="productImage" placeholder="https://example.com/image.jpg" required>
+                    <label for="productImageFile">Chọn hình ảnh:</label>
+                    <input type="file" id="productImageFile" accept="image/*">
+                    <img id="productImagePreview" src="https://placehold.co/80x80/cccccc/000000?text=Xem+truoc" alt="Image Preview" class="product-image" style="margin-top: 10px; display: block;">
+                    <!-- Input ẩn để lưu URL hoặc Base64 gửi lên backend -->
+                    <input type="hidden" id="productImageHiddenUrl">
                 </div>
                 <div class="form-actions">
                     <button type="submit" class="btn btn-add" id="submitProductBtn">Thêm sản phẩm</button>
@@ -95,7 +98,11 @@
         const productNameInput = document.getElementById('productName');
         const productPriceInput = document.getElementById('productPrice');
         const productDescriptionInput = document.getElementById('productDescription');
-        const productImageInput = document.getElementById('productImage');
+        // Thay đổi biến cho input file
+        const productImageFileInput = document.getElementById('productImageFile');
+        const productImagePreview = document.getElementById('productImagePreview');
+        const productImageHiddenUrl = document.getElementById('productImageHiddenUrl'); // Input ẩn để gửi lên backend
+
         const submitProductBtn = document.getElementById('submitProductBtn');
         const cancelEditBtn = document.getElementById('cancelEditBtn'); // Nút Hủy trong form thêm/sửa
         const formTitle = document.getElementById('formTitle');
@@ -137,6 +144,10 @@
             submitProductBtn.textContent = 'Thêm sản phẩm';
             submitProductBtn.classList.replace('btn-update', 'btn-add');
             cancelEditBtn.style.display = 'inline-block'; // Đảm bảo nút hủy luôn hiện khi form được mở
+
+            // Reset preview and hidden URL input when showing the form
+            productImagePreview.src = 'https://placehold.co/80x80/cccccc/000000?text=Xem+truoc';
+            productImageHiddenUrl.value = '';
         }
 
         function hideProductFormModal() {
@@ -147,6 +158,9 @@
             formTitle.textContent = 'Thêm sản phẩm mới';
             submitProductBtn.textContent = 'Thêm sản phẩm';
             submitProductBtn.classList.replace('btn-update', 'btn-add');
+            // Reset preview and hidden URL input when hiding the form
+            productImagePreview.src = 'https://placehold.co/80x80/cccccc/000000?text=Xem+truoc';
+            productImageHiddenUrl.value = '';
         }
 
         // Event listener for the new "Thêm sản phẩm mới" button
@@ -176,6 +190,23 @@
                 deleteProduct(productIdToDelete);
             }
         });
+
+        // --- Handle File Input and Preview ---
+        productImageFileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    productImagePreview.src = e.target.result; // Hiển thị ảnh xem trước
+                    productImageHiddenUrl.value = e.target.result; // Lưu Base64 vào input ẩn
+                };
+                reader.readAsDataURL(file); // Đọc file dưới dạng Base64
+            } else {
+                productImagePreview.src = 'https://placehold.co/80x80/cccccc/000000?text=Xem+truoc'; // Reset ảnh xem trước
+                productImageHiddenUrl.value = ''; // Xóa giá trị input ẩn
+            }
+        });
+
 
         // --- CRUD Operations ---
 
@@ -216,12 +247,22 @@
         productForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
+            // Lấy giá trị từ input ẩn (sẽ là Base64 hoặc URL cũ)
+            const imageValue = productImageHiddenUrl.value;
+
             const productData = {
                 name: productNameInput.value,
                 price: parseFloat(productPriceInput.value),
                 description: productDescriptionInput.value,
-                image: productImageInput.value
+                image: imageValue // Gửi Base64 hoặc URL lên backend
             };
+
+            // Kiểm tra xem trường image có được điền hay không
+            if (!productData.image) {
+                showGlobalFeedback('URL hình ảnh là bắt buộc. Vui lòng chọn ảnh hoặc cung cấp URL.', false);
+                return;
+            }
+
 
             const productId = productIdInput.value;
             let successMessage = '';
@@ -281,7 +322,10 @@
                 productNameInput.value = product.name;
                 productPriceInput.value = product.price;
                 productDescriptionInput.value = product.description;
-                productImageInput.value = product.image;
+                
+                // Đặt giá trị URL ảnh vào input ẩn và hiển thị xem trước
+                productImageHiddenUrl.value = product.image;
+                productImagePreview.src = product.image; // Hiển thị ảnh hiện có
 
                 formTitle.textContent = 'Sửa thông tin sản phẩm';
                 submitProductBtn.textContent = 'Cập nhật sản phẩm';

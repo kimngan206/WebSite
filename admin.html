@@ -95,7 +95,7 @@
             try {
                 // Thay thế bằng URL backend của bạn
                 // CHỈNH SỬA DÒNG NÀY: Gọi đến /api/admin thay vì /api/users
-                const res = await fetch('https://backend-xolq.onrender.com/api/admin');
+        const res = await fetch('https://backend-xolq.onrender.com/api/admin'); // <-- Đã sửa thành /api/admin
                 const users = await res.json();
                 const tbody = document.getElementById('userTableBody');
                 tbody.innerHTML = '';

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Quên mật khẩu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ffbbbb, #dbaeae);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+            width: 350px;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        input[type="email"] {
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input[type="email"]:focus {
+            border-color: #e74c3c;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #c0392b;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(231, 76, 60, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+            background: #a52a22;
+            box-shadow: 0 2px 4px rgba(231, 76, 60, 0.3);
+        }
+
+        .password-box {
+            margin-top: 15px;
+            font-weight: bold;
+            color: #d9534f;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Quên mật khẩu</h2>
+        <input type="email" id="email" placeholder="Nhập email của bạn" required>
+        <button id="actionBtn" onclick="handleAction()">Lấy lại mật khẩu</button>
+        <div class="password-box" id="passwordBox"></div>
+    </div>
+
+    <script>
+        let isPasswordShown = false;
+
+        function generatePassword(length = 8) {
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%";
+            let pass = "";
+            for (let i = 0; i < length; i++) {
+                pass += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return pass;
+        }
+
+        function handleAction() {
+            const email = document.getElementById("email").value;
+            const passwordBox = document.getElementById("passwordBox");
+            const actionBtn = document.getElementById("actionBtn");
+
+            if (!isPasswordShown) {
+                if (email.trim() === "") {
+                    alert("Vui lòng nhập email!");
+                    return;
+                }
+                let newPassword = generatePassword();
+                passwordBox.style.display = "block";
+                passwordBox.textContent = "Mật khẩu mới của bạn: " + newPassword;
+                actionBtn.textContent = "Quay lại đăng nhập";
+                isPasswordShown = true;
+            } else {
+                window.location.href = "login.html"; // link giả định trang đăng nhập
+            }
+        }
+    </script>
+</body>
+
+</html>

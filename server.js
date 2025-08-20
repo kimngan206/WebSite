@@ -1,3 +1,4 @@
+const express = require('express');
 
 const cors = require('cors');
 
@@ -225,8 +226,7 @@ app.get('/api/admin', async (req, res) => {
 
 // =============== Khởi động server ===============
 
-const PORT = process.env.PORT || 4000;
-
+const PORT = 5000;
 app.listen(PORT, () => {
 
     console.log(`✅ Server đang chạy tại http://localhost:${PORT}`);

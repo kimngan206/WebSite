@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hồ Sơ Của Tôi</title>
+    <link rel="stylesheet" href="profile.css">
+</head>
+
+<body>
+    <!-- ===== HEADER MỚI ===== -->
+    <header class="main-header">
+        <div class="container header-container">
+            <!-- Logo -->
+            <a href="#" class="logo">
+                <div class="logo-icon">
+                    <img src="images/logo.png" alt="Logo AnhEm Motor">
+                </div>
+                <span class="logo-text">AnhEm Motor</span>
+            </a>
+
+            <!-- Navigation -->
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Trang Chủ</a></li>
+                    <li><a href="listings.html">Sản Phẩm</a></li>
+                    <li><a href="about.html">Giới Thiệu</a></li>
+                    <li><a href="news.html">Tin Tức</a></li>
+                    <li><a href="promotion.html">Khuyến Mãi</a></li>
+                    <li><a href="service.html">Dịch Vụ</a></li>
+                    <li><a href="contact.html">Liên Hệ</a></li>
+                </ul>
+            </nav>
+
+            <!-- User Actions -->
+            <div class="user-actions" id="user-actions-container">
+                <a href="login.html">Đăng Nhập</a>
+                <a href="register.html">Đăng Ký</a>
+            </div>
+
+            <!-- Mobile toggle -->
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="profile-container">
+            <div class="header">
+                <h1>Hồ Sơ Của Tôi</h1>
+                <p>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
+            </div>
+
+            <div class="profile-main">
+                <div class="profile-info">
+                    <div class="avatar-section">
+                        <div class="avatar-wrapper">
+                            <div class="avatar" id="avatarPreview">H</div>
+                            <label for="fileInput" class="avatar-label">
+                                <i class="fas fa-camera"></i>
+                            </label>
+                        </div>
+                        <div class="avatar-upload-info">
+                            <div>Ảnh đại diện</div>
+                            <div style="font-size: 0.8rem; color: #BDBDBD;">Dung lượng tối đa 1 MB</div>
+                            <div style="font-size: 0.8rem; color: #BDBDBD;">Định dạng: .JPEG, .PNG</div>
+                        </div>
+                    </div>
+
+                    <div class="profile-form">
+                        <div class="form-group">
+                            <label class="form-label" for="username">Tên đăng nhập</label>
+                            <input type="text" id="username" class="form-control username-input" value="hunhngn879"
+                                disabled>
+                            <div class="form-note">Tên đăng nhập chỉ có thể thay đổi một lần.</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="fullname">Tên</label>
+                            <input type="text" id="fullname" class="form-control" placeholder="Nhập tên của bạn">
+                        </div>
+
+                        <div class="form-group has-link">
+                            <label class="form-label" for="email">Email</label>
+                            <input type="email" id="email" class="form-control" value="ki**********@gmail.com" disabled>
+                            <a href="#" class="change-link">Thay Đổi</a>
+                        </div>
+
+                        <div class="form-group has-link">
+                            <label class="form-label" for="phone">Số điện thoại</label>
+                            <input type="tel" id="phone" class="form-control" value="*******17" disabled>
+                            <a href="#" class="change-link">Thay Đổi</a>
+                        </div>
+
+                        <div class="form-group form-group-full">
+                            <label class="form-label">Giới tính</label>
+                            <div class="gender-options">
+                                <label class="gender-option">
+                                    <input type="radio" name="gender" value="male">
+                                    <span>Nam</span>
+                                </label>
+                                <label class="gender-option">
+                                    <input type="radio" name="gender" value="female">
+                                    <span>Nữ</span>
+                                </label>
+                                <label class="gender-option">
+                                    <input type="radio" name="gender" value="other">
+                                    <span>Khác</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group form-group-full">
+                            <label class="form-label">Ngày sinh</label>
+                            <div class="date-inputs">
+                                <select id="daySelect" class="form-control"></select>
+                                <select id="monthSelect" class="form-control"></select>
+                                <select id="yearSelect" class="form-control"></select>
+                            </div>
+                        </div>
+
+                        <button class="save-btn">Lưu Hồ Sơ</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="file" id="fileInput" accept=".jpg,.jpeg,.png" style="display: none;">
+
+    <script>
+        // Populate day, month, and year selects
+        const daySelect = document.getElementById('daySelect');
+        const monthSelect = document.getElementById('monthSelect');
+        const yearSelect = document.getElementById('yearSelect');
+
+        function populateDates() {
+            // Days
+            daySelect.innerHTML = '<option value="">Ngày</option>';
+            for (let i = 1; i <= 31; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i;
+                daySelect.appendChild(option);
+            }
+
+            // Months
+            const months = ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'];
+            monthSelect.innerHTML = '<option value="">Tháng</option>';
+            months.forEach((month, index) => {
+                const option = document.createElement('option');
+                option.value = index + 1;
+                option.textContent = month;
+                monthSelect.appendChild(option);
+            });
+
+            // Years
+            const currentYear = new Date().getFullYear();
+            yearSelect.innerHTML = '<option value="">Năm</option>';
+            for (let i = currentYear; i >= 1900; i--) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i;
+                yearSelect.appendChild(option);
+            }
+        }
+
+        populateDates();
+
+        // File upload handler
+        document.getElementById('fileInput').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const avatar = document.getElementById('avatarPreview');
+                    avatar.style.backgroundImage = `url(${e.target.result})`;
+                    avatar.style.backgroundSize = 'cover';
+                    avatar.style.backgroundPosition = 'center';
+                    avatar.innerHTML = '';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Save button handler
+        document.querySelector('.save-btn').addEventListener('click', function () {
+            alert('Thông tin đã được lưu thành công!');
+        });
+    </script>
+</body>
+
+</html>

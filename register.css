@@ -1,4 +1,3 @@
-/* Điều chỉnh các giá trị để thu nhỏ khoảng cách */
 * {
     box-sizing: border-box;
 }
@@ -17,8 +16,7 @@ body {
 
 .card {
     background: #fff;
-    padding: 25px 30px;
-    /* Giảm padding của card */
+    padding: 35px 40px;
     border-radius: 16px;
     max-width: 450px;
     width: 100%;
@@ -38,22 +36,21 @@ body {
 h1 {
     text-align: center;
     color: #e74c3c;
-    margin-bottom: 20px;
-    /* Giảm khoảng cách dưới tiêu đề */
+    margin-bottom: 30px;
     font-size: 2.2rem;
 }
 
 .form-group {
     position: relative;
-    margin-bottom: -35px;
+    margin-bottom: 18px;
 }
 
 input[type="text"],
 input[type="email"],
+input[type="tel"],
 input[type="password"] {
     width: 100%;
-    padding: 12px 15px;
-    /* Giảm padding của input */
+    padding: 15px 18px;
     margin: 0;
     border: 2px solid #e1e5e9;
     border-radius: 12px;
@@ -69,11 +66,20 @@ input:focus {
     outline: none;
 }
 
+input.invalid {
+    border-color: #e74c3c !important;
+    background-color: #fdf2f2;
+}
+
+input.valid {
+    border-color: #27ae60;
+    background-color: #f0f9f4;
+}
+
 .error-message {
     color: #e74c3c;
     font-size: 13px;
-    margin-top: 5px;
-    /* Giảm khoảng cách trên thông báo lỗi */
+    margin-top: 8px;
     display: none;
     font-weight: 500;
 }
@@ -85,8 +91,7 @@ input:focus {
 .success-message {
     color: #27ae60;
     font-size: 13px;
-    margin-top: 5px;
-    /* Giảm khoảng cách trên thông báo thành công */
+    margin-top: 8px;
     display: none;
     font-weight: 500;
 }
@@ -95,18 +100,55 @@ input:focus {
     display: block;
 }
 
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+    transition: transform 0.2s ease;
+    background: rgba(231, 76, 60, 0.05);
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.checkbox-container:hover {
+    transform: translateX(5px);
+    background: rgba(231, 76, 60, 0.1);
+}
+
+.checkbox-container input {
+    margin-right: 12px;
+    accent-color: #e74c3c;
+    transform: scale(1.2);
+}
+
+.checkbox-container label {
+    font-size: 14px;
+    color: #555;
+    cursor: pointer;
+}
+
+.checkbox-container a {
+    color: #c0392b;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.checkbox-container a:hover {
+    color: #e74c3c;
+    text-decoration: underline;
+}
+
 .btn {
     width: 100%;
-    padding: 14px;
-    /* Giảm padding của nút */
+    padding: 16px;
     background: linear-gradient(45deg, #e74c3c, #c0392b);
     color: white;
     border: none;
     font-size: 16px;
     font-weight: 600;
     border-radius: 12px;
-    margin-top: 20px;
-    /* Giảm khoảng cách trên nút */
+    margin-top: 25px;
     cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
@@ -147,10 +189,8 @@ input:focus {
 }
 
 #global-feedback {
-    margin-bottom: 15px;
-    /* Giảm khoảng cách dưới thông báo chung */
-    padding: 12px 15px;
-    /* Giảm padding của thông báo */
+    margin-bottom: 25px;
+    padding: 15px 20px;
     border-radius: 12px;
     font-size: 14px;
     text-align: center;
@@ -174,8 +214,7 @@ input:focus {
 .loading {
     display: none;
     text-align: center;
-    margin-top: 10px;
-    /* Giảm khoảng cách trên biểu tượng loading */
+    margin-top: 15px;
 }
 
 .spinner {
@@ -198,15 +237,58 @@ input:focus {
     }
 }
 
+.password-strength {
+    margin-top: 5px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.weak {
+    color: #e74c3c;
+}
+
+.medium {
+    color: #f39c12;
+}
+
+.strong {
+    color: #27ae60;
+}
+
+.validation-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    display: none;
+}
+
+.database-status {
+    background: rgba(52, 152, 219, 0.1);
+    border: 2px solid rgba(52, 152, 219, 0.3);
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 13px;
+    color: #3498db;
+    font-weight: 600;
+}
+
+.database-status.connected {
+    background: rgba(39, 174, 96, 0.1);
+    border-color: rgba(39, 174, 96, 0.3);
+    color: #27ae60;
+}
+
 .form-header {
     text-align: center;
-    margin-bottom: 15px;
-    /* Giảm khoảng cách dưới form header */
+    margin-bottom: 25px;
 }
 
 .form-header p {
     color: #666;
-    margin-top: -8px;
+    margin-top: 10px;
     font-size: 14px;
-    margin-bottom: -70px;
 }

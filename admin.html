@@ -64,6 +64,7 @@
             hideConfirmationModal(); // Hide modal immediately after confirmation
 
             try {
+                // Sử dụng endpoint DELETE /api/users/:id đã định nghĩa trong backend
                 const res = await fetch(`https://backend-xolq.onrender.com/api/users/${userId}`, {
                     method: 'DELETE',
                 });
@@ -92,7 +93,9 @@
 
         async function loadUsers() {
             try {
-                const res = await fetch('https://backend-xolq.onrender.com/api/users');
+                // Thay thế bằng URL backend của bạn
+                // CHỈNH SỬA DÒNG NÀY: Gọi đến /api/admin thay vì /api/users
+                const res = await fetch('https://backend-xolq.onrender.com/api/admin');
                 const users = await res.json();
                 const tbody = document.getElementById('userTableBody');
                 tbody.innerHTML = '';
@@ -119,5 +122,4 @@
         document.addEventListener('DOMContentLoaded', loadUsers);
     </script>
 </body>
-
 </html>

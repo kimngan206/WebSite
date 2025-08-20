@@ -7,6 +7,7 @@
     <title>Admin - Quản lý sản phẩm</title>
     <link rel="stylesheet" href="admin.css">
     <link rel="stylesheet" href="product_manage.css">
+
 </head>
 
 <body>
@@ -36,7 +37,8 @@
                 <div class="form-group">
                     <label for="productImageFile">Chọn hình ảnh:</label>
                     <input type="file" id="productImageFile" accept="image/*">
-                    <img id="productImagePreview" src="https://placehold.co/80x80/cccccc/000000?text=Xem+truoc" alt="Image Preview" class="product-image" style="margin-top: 10px; display: block;">
+                    <img id="productImagePreview" src="https://placehold.co/80x80/cccccc/000000?text=Xem+truoc"
+                        alt="Image Preview" class="product-image" style="margin-top: 10px; display: block;">
                     <!-- Input ẩn để lưu URL hoặc Base64 gửi lên backend -->
                     <input type="hidden" id="productImageHiddenUrl">
                 </div>
@@ -322,7 +324,7 @@
                 productNameInput.value = product.name;
                 productPriceInput.value = product.price;
                 productDescriptionInput.value = product.description;
-                
+
                 // Đặt giá trị URL ảnh vào input ẩn và hiển thị xem trước
                 productImageHiddenUrl.value = product.image;
                 productImagePreview.src = product.image; // Hiển thị ảnh hiện có

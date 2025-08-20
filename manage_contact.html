@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Quản lý liên hệ</title>
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="manage_contact.css">
+
+</head>
+
+<body>
+    <div class="table-wrapper">
+        <h1>📞 Quản lý liên hệ</h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Họ và tên</th>
+                    <th>Email</th>
+                    <th>SĐT</th>
+                    <th>Loại yêu cầu</th>
+                    <th>Loại xe</th>
+                    <th>Khoảng Tiền</th>
+                    <th>Tin nhắn chi tiết</th>
+                    <th>Ngày tạo</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody id="contactTableBody"></tbody>
+        </table>
+    </div>
+
+    <!-- Confirmation Modal (cho việc xóa) -->
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <h3>Xác nhận xóa liên hệ</h3>
+            <p>Bạn có chắc chắn muốn xóa liên hệ này không?</p>
+            <div class="modal-buttons">
+                <button class="confirm-btn" id="confirmDeleteBtn">Xóa</button>
+                <button class="cancel-btn" id="cancelDeleteBtn">Hủy</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Global Feedback Message -->
+    <div id="globalFeedback" class="global-feedback"></div>
+
+    <script>
+        // Modal elements (for delete confirmation)
+        const confirmationModal = document.getElementById('confirmationModal');
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+        const cancelDeleteBtnForConfirmation = document.getElementById('cancelDeleteBtn');
+        let contactIdToDelete = null; // Variable to store the ID of the contact to be deleted
+
+        const contactTableBody = document.getElementById('contactTableBody');
+
+        // Feedback element
+        const globalFeedback = document.getElementById('globalFeedback');
+
+        // Base API URL cho API liên hệ
+        const API_URL = 'https://backend-xolq.onrender.com/api/contacts';
+
+        // --- Global Feedback Functions ---
+        function showGlobalFeedback(message, isSuccess) {
+            globalFeedback.textContent = message;
+            globalFeedback.className = 'global-feedback'; // Reset classes
+            if (isSuccess) {
+                globalFeedback.classList.add('success');
+            } else {
+                globalFeedback.classList.add('error');
+            }
+            globalFeedback.style.display = 'block';
+            globalFeedback.style.opacity = 1;
+
+            setTimeout(() => {
+                globalFeedback.style.opacity = 0;
+                setTimeout(() => {
+                    globalFeedback.style.display = 'none';
+                }, 500); // Wait for fade out to complete
+            }, 3000); // Show for 3 seconds
+        }
+
+        // --- Confirmation Modal Functions ---
+        function showConfirmationModal(contactId) {
+            contactIdToDelete = contactId;
+            confirmationModal.style.display = 'flex'; // Use flex to center the modal content
+        }
+
+        function hideConfirmationModal() {
+            contactIdToDelete = null;
+            confirmationModal.style.display = 'none';
+        }
+
+        cancelDeleteBtnForConfirmation.addEventListener('click', hideConfirmationModal);
+
+        confirmDeleteBtn.addEventListener('click', () => {
+            if (contactIdToDelete) {
+                deleteContact(contactIdToDelete);
+            }
+        });
+
+        // --- CRUD Operations for Contacts ---
+
+        // Load Contacts
+        async function loadContacts() {
+            try {
+                const res = await fetch(API_URL);
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+                const contacts = await res.json();
+                contactTableBody.innerHTML = ''; // Clear existing rows
+
+                if (contacts.length === 0) {
+                    contactTableBody.innerHTML = '<tr><td colspan="10" style="text-align:center;">Không có dữ liệu liên hệ nào.</td></tr>';
+                    return;
+                }
+
+                contacts.forEach(c => {
+                    const tr = document.createElement('tr');
+                    // Định dạng ngày giờ nếu có
+                    const createdAt = c.created_at ? new Date(c.created_at).toLocaleString('vi-VN') : 'N/A';
+                    tr.innerHTML = `
+                        <td>${c.id}</td>
+                        <td>${c.full_name}</td>
+                        <td>${c.email}</td>
+                        <td>${c.phone_number}</td>
+                        <td>${c.request_type || 'N/A'}</td>
+                        <td>${c.car_type || 'N/A'}</td>
+                        <td>${c.budget || 'N/A'}</td>
+                        <td class="contact-message-cell">${c.detailed_message || 'N/A'}</td>
+                        <td>${createdAt}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn btn-delete" onclick="showConfirmationModal(${c.id})">Xóa</button>
+                            </div>
+                        </td>
+                    `;
+                    contactTableBody.appendChild(tr);
+                });
+            } catch (err) {
+                console.error('Lỗi khi tải dữ liệu liên hệ:', err);
+                contactTableBody.innerHTML = '<tr><td colspan="10" style="text-align:center; color:red;">Không thể tải dữ liệu liên hệ. Vui lòng thử lại sau.</td></tr>';
+                showGlobalFeedback('Không thể tải dữ liệu liên hệ. Vui lòng thử lại sau.', false);
+            }
+        }
+
+        // Delete Contact
+        async function deleteContact(contactId) {
+            hideConfirmationModal(); // Hide modal immediately after confirmation
+
+            try {
+                const res = await fetch(`${API_URL}/${contactId}`, {
+                    method: 'DELETE',
+                });
+
+                if (!res.ok) {
+                    const errorData = await res.json();
+                    throw new Error(errorData.message || 'Không thể xóa liên hệ.');
+                }
+
+                showGlobalFeedback(`Liên hệ với ID ${contactId} đã được xóa thành công.`, true);
+                loadContacts(); // Reload the table to reflect the changes
+            } catch (err) {
+                console.error('Lỗi khi xóa liên hệ:', err);
+                showGlobalFeedback(err.message || 'Không thể xóa liên hệ.', false);
+            }
+        }
+
+        // Initial load
+        document.addEventListener('DOMContentLoaded', loadContacts);
+    </script>
+</body>
+
+</html>

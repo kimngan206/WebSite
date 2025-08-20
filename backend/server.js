@@ -158,13 +158,14 @@ app.post('/api/login', async (req, res) => {
 });
 
 // API lấy danh sách người dùng
+// Ví dụ về API để lấy tất cả người dùng
 app.get('/api/users', async (req, res) => {
     try {
-        const result = await pool.query('SELECT * FROM users');
-        res.json(result.rows);
+        const result = await pool.query('SELECT id, username, email, phone FROM users ORDER BY id ASC'); // Lấy dữ liệu từ bảng users
+        res.status(200).json(result.rows);
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Lỗi server' });
+        console.error('Lỗi khi lấy danh sách người dùng:', err.message);
+        res.status(500).json({ success: false, message: 'Lỗi server khi lấy danh sách người dùng!' });
     }
 });
 

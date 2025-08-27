@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Honda | Xe máy | Dầu nhờn và Hoá chất</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="index-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Custom styles to match Honda's aesthetic, if not fully covered by Tailwind */
+        body {
+            font-family: "Inter", sans-serif;
+            color: #393939;
+        }
+
+        .text-honda-red {
+            color: #de0000;
+        }
+
+        .bg-honda-red {
+            background-color: #de0000;
+        }
+
+        /* Hide scrollbar for select elements on some browsers */
+        .select-hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .select-hide-scrollbar {
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        /* Custom arrow for dropdowns to match Honda's design */
+        .select-arrow::after {
+            content: url('data:image/svg+xml;utf8,<svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L6 6L11 1" stroke="%23393939" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+
+        /* Product Detail Modal Styles - Centered */
+        #product-detail-panel {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            /* Initially slightly scaled down and hidden */
+            width: 90%;
+            /* Responsive width */
+            max-width: 500px;
+            /* Max width for desktop */
+            max-height: 90vh;
+            /* Max height to prevent overflow on small screens */
+            background-color: white;
+            border-radius: 0.5rem;
+            /* rounded-lg */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            /* Initially invisible */
+            visibility: hidden;
+            /* Hide from screen readers and interaction */
+            transition: all 0.3s ease-in-out;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        #product-detail-panel.open {
+            opacity: 1;
+            /* Fade in */
+            visibility: visible;
+            /* Make visible */
+            transform: translate(-50%, -50%) scale(1);
+            /* Scale up to original size */
+        }
+
+        /* Overlay for background when modal is open */
+        .backdrop-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .backdrop-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Cart panel styles */
+        #cart-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 350px;
+            height: 100%;
+            background-color: white;
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #cart-panel.open {
+            transform: translateX(0);
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px dashed #e0e0e0;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item-details {
+            flex-grow: 1;
+        }
+
+        /* Notification styles */
+        .notification-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .notification {
+            background-color: #10b981;
+            color: white;
+            padding: 12px 20px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .notification.error {
+            background-color: #ef4444;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <div class="notification-container"></div>
+    <header class="main-header">
+        <div class="container">
+            <div class="header-container">
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">
+                        <img src="image/logo.png" alt="AnhEm Motor">
+                    </div>
+                    <span class="logo-text">AnhEm Motor</span>
+                </a>
+
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="index.html">Trang Chủ</a></li>
+                        <li class="has-submenu">
+                            <a href="listings.html">
+                                Sản Phẩm <i class="fas fa-chevron-down"></i>
+                            </a>
+                            <ul class="submenu">
+                                <li><a href="accessory.html">Nón Bảo Hiểm</a></li>
+                                <li><a href="custome.html">Trang Phục</a></li>
+                                <li><a href="chemicals.html">Hóa Chất</a></li>
+                                <li><a href="spareparts.html">Phụ Tùng</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="about.html">Giới Thiệu</a></li>
+                        <li><a href="news.html">Tin Tức-Sự Kiện</a></li>
+                        <li><a href="promotion.html">Khuyến Mãi</a></li>
+                        <li><a href="contact.html">Liên Hệ</a></li>
+                        <li><a href="service.html">Dịch Vụ</a></li>
+                    </ul>
+                </nav>
+
+                <div class="flex items-center space-x-4">
+                    <button id="cart-icon-button"
+                        class="relative text-gray-600 hover:text-red-500 transition duration-300">
+                        <i class="fas fa-shopping-cart text-xl"></i>
+                        <span id="cart-item-count"
+                            class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+
+        <nav class="mobile-nav" id="mobileNav">
+            <div class="mobile-nav-header">
+                <h3>Menu</h3>
+                <button class="mobile-nav-close" id="mobileNavClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <ul>
+                <li><a href="index.html">Trang Chủ</a></li>
+                <li><a href="listings.html">Sản Phẩm</a></li>
+                <li><a href="about.html">Giới Thiệu</a></li>
+                <li><a href="news.html">Tin Tức-Sự Kiện</a></li>
+                <li><a href="promotion.html">Khuyến Mãi</a></li>
+                <li><a href="contact.html">Liên Hệ</a></li>
+                <li><a href="service.html">Dịch Vụ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div id="cart-panel" class="cart-panel">
+        <div class="flex justify-between items-center p-4 border-b">
+            <h3 class="text-xl font-bold">Giỏ hàng của bạn</h3>
+            <button id="close-cart-panel" class="text-gray-700 text-2xl"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="cart-items" class="flex-grow overflow-y-auto p-4">
+        </div>
+        <div class="p-4 border-t">
+            <div class="flex justify-between items-center mb-4">
+                <span class="font-semibold text-lg">Tổng cộng:</span>
+                <span id="cart-total" class="font-bold text-honda-red text-lg">0 VNĐ</span>
+            </div>
+            <a href="shoppingcart.html"> <button id="checkout-button"
+                    class="bg-honda-red text-white w-full py-3 rounded-md text-lg font-semibold hover:bg-red-700 transition duration-200">
+                    Xem giỏ hàng
+                </button></a>
+
+        </div>
+    </div>
+    <div class="bg-gray-100 py-3 px-4">
+        <div class="container mx-auto text-sm text-gray-600 flex items-center space-x-2">
+            <a href="/" class="hover:underline">Trang chủ</a>
+            <span>/</span>
+            <a href="#" class="hover:underline">Xe máy</a>
+            <span>/</span>
+            <span>Dầu nhờn và Hoá chất</span>
+        </div>
+    </div>
+
+    <div class="bg-white shadow-sm py-4">
+        <div
+            class="container mx-auto px-4 flex justify-center space-x-4 md:space-x-8 text-gray-700 text-sm md:text-base font-semibold overflow-x-auto whitespace-nowrap">
+            <a href="accessory.html" class="pb-2 border-b-2 border-transparent hover:border-honda-red">Mũ bảo hiểm</a>
+            <a href="custome.html" class="pb-2 border-b-2 border-transparent hover:border-honda-red">Trang phục</a>
+            <a href="accessories.html" class="pb-2 border-b-2 border-transparent hover:border-honda-red">Phụ kiện</a>
+            <a href="spareparts.html" class="pb-2 border-b-2 border-transparent hover:border-honda-red">Phụ tùng</a>
+            <a href="chemicals.html" class="pb-2 border-b-2 border-honda-red text-honda-red">Dầu nhờn và Hoá chất</a>
+        </div>
+    </div>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="flex items-center justify-between p-4 bg-white rounded-lg shadow-md mb-6">
+            <form action="#" method="GET" class="relative flex-grow mr-4 flex items-center gap-4">
+                <input type="text" id="oil-chemical-search-input" name="searchText" placeholder="Nhập tên sản phẩm"
+                    class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-honda-red">
+                <button type="submit" class="text-gray-500 hover:text-honda-red">
+                    <i class="fas fa-search"></i>
+                </button>
+
+                <div class="relative inline-block text-left">
+                    <div>
+                        <button type="button" id="dropdown-button-product-type"
+                            class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-honda-red"
+                            aria-expanded="true" aria-haspopup="true">
+                            Loại sản phẩm
+                            <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div id="dropdown-menu-product-type"
+                        class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden"
+                        role="menu" aria-orientation="vertical" aria-labelledby="dropdown-button-product-type"
+                        tabindex="-1">
+                        <div class="py-1" role="none">
+                            <label
+                                class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+                                <input type="checkbox" name="productType[]" value="dau-nhon"
+                                    class="filter-checkbox rounded text-honda-red focus:ring-honda-red mr-2">
+                                Dầu nhờn
+                            </label>
+                            <label
+                                class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+                                <input type="checkbox" name="productType[]" value="hoa-chat"
+                                    class="filter-checkbox rounded text-honda-red focus:ring-honda-red mr-2">
+                                Hoá chất
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative inline-block text-left">
+                    <div>
+                        <button type="button" id="dropdown-button-vehicle-type"
+                            class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-honda-red"
+                            aria-expanded="true" aria-haspopup="true">
+                            Loại xe
+                            <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div id="dropdown-menu-vehicle-type"
+                        class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden"
+                        role="menu" aria-orientation="vertical" aria-labelledby="dropdown-button-vehicle-type"
+                        tabindex="-1">
+                        <div class="py-1" role="none">
+                            <label
+                                class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+                                <input type="checkbox" name="vehicleType[]" value="tay-ga"
+                                    class="filter-checkbox rounded text-honda-red focus:ring-honda-red mr-2">
+                                Xe tay ga
+                            </label>
+                            <label
+                                class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+                                <input type="checkbox" name="vehicleType[]" value="xe-so"
+                                    class="filter-checkbox rounded text-honda-red focus:ring-honda-red mr-2">
+                                Xe số
+                            </label>
+                            <label
+                                class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+                                <input type="checkbox" name="vehicleType[]" value="khac"
+                                    class="filter-checkbox rounded text-honda-red focus:ring-honda-red mr-2">
+                                Khác (áp dụng cho cả xe máy và ô tô)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div id="oil-chemical-list">
+            <div id="dau-nhon-section" class="mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-gray-800">Dầu nhờn</h2>
+                <div id="dau-nhon-products" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div class="oil-chemical-card bg-white rounded-lg shadow-md hover:shadow-lg transition duration-200 flex flex-col"
+                        data-product-id="32" data-product-name="Dầu Tổng hợp Cao cấp 4T SL 10W-30 MA Pro Honda"
+                        data-product-price="309000"
+                        data-product-image="https://cdn.honda.com.vn/spare-parts/March2024/6co9OeZArqzagGoZw6v9.PNG"
+                        data-product-type="dau-nhon" data-vehicle-type="khac"
+                        data-product-description="Dầu động cơ tổng hợp cao cấp, bảo vệ vượt trội cho xe của bạn.">
+                        <div class="product-info-wrapper flex-grow cursor-pointer">
+                            <div class="relative overflow-hidden rounded-t-lg image-product-ctn">
+                                <img src="https://cdn.honda.com.vn/spare-parts/March2024/6co9OeZArqzagGoZw6v9.PNG"
+                                    alt="Dầu Tổng hợp Cao cấp 4T SL 10W-30 MA Pro Honda"
+                                    class="w-full h-64 object-contain p-2">
+                            </div>
+                            <div class="p-4">
+                                <p class="font-semibold text-sm md:text-base mb-1">Dầu Tổng hợp Cao cấp 4T SL 10W-30 MA
+                                    Pro
+                                    Honda</p>
+                                <p class="text-honda-red font-bold text-sm md:text-base mb-2">309.000 VNĐ</p>
+                            </div>
+                        </div>
+                        <div class="p-4 pt-0">
+                            <button
+                                class="add-to-cart-btn bg-honda-red text-white w-full py-2 rounded-md font-semibold hover:bg-red-700 transition duration-200">
+                                <i class="fas fa-shopping-cart mr-2"></i>Thêm vào giỏ hàng
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="oil-chemical-card bg-white rounded-lg shadow-md hover:shadow-lg transition duration-200 flex flex-col"
+                        data-product-id="7" data-product-name="Dầu nhờn xe số 4T SL 10W-30 MA Pro Honda"
+                        data-product-price="84000"
+                        data-product-image="https://cdn.honda.com.vn/spare-parts/March2024/EOkuwIg6sWP948xHp31V.PNG"
+                        data-product-type="dau-nhon" data-vehicle-type="xe-so"
+                        data-product-description="Dầu nhờn chuyên biệt cho xe số, bảo vệ động cơ và hộp số.">
+                        <div class="product-info-wrapper flex-grow cursor-pointer">
+                            <div class="relative overflow-hidden rounded-t-lg image-product-ctn">
+                                <img src="https://cdn.honda.com.vn/spare-parts/March2024/EOkuwIg6sWP948xHp31V.PNG"
+                                    alt="Dầu nhờn xe số 4T SL 10W-30 MA Pro Honda"
+                                    class="w-full h-64 object-contain p-2">
+                            </div>
+                            <div class="p-4">
+                                <p class="font-semibold text-sm md:text-base mb-1">Dầu nhờn xe số 4T SL 10W-30 MA Pro
+                                    Honda
+                                </p>
+                                <p class="text-honda-red font-bold text-sm md:text-base mb-2">84.000 VNĐ</p>
+                            </div>
+                        </div>
+                        <div class="p-4 pt-0">
+                            <button
+                                class="add-to-cart-btn bg-honda-red text-white w-full py-2 rounded-md font-semibold hover:bg-red-700 transition duration-200">
+                                <i class="fas fa-shopping-cart mr-2"></i>Thêm vào giỏ hàng
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="oil-chemical-card bg-white rounded-lg shadow-md hover:shadow-lg transition duration-200 flex flex-col"
+                        data-product-id="6" data-product-name="Dầu nhờn xe ga 4T SL 10W-30 MB Pro Honda"
+                        data-product-price="89000"
+                        data-product-image="https://cdn.honda.com.vn/spare-parts/March2024/iLNtowRi6QCmpN2cAP4U.PNG"
+                        data-product-type="dau-nhon" data-vehicle-type="tay-ga"
+                        data-product-description="Dầu nhờn chuyên biệt cho xe ga, tối ưu hóa hiệu suất và bảo vệ động cơ.">
+                        <div class="product-info-wrapper flex-grow cursor-pointer">
+                            <div class="relative overflow-hidden rounded-t-lg image-product-ctn">
+                                <img src="https://cdn.honda.com.vn/spare-parts/March2024/iLNtowRi6QCmpN2cAP4U.PNG"
+                                    alt="Dầu nhờn xe ga 4T SL 10W-30 MB Pro Honda"
+                                    class="w-full h-64 object-contain p-2">
+                            </div>
+                            <div class="p-4">
+                                <p class="font-semibold text-sm md:text-base mb-1">Dầu nhờn xe ga 4T SL 10W-30 MB Pro
+                                    Honda
+                                </p>
+                                <p class="text-honda-red font-bold text-sm md:text-base mb-2">89.000 VNĐ</p>
+                            </div>
+                        </div>
+                        <div class="p-4 pt-0">
+                            <button
+                                class="add-to-cart-btn bg-honda-red text-white w-full py-2 rounded-md font-semibold hover:bg-red-700 transition duration-200">
+                                <i class="fas fa-shopping-cart mr-2"></i>Thêm vào giỏ hàng
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="oil-chemical-card bg-white rounded-lg shadow-md hover:shadow-lg transition duration-200 flex flex-col"
+                        data-product-id="oil-4" data-product-name="Dầu nhờn xe ga 4T SL 10W-30 MB Pro Honda (200L)"
+                        data-product-price="95000"
+                        data-product-image="https://cdn.honda.com.vn/spare-parts/March2024/kv813ufbWd7RDIj7V5Oc.PNG"
+                        data-product-type="dau-nhon" data-vehicle-type="xe-so"
+                        data-product-description="Dầu nhớt đa cấp chuyên dụng cho xe số Honda, giúp động cơ vận hành bền bỉ và ổn định.">
+                        <div class="product-info-wrapper flex-grow cursor-pointer">
+                            <div class="relative overflow-hidden rounded-t-lg image-product-ctn">
+                                <img src="https://cdn.honda.com.vn/spare-parts/March2024/kv813ufbWd7RDIj7V5Oc.PNG"
+                                    alt="Dầu nhờn xe ga 4T SL 10W-30 MB Pro Honda (200L)"
+                                    class="w-full h-64 object-contain p-2">
+                            </div>
+                            <div class="p-4">
+                                <p class="font-semibold text-sm md:text-base mb-1">Dầu nhờn xe ga 4T SL 10W-30 MB Pro
+                                    Honda (200L)</p>
+                                <p class="text-honda-red font-bold text-sm md:text-base mb-2">75.635 VNĐ</p>
+                            </div>
+                        </div>
+                        <div class="p-4 pt-0">
+                            <button
+                                class="add-to-cart-btn bg-honda-red text-white w-full py-2 rounded-md font-semibold hover:bg-red-700 transition duration-200">
+                                <i class="fas fa-shopping-cart mr-2"></i>Thêm vào giỏ hàng
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="oil-chemical-card bg-white rounded-lg shadow-md hover:shadow-lg transition duration-200 flex flex-col"
+                        data-product-id="oil-5" data-product-name="Dầu nhờn xe số 4T SL 10W-30 MA Pro Honda (200L)"
+                        data-product-price="45000"
+                        data-product-image="https://cdn.honda.com.vn/spare-parts/March2024/7vIo2BpFtgrbvWbgHnfv.PNG"
+                        data-product-type="dau-nhon" data-vehicle-type="tay-ga"
+                        data-product-description="Dầu hộp số chuyên dụng cho xe tay ga Honda, giảm mài mòn, đảm bảo truyền động êm ái.">
+                        <div class="product-info-wrapper flex-grow cursor-pointer">
+                            <div class="relative overflow-hidden rounded-t-lg image-product-ctn">
+                                <img src="https://cdn.honda.com.vn/spare-parts/March2024/7vIo2BpFtgrbvWbgHnfv.PNG"
+                                    alt="Dầu nhờn xe số 4T SL 10W-30 MA Pro Honda (200L)"
+                                    class="w-full h-64 object-contain p-2">
+                            </div>
+                            <div class="p-4">
+                                <p class="font-semibold text-sm md:text-base mb-1">Dầu nhờn xe số 4T SL 10W-30 MA Pro
+                                    Honda (200L)</p>
+                                <p class="text-honda-red font-bold text-sm md:text-base mb-2">72.968 VNĐ</p>
+                            </div>
+                        </div>
+                        <div class="p-4 pt-0">
+                            <button
+                                class="add-to-cart-btn bg-honda-red text-white w-full py-2 rounded-md font-semibold hover:bg-red-700 transition duration-200">
+                                <i class="fas fa-shopping-cart mr-2"></i>Thêm vào giỏ hàng
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div id="hoa-chat-section">
+                <h2 class="text-2xl font-bold mb-4 text-gray-800">Hoá chất</h2>
+                <div id="hoa-chat-products" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div class="oil-chemical-card bg-white rounded-lg shadow-md hover:shadow-lg transition duration-200 flex flex-col"
+                        data-product-id="31" data-product-name="Dầu làm sạch và bôi trơn xích (sên) tải Honda"
+                        data-product-price="199000"
+                        data-product-image="https://cdn.honda.com.vn/spare-parts/October2022/1sEiMKTglKJSbDD2YFVW.png"
+                        data-product-type="hoa-chat" data-vehicle-type="khac"
+                        data-product-description="Dầu chuyên dụng làm sạch và bôi trơn xích tải, kéo dài tuổi thọ xích.">
+                        <div class="product-info-wrapper flex-grow cursor-pointer">
+                            <div class="relative overflow-hidden rounded-t-lg image-product-ctn">
+                                <img src="https://cdn.honda.com.vn/spare-parts/October2022/1sEiMKTglKJSbDD2YFVW.png"
+                                    alt="Dầu làm sạch và bôi trơn xích (sên) tải Honda"
+                                    class="w-full h-64 object-contain p-2">
+                            </div>
+                            <div class="p-4">
+                                <p class="font-semibold text-sm md:text-base mb-1">Dầu làm sạch và bôi trơn xích (sên)
+                                    tải
+                                    Honda</p>
+                                <p class="text-honda-red font-bold text-sm md:text-base mb-2">199.000 VNĐ</p>
+                            </div>
+                        </div>
+                        <div class="p-4 pt-0">
+                            <button
+                                class="add-to-cart-btn bg-honda-red text-white w-full py-2 rounded-md font-semibold hover:bg-red-700 transition duration-200">
+                                <i class="fas fa-shopping-cart mr-2"></i>Thêm vào giỏ hàng
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="oil-chemical-card bg-white rounded-lg shadow-md hover:shadow-lg transition duration-200 flex flex-col"
+                        data-product-id="28" data-product-name="Nước làm mát" data-product-price="38000"
+                        data-product-image="https://cdn.honda.com.vn/spare-parts/October2022/VX8IJ9uMXsvgJu6Vlw3c.png"
+                        data-product-type="hoa-chat" data-vehicle-type="khac"
+                        data-product-description="Nước làm mát chất lượng cao, giúp duy trì nhiệt độ động cơ ổn định.">
+                        <div class="product-info-wrapper flex-grow cursor-pointer">
+                            <div class="relative overflow-hidden rounded-t-lg image-product-ctn">
+                                <img src="https://cdn.honda.com.vn/spare-parts/October2022/VX8IJ9uMXsvgJu6Vlw3c.png"
+                                    alt="Nước làm mát" class="w-full h-64 object-contain p-2">
+                            </div>
+                            <div class="p-4">
+                                <p class="font-semibold text-sm md:text-base mb-1">Nước làm mát</p>
+                                <p class="text-honda-red font-bold text-sm md:text-base mb-2">38.000 VNĐ</p>
+                            </div>
+                        </div>
+                        <div class="p-4 pt-0">
+                            <button
+                                class="add-to-cart-btn bg-honda-red text-white w-full py-2 rounded-md font-semibold hover:bg-red-700 transition duration-200">
+                                <i class="fas fa-shopping-cart mr-2"></i>Thêm vào giỏ hàng
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="oil-chemical-card bg-white rounded-lg shadow-md hover:shadow-lg transition duration-200 flex flex-col"
+                        data-product-id="chem-6" data-product-name="Dung dịch vệ sinh kim phun và buồng đốt xe máy"
+                        data-product-price="159000"
+                        data-product-image="https://cdn.honda.com.vn/spare-parts/October2022/5MsYQsH0bIAAfhEyDq7v.jpg"
+                        data-product-type="hoa-chat" data-vehicle-type="khac"
+                        data-product-description="Dung dịch bôi trơn sên (xích) chuyên dụng, chống mài mòn, tăng cường tuổi thọ cho sên và nhông đĩa.">
+                        <div class="product-info-wrapper flex-grow cursor-pointer">
+                            <div class="relative overflow-hidden rounded-t-lg image-product-ctn">
+                                <img src="https://cdn.honda.com.vn/spare-parts/October2022/5MsYQsH0bIAAfhEyDq7v.jpg"
+                                    alt="Dung dịch vệ sinh kim phun và buồng đốt xe máy"
+                                    class="w-full h-64 object-contain p-2">
+                            </div>
+                            <div class="p-4">
+                                <p class="font-semibold text-sm md:text-base mb-1">Dung dịch vệ sinh kim phun và buồng
+                                    đốt xe máy</p>
+                                <p class="text-honda-red font-bold text-sm md:text-base mb-2">52.000 VNĐ</p>
+                            </div>
+                        </div>
+                        <div class="p-4 pt-0">
+                            <button
+                                class="add-to-cart-btn bg-honda-red text-white w-full py-2 rounded-md font-semibold hover:bg-red-700 transition duration-200">
+                                <i class="fas fa-shopping-cart mr-2"></i>Thêm vào giỏ hàng
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="oil-chemical-card bg-white rounded-lg shadow-md hover:shadow-lg transition duration-200 flex flex-col"
+                        data-product-id="chem-7" data-product-name="Dầu phanh" data-product-price="80000"
+                        data-product-image=https://cdn.honda.com.vn/spare-parts/October2022/oGyVvQKFgtFUxGgJZsAX.jpg"
+                        data-product-type="hoa-chat" data-vehicle-type="khac"
+                        data-product-description="Làm bóng và bảo vệ bề mặt lốp xe, chống bám bụi và chống rạn nứt do ảnh hưởng từ môi trường.">
+                        <div class="product-info-wrapper flex-grow cursor-pointer">
+                            <div class="relative overflow-hidden rounded-t-lg image-product-ctn">
+                                <img src="https://cdn.honda.com.vn/spare-parts/October2022/oGyVvQKFgtFUxGgJZsAX.jpg"
+                                    alt="Dầu phanh" class="w-full h-64 object-contain p-2">
+                            </div>
+                            <div class="p-4">
+                                <p class="font-semibold text-sm md:text-base mb-1">Dầu phanh</p>
+                                <p class="text-honda-red font-bold text-sm md:text-base mb-2">50.000 VNĐ</p>
+                            </div>
+                        </div>
+                        <div class="p-4 pt-0">
+                            <button
+                                class="add-to-cart-btn bg-honda-red text-white w-full py-2 rounded-md font-semibold hover:bg-red-700 transition duration-200">
+                                <i class="fas fa-shopping-cart mr-2"></i>Thêm vào giỏ hàng
+                            </button>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div id="no-results-message" class="hidden text-center text-gray-600 text-lg mt-8">
+                Không tìm thấy sản phẩm nào phù hợp.
+            </div>
+        </div>
+    </main>
+
+    <div id="product-detail-panel">
+        <div class="flex items-center justify-between p-4 border-b">
+            <h3 class="text-xl font-bold" id="product-detail-name-panel">Tên sản phẩm</h3>
+            <button id="close-product-detail-panel" class="text-gray-700 text-2xl"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="p-4">
+            <img id="product-detail-image-panel" src="" alt="Hình ảnh sản phẩm"
+                class="w-full h-64 object-contain mb-4 bg-gray-100 rounded-lg">
+            <p class="text-honda-red font-bold text-2xl mb-4" id="product-detail-price-panel">Giá: 0 VNĐ</p>
+            <p class="text-gray-700 mb-6" id="product-detail-description-panel">Mô tả chi tiết sản phẩm.</p>
+
+            <button id="add-to-cart-from-modal"
+                class="bg-honda-red text-white w-full py-3 rounded-md text-lg font-semibold hover:bg-red-700 transition duration-200">
+                <i class="fas fa-shopping-cart mr-2"></i> Thêm vào giỏ hàng
+            </button>
+        </div>
+    </div>
+
+    <div id="backdrop-overlay" class="backdrop-overlay"></div>
+
+    <footer class="bg-gray-800 text-gray-300 py-8 mt-12">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-8 text-sm">
+            <div>
+                <h5 class="font-bold text-white mb-3">Công ty Honda Việt Nam</h5>
+                <ul class="space-y-1">
+                    <li>Số GCNĐKDN: <span>2500150543</span></li>
+                    <li>Đăng ký lần đầu: <span>Ngày 26/6/2008</span></li>
+                    <li>Cơ quan cấp: <span>Sở Kế hoạch và Đầu tư Vĩnh Phúc</span></li>
+                    <li>Địa chỉ: <span>Phường Phúc Thắng, Thành Phố Phúc Yên, Tỉnh Vĩnh Phúc, Việt Nam</span></li>
+                </ul>
+            </div>
+
+            <div>
+                <h5 class="font-bold text-white mb-3">Ô tô</h5>
+                <ul class="space-y-1">
+                    <li><a href="#" class="hover:underline">Sản phẩm</a></li>
+                    <li><a href="#" class="hover:underline">Khuyến mãi</a></li>
+                    <li><a href="#" class="hover:underline">Lái thử xe</a></li>
+                    <li><a href="#" class="hover:underline">Đại lý</a></li>
+                    <li><a href="#" class="hover:underline">Dịch vụ sau bán hàng</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h5 class="font-bold text-white mb-3">Xe máy</h5>
+                <ul class="space-y-1">
+                    <li><a href="#" class="hover:underline">Sản phẩm</a></li>
+                    <li><a href="#" class="hover:underline">Khuyến mãi</a></li>
+                    <li><a href="#" class="hover:underline">Cửa hàng ủy nhiệm</a></li>
+                    <li><a href="#" class="hover:underline">Dịch vụ sau bán hàng</a></li>
+                    <li><a href="#" class="hover:underline">Phụ tùng và phụ kiện</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h5 class="font-bold text-white mb-3">Về Honda</h5>
+                <ul class="space-y-1">
+                    <li><a href="#" class="hover:underline">Honda toàn cầu</a></li>
+                    <li><a href="#" class="hover:underline">Honda Việt Nam</a></li>
+                    <li><a href="#" class="hover:underline">Đóng góp xã hội</a></li>
+                    <li><a href="#" class="hover:underline">Tin tức</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h5 class="font-bold text-white mb-3">An toàn giao thông</h5>
+                <ul class="space-y-1 mb-4">
+                    <li><a href="#" class="hover:underline">Trung tâm đào tạo</a></li>
+                    <li><a href="#" class="hover:underline">Tài liệu đào tạo</a></li>
+                </ul>
+                <h5 class="font-bold text-white mb-3">Đua xe thể thao</h5>
+                <ul class="space-y-1">
+                    <li><a href="#" class="hover:underline">Hoạt động Honda toàn cầu</a></li>
+                    <li><a href="#" class="hover:underline">Hoạt động Honda Việt Nam</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h5 class="font-bold text-white mb-3">Liên hệ</h5>
+                <ul class="space-y-1 mb-4">
+                    <li>Hotline: <b class="text-honda-red">1800 8001</b></li>
+                    <li>Email: <a href="mailto:cr@honda.com.vn" class="hover:underline">cr@honda.com.vn</a></li>
+                </ul>
+                <h5 class="font-bold text-white mb-3">Kết nối với Honda Việt Nam</h5>
+                <div class="flex space-x-3 mt-2">
+                    <a href="#" target="_blank" class="text-gray-300 hover:text-white"><i
+                            class="fab fa-youtube text-xl"></i></a>
+                    <a href="#" target="_blank" class="text-gray-300 hover:text-white"><i
+                            class="fab fa-facebook-f text-xl"></i></a>
+                    <a href="#" target="_blank" class="text-gray-300 hover:text-white"><i
+                            class="fab fa-instagram text-xl"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div
+            class="border-t border-gray-700 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center text-xs text-gray-400 px-4">
+            <div class="flex space-x-4 mb-3 md:mb-0">
+                <a href="#" class="hover:underline">Terms and Conditions</a>
+                <a href="#" class="hover:underline">Privacy Policy</a>
+                <a href="#" class="hover:underline">Cookie Policy</a>
+            </div>
+            <div>
+                © 2024. Copyright by Honda VietNam
+            </div>
+        </div>
+    </footer>
+
+    <button id="scroll-to-top"
+        class="fixed bottom-8 right-8 bg-honda-red text-white p-3 rounded-full shadow-lg hover:bg-red-700 transition duration-300 hidden">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Mobile Menu Toggle
+        const menuButton = document.getElementById('mobileMenuToggle');
+        const mobileMenu = document.getElementById('mobileNav');
+        const closeMenuButton = document.getElementById('mobileNavClose');
+        const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+
+
+        menuButton.addEventListener('click', () => {
+            mobileMenu.style.transform = 'translateX(0)';
+            mobileNavOverlay.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+        });
+
+        closeMenuButton.addEventListener('click', () => {
+            mobileMenu.style.transform = 'translateX(-100%)';
+            mobileNavOverlay.style.display = 'none';
+            document.body.style.overflow = ''; // Restore scrolling
+        });
+
+
+        // --- Product Detail Modal functionality ---
+        const productDetailPanel = document.getElementById('product-detail-panel');
+        const closeProductDetailPanelButton = document.getElementById('close-product-detail-panel');
+        const backdropOverlay = document.getElementById('backdrop-overlay');
+
+        const productDetailName = document.getElementById('product-detail-name-panel');
+        const productDetailImage = document.getElementById('product-detail-image-panel');
+        const productDetailPrice = document.getElementById('product-detail-price-panel');
+        const productDetailDescription = document.getElementById('product-detail-description-panel');
+        const addToCartFromModalButton = document.getElementById('add-to-cart-from-modal');
+
+        // Function to open the product detail modal
+        function openProductDetailPanel(productData) {
+            productDetailName.textContent = productData.name;
+            productDetailImage.src = productData.image;
+            productDetailImage.alt = productData.name;
+            productDetailPrice.textContent = `Giá: ${formatCurrency(productData.price)}`;
+            productDetailDescription.textContent = productData.description;
+
+            // Store product data in the button's dataset for cart functionality
+            addToCartFromModalButton.dataset.productId = productData.id;
+            addToCartFromModalButton.dataset.productName = productData.name;
+            addToCartFromModalButton.dataset.productPrice = productData.price;
+            addToCartFromModalButton.dataset.productImage = productData.image;
+
+            productDetailPanel.classList.add('open');
+            backdropOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling background
+        }
+
+        // Function to close the product detail modal
+        function closeProductDetailPanel() {
+            productDetailPanel.classList.remove('open');
+            if (!cartPanel.classList.contains('open')) {
+                backdropOverlay.classList.remove('active');
+                document.body.style.overflow = ''; // Restore scrolling only if cart is also closed
+            }
+        }
+
+        // --- Shopping Cart Functionality ---
+        const cartIconButton = document.getElementById('cart-icon-button');
+        const cartPanel = document.getElementById('cart-panel');
+        const closeCartPanelButton = document.getElementById('close-cart-panel');
+        const cartItemsContainer = document.getElementById('cart-items');
+        const cartTotalSpan = document.getElementById('cart-total');
+        const cartItemCountSpan = document.getElementById('cart-item-count');
+        const notificationContainer = document.querySelector('.notification-container');
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        function saveCart() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND'
+            }).format(amount);
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type === 'error' ? 'error' : ''}`;
+            notification.textContent = message;
+            notificationContainer.appendChild(notification);
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        function renderCart() {
+            cartItemsContainer.innerHTML = '';
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p class="text-center text-gray-500">Giỏ hàng của bạn đang trống.</p>';
+            }
+
+            let total = 0;
+            let itemCount = 0;
+
+            cart.forEach((item, index) => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'cart-item flex items-center mb-4';
+                itemElement.innerHTML = `
+            <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-contain mr-4">
+            <div class="cart-item-details flex-grow">
+                <p class="font-semibold">${item.name}</p>
+                <p class="text-honda-red">${formatCurrency(item.price)}</p>
+                <div class="flex items-center mt-2">
+                    <button class="quantity-change-btn bg-gray-200 px-2 rounded" data-index="${index}" data-change="-1">-</button>
+                    <span class="mx-2">${item.quantity}</span>
+                    <button class="quantity-change-btn bg-gray-200 px-2 rounded" data-index="${index}" data-change="1">+</button>
+                </div>
+            </div>
+            <button class="remove-item-btn text-red-500 hover:text-red-700" data-index="${index}"><i class="fas fa-trash"></i></button>
+        `;
+                cartItemsContainer.appendChild(itemElement);
+                total += item.price * item.quantity;
+                itemCount += item.quantity;
+            });
+
+            cartTotalSpan.textContent = formatCurrency(total);
+            cartItemCountSpan.textContent = itemCount;
+            cartItemCountSpan.classList.toggle('hidden', itemCount === 0);
+        }
+
+        function openCartPanel() {
+            cartPanel.classList.add('open');
+            backdropOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCartPanel() {
+            cartPanel.classList.remove('open');
+            if (!productDetailPanel.classList.contains('open')) {
+                backdropOverlay.classList.remove('active');
+                document.body.style.overflow = ''; // Restore scrolling only if modal is also closed
+            }
+        }
+
+        cartIconButton.addEventListener('click', openCartPanel);
+        closeCartPanelButton.addEventListener('click', closeCartPanel);
+
+        function handleAddToCart(product) {
+            const existingItem = cart.find(item => item.id === product.id);
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({
+                    ...product,
+                    quantity: 1
+                });
+            }
+            saveCart();
+            renderCart();
+            showNotification(`Đã thêm ${product.name} vào giỏ hàng!`);
+        }
+
+        // Event listener for the entire product list
+        const oilChemicalList = document.getElementById('oil-chemical-list');
+        oilChemicalList.addEventListener('click', (event) => {
+            const addToCartBtn = event.target.closest('.add-to-cart-btn');
+            const productInfoWrapper = event.target.closest('.product-info-wrapper');
+            const card = event.target.closest('.oil-chemical-card');
+
+            if (!card) return;
+
+            if (addToCartBtn) {
+                event.preventDefault();
+                const product = {
+                    id: card.dataset.productId,
+                    name: card.dataset.productName,
+                    price: parseInt(card.dataset.productPrice),
+                    image: card.dataset.productImage,
+                };
+                handleAddToCart(product);
+                openCartPanel();
+            } else if (productInfoWrapper) {
+                const productData = {
+                    id: card.dataset.productId,
+                    name: card.dataset.productName,
+                    price: parseInt(card.dataset.productPrice),
+                    image: card.dataset.productImage,
+                    description: card.dataset.productDescription,
+                };
+                openProductDetailPanel(productData);
+            }
+        });
+
+        closeProductDetailPanelButton.addEventListener('click', closeProductDetailPanel);
+
+        addToCartFromModalButton.addEventListener('click', () => {
+            const product = {
+                id: addToCartFromModalButton.dataset.productId,
+                name: addToCartFromModalButton.dataset.productName,
+                price: parseInt(addToCartFromModalButton.dataset.productPrice),
+                image: addToCartFromModalButton.dataset.productImage,
+            };
+            handleAddToCart(product);
+            closeProductDetailPanel();
+            openCartPanel();
+        });
+
+        backdropOverlay.addEventListener('click', () => {
+            closeProductDetailPanel();
+            closeCartPanel();
+        });
+
+        cartItemsContainer.addEventListener('click', (e) => {
+            const target = e.target;
+            if (target.closest('.quantity-change-btn')) {
+                const button = target.closest('.quantity-change-btn');
+                const index = parseInt(button.dataset.index);
+                const change = parseInt(button.dataset.change);
+                cart[index].quantity += change;
+                if (cart[index].quantity === 0) {
+                    cart.splice(index, 1);
+                }
+                saveCart();
+                renderCart();
+            } else if (target.closest('.remove-item-btn')) {
+                const button = target.closest('.remove-item-btn');
+                const index = parseInt(button.dataset.index);
+                cart.splice(index, 1);
+                saveCart();
+                renderCart();
+                showNotification('Đã xoá sản phẩm khỏi giỏ hàng.');
+            }
+        });
+
+
+        // --- Filter Products Functionality ---
+        const oilChemicalSearchInput = document.getElementById('oil-chemical-search-input');
+        const filterCheckboxes = document.querySelectorAll('.filter-checkbox');
+
+        function filterAndDisplayProducts() {
+            const allOilChemicalCards = Array.from(document.querySelectorAll('.oil-chemical-card')); // Re-query inside function
+            const searchTerm = oilChemicalSearchInput.value.toLowerCase().trim();
+            const selectedProductTypes = Array.from(document.querySelectorAll('input[name="productType[]"]:checked'))
+                .map(checkbox => checkbox.value);
+            const selectedVehicleTypes = Array.from(document.querySelectorAll('input[name="vehicleType[]"]:checked'))
+                .map(checkbox => checkbox.value);
+
+            let hasDauNhon = false;
+            let hasHoaChat = false;
+            let totalFilteredCount = 0;
+
+            allOilChemicalCards.forEach(card => {
+                const productName = card.dataset.productName.toLowerCase();
+                const productType = card.dataset.productType;
+                const vehicleType = card.dataset.vehicleType;
+
+                const matchesSearch = productName.includes(searchTerm);
+                const matchesProductType = selectedProductTypes.length === 0 || selectedProductTypes.includes(
+                    productType);
+                const matchesVehicleType = selectedVehicleTypes.length === 0 || selectedVehicleTypes.includes(
+                    vehicleType);
+
+                if (matchesSearch && matchesProductType && matchesVehicleType) {
+                    card.style.display = 'flex'; // Use flex as it's a flex-col
+                    if (productType === 'dau-nhon') hasDauNhon = true;
+                    if (productType === 'hoa-chat') hasHoaChat = true;
+                    totalFilteredCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            const dauNhonSection = document.getElementById('dau-nhon-section');
+            const hoaChatSection = document.getElementById('hoa-chat-section');
+            const noResultsMessage = document.getElementById('no-results-message');
+
+            dauNhonSection.classList.toggle('hidden', !hasDauNhon);
+            hoaChatSection.classList.toggle('hidden', !hasHoaChat);
+            noResultsMessage.classList.toggle('hidden', totalFilteredCount > 0);
+        }
+
+
+        oilChemicalSearchInput.addEventListener('input', filterAndDisplayProducts);
+        filterCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', filterAndDisplayProducts);
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const dropdownButtonProductType = document.getElementById('dropdown-button-product-type');
+            const dropdownMenuProductType = document.getElementById('dropdown-menu-product-type');
+            const dropdownButtonVehicleType = document.getElementById('dropdown-button-vehicle-type');
+            const dropdownMenuVehicleType = document.getElementById('dropdown-menu-vehicle-type');
+
+            function toggleDropdown(button, menu) {
+                const isExpanded = button.getAttribute('aria-expanded') === 'true';
+                button.setAttribute('aria-expanded', !isExpanded);
+                menu.classList.toggle('hidden');
+            }
+
+            dropdownButtonProductType.addEventListener('click', (event) => {
+                event.stopPropagation();
+                toggleDropdown(dropdownButtonProductType, dropdownMenuProductType);
+                dropdownMenuVehicleType.classList.add('hidden');
+                dropdownButtonVehicleType.setAttribute('aria-expanded', 'false');
+            });
+
+            dropdownButtonVehicleType.addEventListener('click', (event) => {
+                event.stopPropagation();
+                toggleDropdown(dropdownButtonVehicleType, dropdownMenuVehicleType);
+                dropdownMenuProductType.classList.add('hidden');
+                dropdownButtonProductType.setAttribute('aria-expanded', 'false');
+
+            });
+
+            window.addEventListener('click', (event) => {
+                if (!dropdownButtonProductType.contains(event.target) && !dropdownMenuProductType.contains(
+                    event.target)) {
+                    dropdownMenuProductType.classList.add('hidden');
+                    dropdownButtonProductType.setAttribute('aria-expanded', 'false');
+                }
+                if (!dropdownButtonVehicleType.contains(event.target) && !dropdownMenuVehicleType.contains(
+                    event.target)) {
+                    dropdownMenuVehicleType.classList.add('hidden');
+                    dropdownButtonVehicleType.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            filterAndDisplayProducts();
+        });
+        const scrollToTopButton = document.getElementById('scroll-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                scrollToTopButton.classList.remove('hidden');
+            } else {
+                scrollToTopButton.classList.add('hidden');
+            }
+        });
+        scrollToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        renderCart();
+    </script>
+</body>
+
+</html>

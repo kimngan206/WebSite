@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <title>Liên Hệ - AnhEm Motor</title>
     <link rel="stylesheet" href="contact.css">
+    <link rel="stylesheet" href="index-style.css">
     <!-- Thư viện xuất Excel -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
@@ -15,26 +16,69 @@
     <!-- Header -->
     <header class="main-header">
         <div class="container">
-            <!-- Logo -->
-            <div class="logo">
-                <a href="index.html">
-                    <h1><img fetchpriority="high" decoding="async" src="image/logo-removebg-preview.png" height="100"
-                            alt="Yamaha revs your heart" style="margin-top: 40px;"> </h1>
-                </a>
-            </div>
+            <div class="header-container">
+                <!-- Mobile Menu Toggle -->
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
 
-            <!-- Menu -->
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="index.html">Trang Chủ</a></li>
-                    <li><a href="listings.html">Sản Phẩm</a></li>
-                    <li><a href="about.html">Giới Thiệu</a></li>
-                    <li><a href="promotion.html">Khuyến Mãi</a></li>
-                    <li><a href="contact.html">Liên Hệ</a></li>
-                    <li><a href="service.html">Dịch Vụ</a></li>
-                </ul>
-            </nav>
+                <!-- Logo -->
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">
+                        <img src="image/logo.png" alt="AnhEm Motor">
+                    </div>
+                    <span class="logo-text">AnhEm Motor</span>
+                </a>
+
+
+                <!-- Desktop Navigation -->
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="index.html">Trang Chủ</a></li>
+                        <li class="has-submenu">
+                            <a href="listings.html">
+                                Sản Phẩm <i class="fas fa-chevron-down"></i>
+                            </a>
+                            <ul class="submenu">
+                                <li><a href="accessory.html">Nón Bảo Hiểm</a></li>
+                                <li><a href="custome.html">Trang Phục</a></li>
+                                <li><a href="chemicals.html">Hóa Chất</a></li>
+                                <li><a href="spareparts.html">Phụ Tùng</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="about.html">Giới Thiệu</a></li>
+                        <li><a href="news.html">Tin Tức-Sự Kiện</a></li>
+                        <li><a href="promotion.html">Khuyến Mãi</a></li>
+                        <li><a href="contact.html">Liên Hệ</a></li>
+                        <li><a href="service.html">Dịch Vụ</a></li>
+                    </ul>
+                </nav>
+
+
+            </div>
         </div>
+
+        <!-- Mobile Navigation Overlay -->
+        <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+
+        <!-- Mobile Navigation Menu -->
+        <nav class="mobile-nav" id="mobileNav">
+            <div class="mobile-nav-header">
+                <h3>Menu</h3>
+                <button class="mobile-nav-close" id="mobileNavClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <ul>
+                <li><a href="index.html">Trang Chủ</a></li>
+                <li><a href="listings.html">Sản Phẩm</a></li>
+                <li><a href="about.html">Giới Thiệu</a></li>
+                <li><a href="news.html">Tin Tức-Sự Kiện</a></li>
+                <li><a href="promotion.html">Khuyến Mãi</a></li>
+                <li><a href="contact.html">Liên Hệ</a></li>
+                <li><a href="service.html">Dịch Vụ</a></li>
+            </ul>
+        </nav>
     </header>
 
     <div class="main-container">

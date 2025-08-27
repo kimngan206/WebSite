@@ -2,10 +2,38 @@
 <html lang="vi">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hồ Sơ Của Tôi</title>
-    <link rel="stylesheet" href="profile.css">
+    <link rel="stylesheet" href="profile.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <style>
+        /* (Tùy chọn) Một chút style nhỏ cho nhóm Ngày sinh mới, vẫn dùng chung profile.css của bạn */
+        .dob-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: .75rem;
+        }
+
+        .dob-hint {
+            font-size: .85rem;
+            color: #9e9e9e;
+            margin-top: .25rem;
+        }
+
+        .error-text {
+            color: #E53935;
+            font-size: .9rem;
+            margin-top: .4rem;
+            display: none;
+        }
+
+        .form-group .inline {
+            display: flex;
+            gap: .5rem;
+            align-items: center;
+        }
+    </style>
 </head>
 
 <body>
@@ -15,7 +43,7 @@
             <!-- Logo -->
             <a href="#" class="logo">
                 <div class="logo-icon">
-                    <img src="images/logo.png" alt="Logo AnhEm Motor">
+                    <img src="images/logo.png" alt="Logo AnhEm Motor" />
                 </div>
                 <span class="logo-text">AnhEm Motor</span>
             </a>
@@ -70,125 +98,185 @@
                     </div>
 
                     <div class="profile-form">
-                        <div class="form-group">
-                            <label class="form-label" for="username">Tên đăng nhập</label>
-                            <input type="text" id="username" class="form-control username-input" value="hunhngn879"
-                                disabled>
-                            <div class="form-note">Tên đăng nhập chỉ có thể thay đổi một lần.</div>
-                        </div>
+                        <!-- \u26A0\uFE0F ĐÃ BỎ: NHÓM 'Tên đăng nhập'  -->
 
                         <div class="form-group">
                             <label class="form-label" for="fullname">Tên</label>
-                            <input type="text" id="fullname" class="form-control" placeholder="Nhập tên của bạn">
+                            <input type="text" id="fullname" class="form-control" placeholder="Nhập tên của bạn" />
                         </div>
 
                         <div class="form-group has-link">
                             <label class="form-label" for="email">Email</label>
-                            <input type="email" id="email" class="form-control" value="ki**********@gmail.com" disabled>
-                            <a href="#" class="change-link">Thay Đổi</a>
+                            <div class="inline">
+                                <input type="email" id="email" class="form-control" placeholder="**********@gmail.com"
+                                    disabled />
+                                <a href="#" class="change-link">Thay Đổi</a>
+                            </div>
                         </div>
 
                         <div class="form-group has-link">
                             <label class="form-label" for="phone">Số điện thoại</label>
-                            <input type="tel" id="phone" class="form-control" value="*******17" disabled>
-                            <a href="#" class="change-link">Thay Đổi</a>
-                        </div>
-
-                        <div class="form-group form-group-full">
-                            <label class="form-label">Giới tính</label>
-                            <div class="gender-options">
-                                <label class="gender-option">
-                                    <input type="radio" name="gender" value="male">
-                                    <span>Nam</span>
-                                </label>
-                                <label class="gender-option">
-                                    <input type="radio" name="gender" value="female">
-                                    <span>Nữ</span>
-                                </label>
-                                <label class="gender-option">
-                                    <input type="radio" name="gender" value="other">
-                                    <span>Khác</span>
-                                </label>
+                            <div class="inline">
+                                <input type="tel" id="phone" class="form-control" disabled />
+                                <a href="#" class="change-link">Thay Đổi</a>
                             </div>
                         </div>
 
+                        <!-- \u26A0\uFE0F ĐÃ BỎ: NHÓM 'Giới tính'  -->
+
+                        <!-- \uD83D\uDCC5 NGÀY SINH (thiết kế lại) -->
                         <div class="form-group form-group-full">
                             <label class="form-label">Ngày sinh</label>
-                            <div class="date-inputs">
+                            <div class="dob-row">
                                 <select id="daySelect" class="form-control"></select>
                                 <select id="monthSelect" class="form-control"></select>
                                 <select id="yearSelect" class="form-control"></select>
                             </div>
+                            <div class="dob-hint">Chỉ cho phép ngày hợp lệ (ví dụ: không có 31/2) và không vượt quá ngày
+                                hiện tại.</div>
+                            <div id="dobError" class="error-text">Ngày sinh không hợp lệ. Vui lòng kiểm tra lại.</div>
                         </div>
 
-                        <button class="save-btn">Lưu Hồ Sơ</button>
+                        <button class="save-btn" id="saveBtn">Lưu Hồ Sơ</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <input type="file" id="fileInput" accept=".jpg,.jpeg,.png" style="display: none;">
+    <input type="file" id="fileInput" accept=".jpg,.jpeg,.png" style="display: none;" />
 
     <script>
-        // Populate day, month, and year selects
+        // ===== DOB Helpers =====
         const daySelect = document.getElementById('daySelect');
         const monthSelect = document.getElementById('monthSelect');
         const yearSelect = document.getElementById('yearSelect');
+        const dobError = document.getElementById('dobError');
 
-        function populateDates() {
-            // Days
-            daySelect.innerHTML = '<option value="">Ngày</option>';
-            for (let i = 1; i <= 31; i++) {
-                const option = document.createElement('option');
-                option.value = i;
-                option.textContent = i;
-                daySelect.appendChild(option);
-            }
-
-            // Months
-            const months = ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'];
-            monthSelect.innerHTML = '<option value="">Tháng</option>';
-            months.forEach((month, index) => {
-                const option = document.createElement('option');
-                option.value = index + 1;
-                option.textContent = month;
-                monthSelect.appendChild(option);
-            });
-
-            // Years
+        function fillYears() {
             const currentYear = new Date().getFullYear();
             yearSelect.innerHTML = '<option value="">Năm</option>';
-            for (let i = currentYear; i >= 1900; i--) {
-                const option = document.createElement('option');
-                option.value = i;
-                option.textContent = i;
-                yearSelect.appendChild(option);
+            for (let y = currentYear; y >= 1900; y--) {
+                const opt = document.createElement('option');
+                opt.value = String(y);
+                opt.textContent = String(y);
+                yearSelect.appendChild(opt);
             }
         }
 
-        populateDates();
+        function fillMonths() {
+            const months = [
+                'Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6',
+                'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'
+            ];
+            monthSelect.innerHTML = '<option value="">Tháng</option>';
+            months.forEach((m, i) => {
+                const opt = document.createElement('option');
+                opt.value = String(i + 1);
+                opt.textContent = m;
+                monthSelect.appendChild(opt);
+            });
+        }
 
-        // File upload handler
+        function daysInMonth(year, month) {
+            // month: 1-12
+            return new Date(year, month, 0).getDate();
+        }
+
+        function refillDays() {
+            const y = parseInt(yearSelect.value, 10);
+            const m = parseInt(monthSelect.value, 10);
+
+            daySelect.innerHTML = '<option value="">Ngày</option>';
+
+            if (!isNaN(y) && !isNaN(m)) {
+                const max = daysInMonth(y, m);
+                for (let d = 1; d <= max; d++) {
+                    const opt = document.createElement('option');
+                    opt.value = String(d);
+                    opt.textContent = String(d);
+                    daySelect.appendChild(opt);
+                }
+            }
+        }
+
+        function isValidDOB() {
+            const d = parseInt(daySelect.value, 10);
+            const m = parseInt(monthSelect.value, 10);
+            const y = parseInt(yearSelect.value, 10);
+
+            if (isNaN(d) || isNaN(m) || isNaN(y)) return false;
+
+            // Kiểm tra tồn tại ngày (chặn 31/2, 30/2, v.v.)
+            const max = daysInMonth(y, m);
+            if (d < 1 || d > max) return false;
+
+            // Không cho phép ngày trong tương lai
+            const picked = new Date(y, m - 1, d);
+            const today = new Date();
+            // Bỏ phần thời gian để so sánh ngày-tháng-năm thuần
+            picked.setHours(0, 0, 0, 0);
+            today.setHours(0, 0, 0, 0);
+            if (picked > today) return false;
+
+            // Giới hạn tối thiểu (tuỳ chỉnh): từ 01/01/1900
+            const min = new Date(1900, 0, 1);
+            if (picked < min) return false;
+
+            return true;
+        }
+
+        function updateDOBValidityUI() {
+            const valid = isValidDOB();
+            dobError.style.display = valid ? 'none' : 'block';
+        }
+
+        function initDOB() {
+            fillYears();
+            fillMonths();
+            refillDays();
+
+            yearSelect.addEventListener('change', () => { refillDays(); updateDOBValidityUI(); });
+            monthSelect.addEventListener('change', () => { refillDays(); updateDOBValidityUI(); });
+            daySelect.addEventListener('change', updateDOBValidityUI);
+        }
+
+        // ===== Avatar upload handler =====
         document.getElementById('fileInput').addEventListener('change', function (e) {
             const file = e.target.files[0];
             if (file) {
+                // Kiểm soát kích thước 1MB
+                const ONE_MB = 1024 * 1024;
+                if (file.size > ONE_MB) {
+                    alert('Ảnh vượt quá 1MB. Vui lòng chọn ảnh khác.');
+                    e.target.value = '';
+                    return;
+                }
                 const reader = new FileReader();
-                reader.onload = function (e) {
+                reader.onload = function (evt) {
                     const avatar = document.getElementById('avatarPreview');
-                    avatar.style.backgroundImage = `url(${e.target.result})`;
+                    avatar.style.backgroundImage = `url(${evt.target.result})`;
                     avatar.style.backgroundSize = 'cover';
                     avatar.style.backgroundPosition = 'center';
-                    avatar.innerHTML = '';
+                    avatar.textContent = '';
                 };
                 reader.readAsDataURL(file);
             }
         });
 
-        // Save button handler
-        document.querySelector('.save-btn').addEventListener('click', function () {
+        // ===== Save button handler =====
+        document.getElementById('saveBtn').addEventListener('click', function () {
+            if (!isValidDOB()) {
+                dobError.style.display = 'block';
+                // Cuộn tới nhóm ngày sinh nếu có lỗi
+                document.querySelector('.form-group-full').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
             alert('Thông tin đã được lưu thành công!');
         });
+
+        // ===== Kick-off =====
+        initDOB();
     </script>
 </body>
 

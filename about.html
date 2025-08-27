@@ -5,32 +5,64 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Giới Thiệu - AnhEm Moto</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="about.css">
 </head>
 
 <body>
-    <!-- Header (giữ nguyên như trong code bạn cung cấp) -->
+    <!-- Header chính của trang web -->
     <header class="main-header">
         <div class="container">
-            <div class="logo">
-                <a href="index.html">
-                    <h1><img fetchpriority="high" decoding="async" src="image/logo-removebg-preview.png" height="100"
-                            alt="Yamaha revs your heart"> </h1>
-                </a>
-            </div>
+            <div class="header-container">
+                <!-- Nút bật/tắt menu mobile -->
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
 
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="index.html">Trang Chủ</a></li>
-                    <li><a href="listings.html">Sản Phẩm</a></li>
-                    <li><a href="about.html">Giới Thiệu</a></li>
-                    <li><a href="news.html">Tin Tức-Sự Kiện</a></li>
-                    <li><a href="promotion.html">Khuyến Mãi</a></li>
-                    <li><a href="contact.html">Liên Hệ</a></li>
-                    <li><a href="service.html">Dịch Vụ</a></li>
-                </ul>
-            </nav>
+                <!-- Logo của trang web -->
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">
+                        <img src="image/logo.png" alt="AnhEm Motor">
+                    </div>
+                    <span class="logo-text">AnhEm Motor</span>
+                </a>
+
+                <!-- Thanh điều hướng dành cho desktop -->
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="index.html">Trang Chủ</a></li>
+                        <li><a href="listings.html">Sản Phẩm</a></li>
+                        <li><a href="about.html">Giới Thiệu</a></li>
+                        <li><a href="news.html">Tin Tức-Sự Kiện</a></li>
+                        <li><a href="promotion.html">Khuyến Mãi</a></li>
+                        <li><a href="contact.html">Liên Hệ</a></li>
+                        <li><a href="service.html">Dịch Vụ</a></li>
+                    </ul>
+                </nav>
+            </div>
         </div>
+
+        <!-- Lớp phủ cho menu mobile -->
+        <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+
+        <!-- Menu điều hướng mobile -->
+        <nav class="mobile-nav" id="mobileNav">
+            <div class="mobile-nav-header">
+                <h3>Menu</h3>
+                <button class="mobile-nav-close" id="mobileNavClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <ul>
+                <li><a href="index.html">Trang Chủ</a></li>
+                <li><a href="listings.html">Sản Phẩm</a></li>
+                <li><a href="about.html">Giới Thiệu</a></li>
+                <li><a href="news.html">Tin Tức-Sự Kiện</a></li>
+                <li><a href="promotion.html">Khuyến Mãi</a></li>
+                <li><a href="contact.html">Liên Hệ</a></li>
+                <li><a href="service.html">Dịch Vụ</a></li>
+            </ul>
+        </nav>
     </header>
 
     <!-- Nội dung chính trang Giới Thiệu -->
@@ -102,6 +134,10 @@
             <p class="subtitle">Khám phá showroom và dịch vụ chất lượng của chúng tôi</p>
 
             <div class="video-container">
+                <!-- Chú ý: video cục bộ thường không chạy được trực tiếp trong iframe.
+                     Bạn nên tải video lên một dịch vụ lưu trữ và sử dụng URL công khai,
+                     hoặc sử dụng thẻ <video> HTML để phát trực tiếp nếu video ở cùng thư mục.
+                     Tạm thời để video cục bộ, nhưng có thể cần điều chỉnh sau. -->
                 <iframe src="image/hondamoto.mp4" title="Video Giới Thiệu AnhEm Moto" frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowfullscreen>
@@ -140,7 +176,6 @@
                     <p class="hours">🕐 Mở cửa: 8:00 - 19:00 (Thứ 2 - CN)</p>
                     <p>Trung tâm miền Trung - Dịch vụ sửa chữa chuyên nghiệp</p>
                 </div>
-
 
                 <div class="branch-card">
                     <h3>Cơ Sở 4 - Cần Thơ</h3>
@@ -268,6 +303,7 @@
         </div>
     </section>
 
+    <!-- Footer của trang web -->
     <footer>
         <div class="container">
             <div class="footer-col">
@@ -300,43 +336,65 @@
         </div>
     </footer>
 
-</body>
-<script>
-    // Function để tìm kiếm địa điểm trên Google Maps
-    function searchLocation(address) {
-        // Encode địa chỉ để sử dụng trong URL
-        const encodedAddress = encodeURIComponent(address);
+    <script>
+        // Bắt sự kiện DOMContentLoaded để đảm bảo DOM đã được tải hoàn chỉnh
+        document.addEventListener('DOMContentLoaded', function () {
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            const mobileNav = document.getElementById('mobileNav');
+            const mobileNavClose = document.getElementById('mobileNavClose');
+            const mobileNavOverlay = document.getElementById('mobileNavOverlay');
 
-        // Tạo URL Google Maps với địa chỉ cụ thể
-        const mapUrl = `https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dOWTgRzKA2xEJo&q=${encodedAddress}&zoom=16`;
+            // Mở menu mobile
+            mobileMenuToggle.addEventListener('click', function () {
+                mobileNav.classList.add('active');
+                mobileNavOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Ngăn cuộn trang khi menu mở
+            });
 
-        // Cập nhật iframe với địa chỉ mới
-        const mapFrame = document.getElementById('mapFrame');
+            // Đóng menu mobile
+            mobileNavClose.addEventListener('click', function () {
+                mobileNav.classList.remove('active');
+                mobileNavOverlay.classList.remove('active');
+                document.body.style.overflow = ''; // Cho phép cuộn trang trở lại
+            });
 
-        // Hiệu ứng loading
-        mapFrame.style.opacity = '0.5';
+            // Đóng menu mobile khi click ra ngoài overlay
+            mobileNavOverlay.addEventListener('click', function () {
+                mobileNav.classList.remove('active');
+                mobileNavOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            });
 
-        // Thay đổi src sau một chút để có hiệu ứng
-        setTimeout(() => {
-            // Sử dụng Google Maps search URL thay vì embed
+            // Đóng menu khi click vào một liên kết trong menu mobile (tùy chọn)
+            mobileNav.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function () {
+                    mobileNav.classList.remove('active');
+                    mobileNavOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            });
+        });
+
+        // Function để tìm kiếm địa điểm trên Google Maps
+        function searchLocation(address) {
+            // Mã hóa địa chỉ để sử dụng trong URL
+            const encodedAddress = encodeURIComponent(address);
+
+            // Tạo URL Google Maps search với địa chỉ cụ thể
             const searchUrl = `https://www.google.com/maps/search/${encodedAddress}/@10.755,106.965,12z`;
 
-            // Mở trong tab mới thay vì thay đổi iframe
+            // Mở trong tab mới
             window.open(searchUrl, '_blank');
-
-            // Khôi phục opacity
-            mapFrame.style.opacity = '1';
 
             // Hiển thị thông báo
             showNotification(`Đang tìm kiếm: ${address}`);
-        }, 300);
-    }
+        }
 
-    // Function hiển thị thông báo
-    function showNotification(message) {
-        // Tạo element thông báo
-        const notification = document.createElement('div');
-        notification.innerHTML = `
+        // Function hiển thị thông báo tùy chỉnh
+        function showNotification(message) {
+            // Tạo element thông báo
+            const notification = document.createElement('div');
+            notification.innerHTML = `
                 <div style="
                     position: fixed;
                     top: 20px;
@@ -356,9 +414,9 @@
                 </div>
             `;
 
-        // Thêm CSS animation
-        const style = document.createElement('style');
-        style.textContent = `
+            // Thêm CSS animation
+            const style = document.createElement('style');
+            style.textContent = `
                 @keyframes slideIn {
                     from {
                         transform: translateX(100%);
@@ -369,34 +427,36 @@
                         opacity: 1;
                     }
                 }
-            `;
-        document.head.appendChild(style);
-
-        document.body.appendChild(notification);
-
-        // Tự động xóa sau 3 giây
-        setTimeout(() => {
-            notification.style.animation = 'slideIn 0.3s ease reverse';
-            setTimeout(() => {
-                if (notification.parentNode) {
-                    notification.parentNode.removeChild(notification);
+                @keyframes slideOut {
+                    from {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                    to {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
                 }
-            }, 300);
-        }, 3000);
-    }
+            `;
+            document.head.appendChild(style);
 
-    // Alternative function nếu muốn cập nhật iframe thay vì mở tab mới
-    function searchLocationInFrame(address) {
-        const encodedAddress = encodeURIComponent(address);
-        const mapFrame = document.getElementById('mapFrame');
+            document.body.appendChild(notification);
 
-        // URL để hiển thị địa điểm cụ thể trong iframe
-        const newSrc = `https://www.google.com/maps?q=${encodedAddress}&output=embed&zoom=16`;
-
-        mapFrame.src = newSrc;
-
-        showNotification(`Đã cập nhật bản đồ cho: ${address}`);
-    }
-</script>
+            // Tự động xóa sau 3 giây
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease forwards';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                        // Xóa style animation khỏi head để tránh trùng lặp
+                        if (style.parentNode) {
+                            style.parentNode.removeChild(style);
+                        }
+                    }
+                }, 300);
+            }, 3000);
+        }
+    </script>
+</body>
 
 </html>

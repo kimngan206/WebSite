@@ -31,7 +31,17 @@
                 <nav class="main-nav">
                     <ul>
                         <li><a href="index.html">Trang Chủ</a></li>
-                        <li><a href="listings.html">Sản Phẩm</a></li>
+                        <li class="has-submenu">
+                            <a href="listings.html">
+                                Sản Phẩm <i class="fas fa-chevron-down"></i>
+                            </a>
+                            <ul class="submenu">
+                                <li><a href="accessory.html">Nón Bảo Hiểm</a></li>
+                                <li><a href="custome.html">Quần Áo</a></li>
+                                <li><a href="chemicals.html">Hóa Chất</a></li>
+                                <li><a href="spareparts.html">Phụ Tùng</a></li>
+                            </ul>
+                        </li>
                         <li><a href="about.html">Giới Thiệu</a></li>
                         <li><a href="news.html">Tin Tức-Sự Kiện</a></li>
                         <li><a href="promotion.html">Khuyến Mãi</a></li>
@@ -278,7 +288,28 @@
             </div>
         </section>
     </main>
+    <div class="chat-icon" id="chatIcon">
+        💬
+    </div>
 
+    <!-- Chat Widget -->
+    <div class="chat-widget" id="chatWidget">
+        <div class="chat-header">
+            <h2>AI Tư Vấn Xe Máy</h2>
+            <button class="close-chat" id="closeChat">&times;</button>
+        </div>
+        <div class="chat-body">
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot-message">
+                    <p>Xin chào! Tôi có thể giúp bạn tìm được xe máy hoàn hảo như thế nào hôm nay?</p>
+                </div>
+            </div>
+        </div>
+        <div class="chat-footer">
+            <input type="text" id="chatInput" placeholder="Hỏi về xe máy...">
+            <button id="sendMessage">Gửi</button>
+        </div>
+    </div>
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -286,7 +317,7 @@
                     <h3>Thông Tin Liên Hệ</h3>
                     <p><i class="fas fa-map-marker-alt"></i> 193 Đỗ Văn Thi, Phường Trấn Biên, TP. Biên Hoà, Tỉnh Đồng
                         Nai</p>
-                    <p><i class="fas fa-phone"></i> 012 3456 7890</p>
+                    <p><i class="fas fa-phone"></i> (024) 8582 0808</p>
                     <p><i class="fas fa-envelope"></i> anhemmotor@gmail.com</p>
                     <div class="social-links">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
@@ -399,7 +430,7 @@
                     <div class="installment">TRẢ GÓP 0%</div>
                 </div>
 
-                <button class="cta-button">XEM NGAY ➤</button>
+                <a href="promotion.html" class="cta-button">XEM NGAY ➤</a>
             </div>
         </div>
     </div>
@@ -407,6 +438,156 @@
     <!-- Script chính xử lý sản phẩm -->
     <script src="index-js.js"></script>
     <script>
+        // Thay thế đoạn script chatbot trong HTML của bạn
+        document.addEventListener("DOMContentLoaded", () => {
+            const chatIcon = document.getElementById("chatIcon");
+            const chatWidget = document.getElementById("chatWidget");
+            const closeChat = document.getElementById("closeChat");
+            const chatInput = document.getElementById("chatInput");
+            const sendMessage = document.getElementById("sendMessage");
+            const chatMessages = document.getElementById("chatMessages");
+
+            let conversationHistory = [];
+
+            // Event listeners
+            chatIcon.addEventListener("click", () => {
+                chatWidget.classList.toggle("active");
+            });
+
+            closeChat.addEventListener("click", () => {
+                chatWidget.classList.remove("active");
+            });
+
+            sendMessage.addEventListener("click", handleUserMessage);
+            chatInput.addEventListener("keypress", (e) => {
+                if (e.key === "Enter") {
+                    handleUserMessage();
+                }
+            });
+
+            function handleUserMessage() {
+                const userMessage = chatInput.value.trim();
+                if (!userMessage) return;
+
+                appendMessage(userMessage, "user-message");
+                chatInput.value = "";
+                conversationHistory.push(`Người dùng: ${userMessage}`);
+
+                const typingIndicator = appendMessage("Đang suy nghĩ...", "bot-message");
+
+                // Sử dụng chatbot giả lập thay vì API thực
+                simulateAIResponse(userMessage, typingIndicator);
+            }
+
+            function appendMessage(message, type) {
+                const messageElement = document.createElement("div");
+                messageElement.classList.add("message", type);
+                messageElement.innerHTML = `<p>${message}</p>`;
+                chatMessages.appendChild(messageElement);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                return messageElement;
+            }
+
+            // Chatbot giả lập với câu trả lời thông minh
+            function simulateAIResponse(userMessage, typingIndicator) {
+                // Delay để tạo hiệu ứng đang xử lý
+                setTimeout(() => {
+                    let response = getSmartResponse(userMessage);
+                    conversationHistory.push(`AI: ${response}`);
+                    typingIndicator.querySelector("p").innerHTML = response;
+                }, 1000 + Math.random() * 1000); // 1-2 giây delay
+            }
+
+            function getSmartResponse(userMessage) {
+                const msg = userMessage.toLowerCase();
+
+                // Các từ khóa và phản hồi thông minh
+                const responses = {
+                    // Chào hỏi
+                    greeting: [
+                        "Xin chào! Tôi có thể giúp bạn tìm hiểu về xe máy nào hôm nay?",
+                        "Chào bạn! Bạn đang quan tâm đến loại xe máy nào?",
+                        "Xin chào! Tôi sẵn sàng tư vấn xe máy cho bạn!"
+                    ],
+
+                    // Về Honda
+                    honda: [
+                        "Honda là thương hiệu xe máy uy tín hàng đầu! Một số mẫu phổ biến: Honda Winner X, Honda Wave Alpha, Honda Air Blade. Bạn quan tâm mẫu nào?",
+                        "Honda nổi tiếng với độ bền cao và tiết kiệm xăng. Giá từ 20-80 triệu tùy mẫu. Bạn có ngân sách bao nhiêu?",
+                        "Honda có nhiều dòng: xe số (Wave), xe tay ga (Air Blade, SH), xe thể thao (Winner X, CBR). Bạn thích loại nào?"
+                    ],
+
+                    // Về Yamaha  
+                    yamaha: [
+                        "Yamaha nổi tiếng thiết kế thể thao! Các mẫu hot: Yamaha Exciter, NVX, Jupiter. Bạn muốn biết chi tiết mẫu nào?",
+                        "Yamaha Exciter đang rất được ưa chuộng với thiết kế mạnh mẽ và vận hành êm ái. Giá khoảng 50-55 triệu.",
+                        "Yamaha có âm thanh động cơ đặc trưng. Từ xe số Jupiter đến xe thể thao Exciter đều rất chất lượng!"
+                    ],
+
+                    // Về giá cả
+                    price: [
+                        "Giá xe máy hiện tại: Xe số 20-35 triệu, Xe tay ga 30-60 triệu, Xe thể thao 45-80 triệu. Bạn quan tâm loại nào?",
+                        "Chúng tôi có nhiều chương trình trả góp 0% lãi suất. Bạn có muốn tìm hiểu thêm không?",
+                        "Giá xe có thể thay đổi theo thời điểm. Bạn nên ghé showroom để được tư vấn giá tốt nhất!"
+                    ],
+
+                    // Tư vấn chung
+                    advice: [
+                        "Để chọn xe phù hợp, bạn nên xem xét: mục đích sử dụng, ngân sách, sở thích thiết kế. Bạn có thể chia sẻ thêm không?",
+                        "Xe số tiết kiệm xăng, xe tay ga tiện lợi, xe thể thao mạnh mẽ. Bạn ưu tiên yếu tố nào nhất?",
+                        "Ngoài xe máy, chúng tôi còn có đầy đủ phụ kiện và dịch vụ bảo dưỡng. Bạn quan tâm không?"
+                    ],
+
+                    // Mặc định
+                    default: [
+                        "Cảm ơn bạn đã hỏi! Tôi chuyên tư vấn về xe máy Honda, Yamaha, Suzuki, Kawasaki. Bạn muốn biết gì cụ thể?",
+                        "Tôi có thể giúp bạn về: thông số xe, giá cả, so sánh các mẫu, tư vấn chọn xe phù hợp. Bạn quan tâm điều gì?",
+                        "Hãy cho tôi biết bạn đang tìm loại xe gì, ngân sách ra sao để tôi tư vấn tốt nhất nhé!"
+                    ]
+                };
+
+                // Logic nhận diện và trả lời thông minh
+                if (msg.includes('xin chào') || msg.includes('chào') || msg.includes('hello') || msg.includes('hi')) {
+                    return getRandomResponse(responses.greeting);
+                }
+                else if (msg.includes('honda')) {
+                    return getRandomResponse(responses.honda);
+                }
+                else if (msg.includes('yamaha')) {
+                    return getRandomResponse(responses.yamaha);
+                }
+                else if (msg.includes('giá') || msg.includes('tiền') || msg.includes('bao nhiêu') || msg.includes('cost')) {
+                    return getRandomResponse(responses.price);
+                }
+                else if (msg.includes('tư vấn') || msg.includes('chọn') || msg.includes('nên mua') || msg.includes('phù hợp')) {
+                    return getRandomResponse(responses.advice);
+                }
+                else if (msg.includes('suzuki')) {
+                    return "Suzuki nổi tiếng tiết kiệm xăng và giá cả phải chăng! Các mẫu như Suzuki Satria, Raider đều rất được ưa chuộng. Bạn muốn biết thêm chi tiết không?";
+                }
+                else if (msg.includes('kawasaki')) {
+                    return "Kawasaki là thương hiệu thể thao mạnh mẽ! Nổi tiếng với dòng Ninja và Z series. Tuy nhiên tại Việt Nam chủ yếu là xe phân khối lớn. Bạn có quan tâm không?";
+                }
+                else if (msg.includes('trả góp') || msg.includes('góp')) {
+                    return "Chúng tôi hỗ trợ trả góp lãi suất 0% cho nhiều mẫu xe! Thời gian góp từ 6-36 tháng. Bạn có muốn tôi tính toán khoản góp hàng tháng không?";
+                }
+                else if (msg.includes('bảo hành') || msg.includes('warranty')) {
+                    return "Tất cả xe máy chính hãng đều có bảo hành 3 năm hoặc 30,000km tùy điều kiện nào đến trước. Bảo hành toàn quốc tại các đại lý ủy quyền!";
+                }
+                else if (msg.includes('phụ kiện') || msg.includes('helmet') || msg.includes('mũ')) {
+                    return "Chúng tôi có đầy đủ phụ kiện chính hãng: mũ bảo hiểm, thùng xe, khoá chống trộm, đèn LED... Tất cả đều có chất lượng đảm bảo!";
+                }
+                else {
+                    return getRandomResponse(responses.default);
+                }
+            }
+
+            function getRandomResponse(responseArray) {
+                return responseArray[Math.floor(Math.random() * responseArray.length)];
+            }
+        });
+
+        // ===== PHẦN CODE QUẢN LÝ USER KHÔNG THAY ĐỔI =====
         document.addEventListener('DOMContentLoaded', () => {
             const userActions = document.getElementById('user-actions-container');
             const userSession = sessionStorage.getItem('loggedInUser');
@@ -432,33 +613,33 @@
                     const dropdownContent = document.createElement('div');
                     dropdownContent.className = 'dropdown-content';
                     dropdownContent.innerHTML = `
-                        <div class="dropdown-header">
-                            <div class="admin-name">${user.username}</div>
-                            <div class="admin-role">Administrator</div>
-                        </div>
-                        <a href="manage_product.html" class="dropdown-item">
-                            <i class="fas fa-motorcycle"></i>
-                            <span>Quản Lý Sản Phẩm</span>
-                        </a>
-                        <a href="admin.html" class="dropdown-item">
-                            <i class="fas fa-users"></i>
-                            <span>Quản Lý Users</span>
-                        </a>
-                        <a href="manage_contact.html" class="dropdown-item">
-                            <i class="fas fa-users"></i>
-                            <span>Quản Lý Liên Hệ</span>
-                        </a>
-                        <div class="dropdown-separator"></div>
-                        <a href="profile.html" class="dropdown-item">
-                            <i class="fas fa-user"></i>
-                            <span>Hồ Sơ Cá Nhân</span>
-                        </a>
-                        <div class="dropdown-separator"></div>
-                        <a href="index.html" class="dropdown-item logout-item" id="adminLogout">
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span>Đăng Xuất</span>
-                        </a>
-                    `;
+                <div class="dropdown-header">
+                    <div class="admin-name">${user.username}</div>
+                    <div class="admin-role">Administrator</div>
+                </div>
+                <a href="manage_product.html" class="dropdown-item">
+                    <i class="fas fa-motorcycle"></i>
+                    <span>Quản Lý Sản Phẩm</span>
+                </a>
+                <a href="admin.html" class="dropdown-item">
+                    <i class="fas fa-users"></i>
+                    <span>Quản Lý Users</span>
+                </a>
+                <a href="manage_contact.html" class="dropdown-item">
+                    <i class="fas fa-users"></i>
+                    <span>Quản Lý Liên Hệ</span>
+                </a>
+                <div class="dropdown-separator"></div>
+                <a href="profile.html" class="dropdown-item">
+                    <i class="fas fa-user"></i>
+                    <span>Hồ Sơ Cá Nhân</span>
+                </a>
+                <div class="dropdown-separator"></div>
+                <a href="index.html" class="dropdown-item logout-item" id="adminLogout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Đăng Xuất</span>
+                </a>
+            `;
 
                     adminDropdown.appendChild(adminAvatar);
                     adminDropdown.appendChild(dropdownContent);
@@ -501,19 +682,19 @@
                     const dropdownContent = document.createElement('div');
                     dropdownContent.className = 'dropdown-content';
                     dropdownContent.innerHTML = `
-        <div class="dropdown-header">
-            <div class="user-name">${user.username}</div>
-            <div class="user-role">Người dùng</div>
-        </div>
-        <a href="profile.html" class="dropdown-item">
-            <i class="fas fa-user"></i>
-            <span>Hồ Sơ Cá Nhân</span>
-        </a>
-        <div class="dropdown-separator"></div>
-        <a href="index.html" class="dropdown-item logout-item" id="userLogout">
-            <i class="fas fa-sign-out-alt"></i>
-            <span>Đăng Xuất</span>
-        </a>`;
+<div class="dropdown-header">
+    <div class="user-name">${user.username}</div>
+    <div class="user-role">Người dùng</div>
+</div>
+<a href="profile.html" class="dropdown-item">
+    <i class="fas fa-user"></i>
+    <span>Hồ Sơ Cá Nhân</span>
+</a>
+<div class="dropdown-separator"></div>
+<a href="index.html" class="dropdown-item logout-item" id="userLogout">
+    <i class="fas fa-sign-out-alt"></i>
+    <span>Đăng Xuất</span>
+</a>`;
 
                     userDropdown.appendChild(userAvatar);
                     userDropdown.appendChild(dropdownContent);
@@ -540,7 +721,6 @@
                         }
                     });
                 }
-
             }
         });
 

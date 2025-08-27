@@ -4,85 +4,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tin tức, sự kiện | White-Red Version</title>
-    <link rel="stylesheet" href="news.css">
-    <!-- Tải Tailwind CSS để tạo kiểu nhanh chóng và hiệu quả -->
+    <title>Tin tức, sự kiện | AnhEm Motor</title>
+    <!-- Tải Font Awesome cho các biểu tượng (menu mobile) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Tải Tailwind CSS để tạo kiểu nhanh chóng và hiệu quả (nếu có sử dụng các class tailwind cho các phần khác của trang) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Tải Google Fonts cho phông chữ Inter để có giao diện hiện đại -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
-
+    <!-- Liên kết đến file CSS tùy chỉnh (news.css) -->
+    <link rel="stylesheet" href="news.css">
 </head>
 
 <body class="bg-white text-gray-800">
 
     <!-- Header Section - Cập nhật để có giao diện hiện đại và đáp ứng tốt hơn -->
-    <header class="bg-white border-b border-red-600 fixed top-0 w-full z-50 shadow-md">
-        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
-            <!-- Logo - Thay thế placeholder bằng hình ảnh đã tải lên -->
-            <div class="logo flex-shrink-0">
-                <a href="index.html" class="flex items-center space-x-2">
-                    <!-- Đã cập nhật đường dẫn hình ảnh logo theo yêu cầu của bạn -->
-                    <img src="image/logo-removebg-preview.png" alt="ANH EM MOTOR" class="h-16 w-auto">
+    <header class="main-header">
+        <div class="container">
+            <div class="header-container">
+                <!-- Mobile Menu Toggle -->
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <!-- Logo -->
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">
+                        <!-- Đảm bảo đường dẫn hình ảnh logo đúng -->
+                        <img src="image/logo.png" alt="AnhEm Motor">
+                    </div>
+                    <span class="logo-text">AnhEm Motor</span>
                 </a>
-            </div>
 
-            <!-- Navigation Links - Chỉ hiển thị trên màn hình lớn (md) -->
-            <nav class="hidden md:flex flex-grow justify-center space-x-8">
-                <!-- Đã cập nhật lớp thành font-bold để chữ in đậm -->
-                <a href="index.html"
-                    class="text-gray-800 hover:text-red-600 transition-colors duration-300 font-bold">Trang Chủ</a>
-                <a href="listings.html"
-                    class="text-gray-800 hover:text-red-600 transition-colors duration-300 font-bold">Sản Phẩm</a>
-                <a href="about.html"
-                    class="text-gray-800 hover:text-red-600 transition-colors duration-300 font-bold">Giới Thiệu</a>
-                <a href="news.html"
-                    class="text-gray-800 hover:text-red-600 transition-colors duration-300 font-bold">Tin Tức-Sự
-                    Kiện</a>
-                <a href="promotion.html"
-                    class="text-gray-800 hover:text-red-600 transition-colors duration-300 font-bold">Khuyến Mãi</a>
-                <a href="contact.html"
-                    class="text-gray-800 hover:text-red-600 transition-colors duration-300 font-bold">Liên Hệ</a>
-                <a href="service.html"
-                    class="text-gray-800 hover:text-red-600 transition-colors duration-300 font-bold">Dịch Vụ</a>
-            </nav>
-
-            <!-- Search Icon and Mobile Menu Button -->
-            <div class="flex items-center space-x-4">
-                <button class="text-gray-800 hover:text-red-600 focus:outline-none">
-                    <!-- Search Icon SVG -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                </button>
-                <button id="mobile-menu-button" class="md:hidden text-gray-800 focus:outline-none">
-                    <!-- Hamburger Icon SVG -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 12h16m-7 6h7" />
-                    </svg>
-                </button>
+                <!-- Desktop Navigation -->
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="index.html">Trang Chủ</a></li>
+                        <li><a href="listings.html">Sản Phẩm</a></li>
+                        <li><a href="about.html">Giới Thiệu</a></li>
+                        <li><a href="news.html">Tin Tức-Sự Kiện</a></li>
+                        <li><a href="promotion.html">Khuyến Mãi</a></li>
+                        <li><a href="contact.html">Liên Hệ</a></li>
+                        <li><a href="service.html">Dịch Vụ</a></li>
+                    </ul>
+                </nav>
             </div>
         </div>
 
-        <!-- Mobile Menu - Hiện trên màn hình nhỏ (md) khi được click -->
-        <div id="mobile-menu" class="hidden bg-gray-100 border-t border-red-600 py-2 md:hidden">
-            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-200 transition duration-300 ease-in-out">GIỚI
-                THIỆU</a>
-            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-200 transition duration-300 ease-in-out">TIN
-                TỨC & SỰ KIỆN</a>
-            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-200 transition duration-300 ease-in-out">SẢN
-                PHẨM</a>
-            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-200 transition duration-300 ease-in-out">BÁN
-                HÀNG</a>
-            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-200 transition duration-300 ease-in-out">LIÊN
-                HỆ</a>
-        </div>
+        <!-- Mobile Navigation Overlay -->
+        <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+
+        <!-- Mobile Navigation Menu -->
+        <nav class="mobile-nav" id="mobileNav">
+            <div class="mobile-nav-header">
+                <h3>Menu</h3>
+                <button class="mobile-nav-close" id="mobileNavClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <ul>
+                <li><a href="index.html">Trang Chủ</a></li>
+                <li><a href="listings.html">Sản Phẩm</a></li>
+                <li><a href="about.html">Giới Thiệu</a></li>
+                <li><a href="news.html">Tin Tức-Sự Kiện</a></li>
+                <li><a href="promotion.html">Khuyến Mãi</a></li>
+                <li><a href="contact.html">Liên Hệ</a></li>
+                <li><a href="service.html">Dịch Vụ</a></li>
+            </ul>
+        </nav>
     </header>
 
-    <main class="pt-24">
+    <main class="pt-24" , style="padding-top: 1rem;">
         <!-- Hero Section/Main Banner -->
         <section
             class="w-full h-96 bg-cover bg-center flex items-center justify-center relative transition-all duration-1000"
@@ -209,12 +200,43 @@
 
     <script>
         // JavaScript để bật/tắt menu di động
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
+        document.addEventListener('DOMContentLoaded', function () {
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            const mobileNav = document.getElementById('mobileNav');
+            const mobileNavClose = document.getElementById('mobileNavClose');
+            const mobileNavOverlay = document.getElementById('mobileNavOverlay');
 
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
+            // Mở menu mobile
+            mobileMenuToggle.addEventListener('click', function () {
+                mobileNav.classList.add('active');
+                mobileNavOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Ngăn cuộn trang khi menu mở
+            });
+
+            // Đóng menu mobile
+            mobileNavClose.addEventListener('click', function () {
+                mobileNav.classList.remove('active');
+                mobileNavOverlay.classList.remove('active');
+                document.body.style.overflow = ''; // Cho phép cuộn trang trở lại
+            });
+
+            // Đóng menu mobile khi click ra ngoài overlay
+            mobileNavOverlay.addEventListener('click', function () {
+                mobileNav.classList.remove('active');
+                mobileNavOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+
+            // Đóng menu khi click vào một liên kết trong menu mobile (tùy chọn)
+            mobileNav.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function () {
+                    mobileNav.classList.remove('active');
+                    mobileNavOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            });
         });
+
 
         // JavaScript để tạo hiệu ứng cuộn mượt mà
         const observerOptions = {

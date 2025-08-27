@@ -4,397 +4,371 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Giỏ Hàng - Yamaha</title>
-    <link rel="stylesheet" href="shoppingcart.css">
+    <title>Giỏ Hàng - AnhEm Motor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="index-style.css">
+    <link rel="stylesheet" href="shoppingcart.css">
 
 </head>
 
-<body>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+    <!-- Custom Modal for alerts/confirms (kept as is) -->
+    <div id="custom-modal" class="custom-modal">
+        <div class="custom-modal-content">
+            <h3 id="custom-modal-title"></h3>
+            <p id="custom-modal-message"></p>
+            <div class="custom-modal-buttons">
+                <button id="custom-modal-cancel" class="btn btn-secondary" style="display: none;">Hủy</button>
+                <button id="custom-modal-ok" class="btn btn-primary">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+    <div class="notification-container"></div>
     <header class="main-header">
         <div class="container">
-            <div class="logo">
-                <a href="index.html">
-                    <h1><img fetchpriority="high" decoding="async" src="image/logo-removebg-preview.png" height="100"
-                            alt="Yamaha revs your heart"> </h1>
+            <div class="header-container">
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">
+                        <img src="image/logo.png" alt="AnhEm Motor">
+                    </div>
+                    <span class="logo-text">AnhEm Motor</span>
                 </a>
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="index.html">Trang Chủ</a></li>
+                        <li class="has-submenu">
+                            <a href="listings.html">
+                                Sản Phẩm <i class="fas fa-chevron-down"></i>
+                            </a>
+                            <ul class="submenu">
+                                <li><a href="accessory.html">Nón Bảo Hiểm</a></li>
+                                <li><a href="custome.html">Trang Phục</a></li>
+                                <li><a href="chemicals.html">Hóa Chất</a></li>
+                                <li><a href="spareparts.html">Phụ Tùng</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="about.html">Giới Thiệu</a></li>
+                        <li><a href="news.html">Tin Tức-Sự Kiện</a></li>
+                        <li><a href="promotion.html">Khuyến Mãi</a></li>
+                        <li><a href="contact.html">Liên Hệ</a></li>
+                        <li><a href="service.html">Dịch Vụ</a></li>
+                    </ul>
+                </nav>
+                <div class="flex items-center space-x-4">
+                    <a href="listings.html" class="text-gray-600 hover:text-red-500 transition duration-300">
+                        <i class="fas fa-shopping-cart text-xl"></i>
+                    </a>
+                </div>
             </div>
-
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="index.html">Trang Chủ</a></li>
-                    <li><a href="listings.html">Sản Phẩm</a></li>
-                    <li><a href="about.html">Giới Thiệu</a></li>
-                    <li><a href="news.html">Tin Tức-Sự Kiện</a></li>
-                    <li><a href="promotion.html">Khuyến Mãi</a></li>
-                    <li><a href="contact.html">Liên Hệ</a></li>
-                    <li><a href="service.html">Dịch Vụ</a></li>
-                </ul>
-            </nav>
         </div>
     </header>
 
     <main>
-        <h1 class="page-title">
-            <i class="fas fa-shopping-cart"></i>
-            Giỏ Hàng Của Bạn
-        </h1>
-
         <div class="cart-container-main">
-            <div class="cart-empty" id="empty-cart" style="display: none;">
+            <h1 class="page-title">Giỏ hàng của bạn</h1>
+            <div id="cart-content">
+                <div class="cart-content">
+                    <div class="cart-items">
+                        <div class="cart-actions-top">
+                            <button id="clear-cart-btn" class="clear-cart">
+                                <i class="fas fa-trash-alt"></i> Xóa tất cả
+                            </button>
+                        </div>
+                        <div id="cart-items-list" class="cart-items-list">
+                        </div>
+                    </div>
+                    <div class="cart-summary">
+                        <h3 class="text-xl font-semibold mb-4">Tóm tắt đơn hàng</h3>
+                        <div class="summary-row">
+                            <span class="text-gray-600">Tổng phụ:</span>
+                            <span id="subtotal-summary">0 VNĐ</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="text-gray-600">Phí vận chuyển:</span>
+                            <span>0 VNĐ</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="text-gray-600">Thuế (VAT):</span>
+                            <span>0 VNĐ</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Tổng cộng:</span>
+                            <span id="total-summary" class="text-honda-red">0 VNĐ</span>
+                        </div>
+                        <div class="checkout-actions">
+                            <button id="checkout-btn" class="btn btn-primary">
+                                <i class="fas fa-money-check-alt"></i> Tiến hành thanh toán
+                            </button>
+                            <a href="listings.html" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Quay lại cửa hàng
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="cart-empty" class="cart-empty hidden">
                 <i class="fas fa-shopping-cart"></i>
                 <h3>Giỏ hàng của bạn đang trống</h3>
-                <p>Hãy thêm một số sản phẩm vào giỏ hàng để tiếp tục mua sắm!</p>
-                <a href="listings.html" class="continue-shopping">
-                    <i class="fas fa-arrow-left"></i>
-                    Tiếp tục mua sắm
-                </a>
-            </div>
-
-            <div class="cart-content" id="cart-content">
-                <div class="cart-actions-top">
-                    <button class="clear-cart" id="clear-cart">
-                        <i class="fas fa-trash"></i>
-                        Xóa tất cả
-                    </button>
-                </div>
-
-                <div class="cart-items-list" id="cart-items-list">
-                </div>
-
-                <div class="cart-summary">
-                    <div class="summary-row">
-                        <span>Tổng số sản phẩm:</span>
-                        <span id="total-items">0</span>
-                    </div>
-                    <div class="summary-row">
-                        <span>Tạm tính:</span>
-                        <span id="subtotal">0 VNĐ</span>
-                    </div>
-                    <div class="summary-row">
-                        <span>Phí vận chuyển:</span>
-                        <span>Miễn phí</span>
-                    </div>
-                    <div class="summary-row total">
-                        <span>Tổng cộng:</span>
-                        <span id="total-amount">0 VNĐ</span>
-                    </div>
-
-                    <div class="checkout-actions">
-                        <a href="listings.html" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left"></i>
-                            Tiếp tục mua sắm
-                        </a>
-                        <button class="btn btn-primary" id="checkout-btn">
-                            <i class="fas fa-credit-card"></i>
-                            Thanh Toán
-                        </button>
-                    </div>
-                </div>
+                <p>Hãy khám phá các sản phẩm của chúng tôi và thêm vào giỏ hàng!</p>
+                <a href="listings.html" class="continue-shopping">Tiếp tục mua sắm</a>
             </div>
         </div>
     </main>
 
+    <!-- Payment Modal -->
     <div id="payment-modal" class="modal">
         <div class="modal-content">
-            <span class="close-btn">&times;</span>
-            <h2>Chọn phương thức thanh toán</h2>
+            <span id="payment-close-btn" class="close-btn">&times;</span>
+            <h3 class="text-2xl font-bold mb-4">Chọn phương thức thanh toán</h3>
+
             <div class="payment-methods-list">
-                <div class="payment-method" data-method="credit-card">
-                    <i class="fas fa-credit-card"></i>
-                    <div class="payment-method-details">
-                        <h4>Thẻ Tín Dụng / Ghi Nợ</h4>
-                        <p>Thanh toán qua Visa, Mastercard, JCB...</p>
-                    </div>
+                <div class="payment-method" data-method="cod">
+                    <i class="fas fa-handshake"></i>
+                    <p class="font-semibold">Thanh toán khi nhận hàng (COD)</p>
                 </div>
                 <div class="payment-method" data-method="bank-transfer">
                     <i class="fas fa-university"></i>
-                    <div class="payment-method-details">
-                        <h4>Chuyển Khoản Ngân Hàng</h4>
-                        <p>Chuyển tiền vào tài khoản ngân hàng của chúng tôi</p>
-                    </div>
-                </div>
-                <div class="payment-method" data-method="cod">
-                    <i class="fas fa-money-bill-wave"></i>
-                    <div class="payment-method-details">
-                        <h4>Thanh Toán Khi Nhận Hàng (COD)</h4>
-                        <p>Thanh toán bằng tiền mặt khi nhận sản phẩm</p>
-                    </div>
+                    <p class="font-semibold">Chuyển khoản ngân hàng</p>
                 </div>
             </div>
 
-            <div id="payment-info-credit-card" class="payment-info">
-                <h4>Thanh toán bằng thẻ</h4>
-                <p>Bạn sẽ được chuyển hướng đến cổng thanh toán an toàn để nhập thông tin thẻ.</p>
+            <div id="cod-info" class="payment-info">
+                <p>Bạn sẽ thanh toán tiền mặt cho nhân viên giao hàng khi nhận được sản phẩm.</p>
             </div>
-            <div id="payment-info-bank-transfer" class="payment-info">
-                <h4>Thông tin chuyển khoản</h4>
-                <p>Tên tài khoản: CÔNG TY YAMAHA</p>
-                <p>Số tài khoản: <b>1234 5678 9012 3456</b></p>
-                <p>Ngân hàng: VIETCOMBANK - Chi nhánh TP.HCM</p>
-                <p>Nội dung chuyển khoản: **Tên bạn - Số điện thoại**</p>
-            </div>
-            <div id="payment-info-cod" class="payment-info">
-                <h4>Thông tin thanh toán khi nhận hàng</h4>
-                <p>Chúng tôi sẽ liên hệ để xác nhận đơn hàng và giao sản phẩm. Bạn sẽ thanh toán tổng số tiền <b><span
-                            id="total-amount-cod"></span></b> cho nhân viên giao hàng.</p>
+            <div id="bank-transfer-info" class="payment-info">
+                <p class="font-bold">Thông tin chuyển khoản:</p>
+                <p><strong>Ngân hàng:</strong> Vietcombank</p>
+                <p><strong>Số tài khoản:</strong> 0123456789</p>
+                <p><strong>Chủ tài khoản:</strong> Cong ty TNHH AnhEm Motor</p>
+                <p><strong>Nội dung:</strong> [Tên bạn] - TT Don hang #[Số đơn hàng]</p>
             </div>
 
-            <button class="confirm-payment-btn" id="confirm-payment-btn">Xác Nhận Thanh Toán</button>
+            <button id="confirm-payment-btn" class="confirm-payment-btn">Xác nhận thanh toán</button>
         </div>
     </div>
 
-
-    <footer>
-        <p>&copy; Cửa Hàng Xe Máy AnhEm Motor. Mọi quyền được bảo lưu.</p>
-    </footer>
-
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', () => {
             const cartItemsList = document.getElementById('cart-items-list');
+            const subtotalSummary = document.getElementById('subtotal-summary');
+            const totalSummary = document.getElementById('total-summary');
             const cartContent = document.getElementById('cart-content');
-            const emptyCart = document.getElementById('empty-cart');
-            const cartCount = document.querySelector('.cart-count');
-            const totalItems = document.getElementById('total-items');
-            const subtotal = document.getElementById('subtotal');
-            const totalAmount = document.getElementById('total-amount');
-            const clearCartBtn = document.getElementById('clear-cart');
+            const cartEmpty = document.getElementById('cart-empty');
+            const clearCartBtn = document.getElementById('clear-cart-btn');
             const checkoutBtn = document.getElementById('checkout-btn');
-
-            // Modal elements
             const paymentModal = document.getElementById('payment-modal');
-            const closeModalBtn = document.querySelector('.close-btn');
+            const paymentCloseBtn = document.getElementById('payment-close-btn');
             const paymentMethods = document.querySelectorAll('.payment-method');
-            const paymentInfoDivs = document.querySelectorAll('.payment-info');
+            const paymentInfos = document.querySelectorAll('.payment-info');
             const confirmPaymentBtn = document.getElementById('confirm-payment-btn');
-            const totalAmountCod = document.getElementById('total-amount-cod');
+            const customModal = document.getElementById('custom-modal');
+            const customModalTitle = document.getElementById('custom-modal-title');
+            const customModalMessage = document.getElementById('custom-modal-message');
+            const customModalOkBtn = document.getElementById('custom-modal-ok');
+            const notificationContainer = document.querySelector('.notification-container');
 
-            let cart = [];
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let currentOrderId = 'AE' + Math.floor(Math.random() * 100000);
 
-            // Load cart from localStorage
-            function loadCart() {
-                const savedCart = localStorage.getItem('cart');
-                if (savedCart) {
-                    cart = JSON.parse(savedCart);
-                }
-                renderCart();
+            // Function to show custom notification
+            function showNotification(message, type = 'success') {
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.textContent = message;
+                notificationContainer.appendChild(notification);
+
+                setTimeout(() => {
+                    notification.style.animation = 'slideOut 0.3s ease-in-out forwards';
+                }, 3000); // 3 seconds before sliding out
+
+                setTimeout(() => {
+                    notification.remove();
+                }, 3300); // Remove after animation
             }
 
-            // Save cart to localStorage
-            function saveCart() {
-                localStorage.setItem('cart', JSON.stringify(cart));
-                updateCartCount();
+            // Function to show custom modal for alerts
+            function showCustomModal(title, message) {
+                customModalTitle.textContent = title;
+                customModalMessage.textContent = message;
+                customModal.style.display = 'flex';
+                customModalOkBtn.onclick = () => {
+                    customModal.style.display = 'none';
+                };
             }
 
-            // Update cart count
-            function updateCartCount() {
-                const count = cart.reduce((sum, item) => sum + item.quantity, 0);
-                cartCount.textContent = count;
-            }
-
-            // Format currency
-            function formatCurrency(amount) {
-                return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-            }
-
-            // Render cart
             function renderCart() {
                 if (cart.length === 0) {
-                    cartContent.style.display = 'none';
-                    emptyCart.style.display = 'block';
+                    cartContent.classList.add('hidden');
+                    cartEmpty.classList.remove('hidden');
+                } else {
+                    cartContent.classList.remove('hidden');
+                    cartEmpty.classList.add('hidden');
+                    cartItemsList.innerHTML = cart.map(item => `
+                        <div class="cart-item" data-id="${item.id}">
+                            <div class="item-image">
+                                <img src="${item.image}" alt="${item.name}">
+                            </div>
+                            <div class="item-details">
+                                <h4 class="item-name">${item.name}</h4>
+                                <p class="item-price">Mã: ${item.code}</p>
+                                <p class="item-price">${(item.price).toLocaleString('vi-VN')} VNĐ</p>
+                                <div class="quantity-controls">
+                                    <button class="quantity-btn decrease-btn" data-id="${item.id}">-</button>
+                                    <span class="quantity-display">${item.quantity}</span>
+                                    <button class="quantity-btn increase-btn" data-id="${item.id}">+</button>
+                                </div>
+                            </div>
+                            <p class="font-semibold text-xl text-honda-red">${(item.price * item.quantity).toLocaleString('vi-VN')} VNĐ</p>
+                            <button class="remove-item" data-id="${item.id}">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    `).join('');
+                }
+                updateCartSummary();
+            }
+
+            function updateCartSummary() {
+                const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                subtotalSummary.textContent = `${subtotal.toLocaleString('vi-VN')} VNĐ`;
+                totalSummary.textContent = `${subtotal.toLocaleString('vi-VN')} VNĐ`;
+            }
+
+            function saveCart() {
+                localStorage.setItem('cart', JSON.stringify(cart));
+            }
+
+            // Event listener for quantity changes and item removal
+            cartItemsList.addEventListener('click', (e) => {
+                const target = e.target;
+                const itemId = target.closest('[data-id]')?.dataset.id;
+                if (!itemId) return;
+
+                const itemIndex = cart.findIndex(item => item.id == itemId);
+                if (itemIndex === -1) return;
+
+                if (target.closest('.increase-btn')) {
+                    cart[itemIndex].quantity++;
+                } else if (target.closest('.decrease-btn')) {
+                    if (cart[itemIndex].quantity > 1) {
+                        cart[itemIndex].quantity--;
+                    } else {
+                        // Use custom modal for confirmation before removing last item
+                        showCustomModal(
+                            'Xác nhận xóa',
+                            'Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?'
+                        );
+                        document.getElementById('custom-modal-cancel').style.display = 'inline-block';
+                        document.getElementById('custom-modal-ok').onclick = () => {
+                            cart.splice(itemIndex, 1);
+                            saveCart();
+                            renderCart();
+                            customModal.style.display = 'none';
+                            document.getElementById('custom-modal-cancel').style.display = 'none';
+                        };
+                        document.getElementById('custom-modal-cancel').onclick = () => {
+                            customModal.style.display = 'none';
+                            document.getElementById('custom-modal-cancel').style.display = 'none';
+                        };
+                        return;
+                    }
+                } else if (target.closest('.remove-item')) {
+                    // Use custom modal for confirmation
+                    showCustomModal(
+                        'Xác nhận xóa',
+                        'Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?'
+                    );
+                    document.getElementById('custom-modal-cancel').style.display = 'inline-block';
+                    document.getElementById('custom-modal-ok').onclick = () => {
+                        cart.splice(itemIndex, 1);
+                        saveCart();
+                        renderCart();
+                        customModal.style.display = 'none';
+                        document.getElementById('custom-modal-cancel').style.display = 'none';
+                    };
+                    document.getElementById('custom-modal-cancel').onclick = () => {
+                        customModal.style.display = 'none';
+                        document.getElementById('custom-modal-cancel').style.display = 'none';
+                    };
                     return;
                 }
 
-                cartContent.style.display = 'block';
-                emptyCart.style.display = 'none';
+                saveCart();
+                renderCart();
+            });
 
-                cartItemsList.innerHTML = '';
-                let totalPrice = 0;
-                let itemCount = 0;
-
-                cart.forEach((item, index) => {
-                    const itemTotal = item.price * item.quantity;
-                    totalPrice += itemTotal;
-                    itemCount += item.quantity;
-
-                    const cartItem = document.createElement('div');
-                    cartItem.className = 'cart-item';
-                    cartItem.innerHTML = `
-                        <div class="item-image">
-                            <img src="${item.image}" alt="${item.name}" />
-                        </div>
-                        <div class="item-details">
-                            <div class="item-name">${item.name}</div>
-                            <div class="item-price">${formatCurrency(item.price)} VNĐ</div>
-                            <div class="quantity-controls">
-                                <button class="quantity-btn" onclick="updateQuantity(${index}, -1)">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                                <span class="quantity-display">${item.quantity}</span>
-                                <button class="quantity-btn" onclick="updateQuantity(${index}, 1)">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                            </div>
-                            <button class="remove-item" onclick="removeItem(${index})">
-                                <i class="fas fa-trash"></i>
-                                Xóa
-                            </button>
-                        </div>
-                        <div class="item-total">
-                            <div class="item-subtotal">${formatCurrency(itemTotal)} VNĐ</div>
-                        </div>
-                    `;
-                    cartItemsList.appendChild(cartItem);
-                });
-
-                // Update summary
-                totalItems.textContent = itemCount;
-                subtotal.textContent = formatCurrency(totalPrice) + ' VNĐ';
-                totalAmount.textContent = formatCurrency(totalPrice) + ' VNĐ';
-                totalAmountCod.textContent = formatCurrency(totalPrice) + ' VNĐ';
-                updateCartCount();
-            }
-
-            // Update quantity
-            window.updateQuantity = function (index, change) {
-                if (cart[index]) {
-                    cart[index].quantity += change;
-
-                    if (cart[index].quantity <= 0) {
-                        cart.splice(index, 1);
-                    }
-
-                    saveCart();
-                    renderCart();
-
-                    // Show notification
-                    showNotification('Cập nhật số lượng thành công!');
-                }
-            };
-
-            // Remove item
-            window.removeItem = function (index) {
-                if (confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?')) {
-                    const itemName = cart[index].name;
-                    cart.splice(index, 1);
-                    saveCart();
-                    renderCart();
-                    showNotification(`Đã xóa ${itemName} khỏi giỏ hàng!`);
-                }
-            };
-
-            // Clear cart
-            clearCartBtn.addEventListener('click', function () {
-                if (confirm('Bạn có chắc chắn muốn xóa tất cả sản phẩm trong giỏ hàng?')) {
+            // Clear all items from cart
+            clearCartBtn.addEventListener('click', () => {
+                showCustomModal(
+                    'Xác nhận xóa tất cả',
+                    'Bạn có chắc chắn muốn xóa tất cả sản phẩm khỏi giỏ hàng?'
+                );
+                document.getElementById('custom-modal-cancel').style.display = 'inline-block';
+                document.getElementById('custom-modal-ok').onclick = () => {
                     cart = [];
                     saveCart();
                     renderCart();
-                    showNotification('Đã xóa tất cả sản phẩm trong giỏ hàng!');
-                }
+                    customModal.style.display = 'none';
+                    document.getElementById('custom-modal-cancel').style.display = 'none';
+                };
+                document.getElementById('custom-modal-cancel').onclick = () => {
+                    customModal.style.display = 'none';
+                    document.getElementById('custom-modal-cancel').style.display = 'none';
+                };
             });
 
-            // Show payment modal on checkout button click
-            checkoutBtn.addEventListener('click', function () {
+            // Handle payment modal
+            checkoutBtn.addEventListener('click', () => {
                 if (cart.length === 0) {
-                    showNotification('Giỏ hàng của bạn đang trống!', 'error');
+                    showNotification("Giỏ hàng của bạn đang trống. Vui lòng thêm sản phẩm để thanh toán.", "error");
                     return;
                 }
                 paymentModal.style.display = 'flex';
             });
 
-            // Close modal
-            closeModalBtn.addEventListener('click', function () {
+            paymentCloseBtn.addEventListener('click', () => {
                 paymentModal.style.display = 'none';
             });
 
-            window.onclick = function (event) {
-                if (event.target == paymentModal) {
+            window.addEventListener('click', (e) => {
+                if (e.target == paymentModal) {
                     paymentModal.style.display = 'none';
                 }
-            };
+            });
 
             // Handle payment method selection
             paymentMethods.forEach(method => {
-                method.addEventListener('click', function () {
-                    // Remove 'selected' class from all methods
+                method.addEventListener('click', () => {
                     paymentMethods.forEach(m => m.classList.remove('selected'));
-                    // Add 'selected' class to the clicked method
-                    this.classList.add('selected');
+                    method.classList.add('selected');
 
-                    // Hide all payment info sections
-                    paymentInfoDivs.forEach(info => info.classList.remove('active'));
-
-                    // Show the corresponding info section
-                    const selectedMethod = this.getAttribute('data-method');
-                    document.getElementById(`payment-info-${selectedMethod}`).classList.add('active');
-
-                    // Set button text
-                    confirmPaymentBtn.textContent = `Xác Nhận ${this.querySelector('h4').textContent}`;
+                    paymentInfos.forEach(info => info.classList.remove('active'));
+                    const methodType = method.dataset.method;
+                    document.getElementById(`${methodType}-info`).classList.add('active');
                 });
             });
 
-            // Confirm payment button
-            confirmPaymentBtn.addEventListener('click', function () {
+            // Handle confirmation of payment
+            confirmPaymentBtn.addEventListener('click', () => {
                 const selectedMethod = document.querySelector('.payment-method.selected');
                 if (!selectedMethod) {
-                    showNotification('Vui lòng chọn một phương thức thanh toán!', 'error');
+                    showNotification("Vui lòng chọn một phương thức thanh toán.", "error");
                     return;
                 }
-                const methodText = selectedMethod.querySelector('h4').textContent;
-                alert(`Bạn đã chọn thanh toán bằng "${methodText}". Đơn hàng sẽ được xử lý. Cảm ơn bạn!`);
 
-                // Close modal and clear cart after successful payment
+                // Simulate payment success
                 paymentModal.style.display = 'none';
                 cart = [];
                 saveCart();
                 renderCart();
+                showNotification("Thanh toán thành công! Cảm ơn bạn đã mua hàng.");
             });
 
-            // Show notification
-            function showNotification(message, type = 'success') {
-                const notification = document.createElement('div');
-                notification.textContent = message;
-                notification.style.position = 'fixed';
-                notification.style.bottom = '20px';
-                notification.style.right = '20px';
-                notification.style.padding = '15px 25px';
-                notification.style.backgroundColor = type === 'error' ? '#ff4757' : '#2ecc71';
-                notification.style.color = 'white';
-                notification.style.borderRadius = '5px';
-                notification.style.zIndex = '1000';
-                notification.style.fontSize = '14px';
-                notification.style.fontWeight = '500';
-                notification.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
-                notification.style.animation = 'slideIn 0.3s ease';
-                document.body.appendChild(notification);
-
-                // Add CSS animation
-                if (!document.getElementById('notification-styles')) {
-                    const style = document.createElement('style');
-                    style.id = 'notification-styles';
-                    style.textContent = `
-                        @keyframes slideIn {
-                            from { transform: translateX(100%); opacity: 0; }
-                            to { transform: translateX(0); opacity: 1; }
-                        }
-                    `;
-                    document.head.appendChild(style);
-                }
-
-                setTimeout(() => {
-                    notification.style.animation = 'slideOut 0.3s ease forwards';
-                    setTimeout(() => notification.remove(), 300);
-                }, 3000);
-            }
-
-            // Initialize cart
-            loadCart();
-
-            // Back to cart from product page
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('added')) {
-                showNotification('Sản phẩm đã được thêm vào giỏ hàng thành công!');
-            }
+            renderCart();
         });
     </script>
 </body>

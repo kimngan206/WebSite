@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Honda | Xe máy | Phụ tùng</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="index-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Custom styles to match Honda's aesthetic */
+        body {
+            font-family: "Inter", sans-serif;
+            color: #393939;
+        }
+
+        .text-honda-red {
+            color: #de0000;
+        }
+
+        .bg-honda-red {
+            background-color: #de0000;
+        }
+
+        /* Product Detail Modal Styles - Centered */
+        #product-detail-panel {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease-in-out;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        #product-detail-panel.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* Overlay for background when modal is open */
+        .backdrop-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .backdrop-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Cart panel styles */
+        #cart-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 350px;
+            height: 100%;
+            background-color: white;
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #cart-panel.open {
+            transform: translateX(0);
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px dashed #e0e0e0;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .cart-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            border-radius: 0.25rem;
+            margin-right: 0.75rem;
+        }
+
+        .cart-item-details {
+            flex-grow: 1;
+        }
+
+        .cart-item-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .cart-item-price {
+            color: #de0000;
+            font-size: 0.85rem;
+        }
+
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+            margin-top: 0.25rem;
+        }
+
+        .cart-item-quantity button {
+            background-color: #f1f1f1;
+            border: 1px solid #ddd;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 0.125rem;
+            cursor: pointer;
+        }
+
+        .cart-item-quantity span {
+            margin: 0 0.5rem;
+            font-weight: 500;
+        }
+
+        .cart-item-remove {
+            color: #ef4444;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-left: 0.75rem;
+        }
+
+        /* Notification styles */
+        .notification-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .notification {
+            background-color: #10b981;
+            color: white;
+            padding: 12px 20px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .notification.error {
+            background-color: #ef4444;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <div class="notification-container"></div>
+
+    <header class="main-header">
+        <div class="container">
+            <div class="header-container">
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">
+                        <img src="image/logo.png" alt="AnhEm Motor">
+                    </div>
+                    <span class="logo-text">AnhEm Motor</span>
+                </a>
+
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="index.html">Trang Chủ</a></li>
+                        <li class="has-submenu">
+                            <a href="listings.html">
+                                Sản Phẩm <i class="fas fa-chevron-down"></i>
+                            </a>
+                            <ul class="submenu">
+                                <li><a href="accessory.html">Nón Bảo Hiểm</a></li>
+                                <li><a href="custome.html">Quần Áo</a></li>
+                                <li><a href="chemicals.html">Hóa Chất</a></li>
+                                <li><a href="spareparts.html">Phụ Tùng</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="about.html">Giới Thiệu</a></li>
+                        <li><a href="news.html">Tin Tức-Sự Kiện</a></li>
+                        <li><a href="promotion.html">Khuyến Mãi</a></li>
+                        <li><a href="contact.html">Liên Hệ</a></li>
+                        <li><a href="service.html">Dịch Vụ</a></li>
+                    </ul>
+                </nav>
+
+                <div class="flex items-center space-x-4">
+                    <button id="cart-icon-button"
+                        class="relative text-gray-600 hover:text-red-500 transition duration-300">
+                        <i class="fas fa-shopping-cart text-xl"></i>
+                        <span id="cart-item-count"
+                            class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+
+        <nav class="mobile-nav" id="mobileNav">
+            <div class="mobile-nav-header">
+                <h3>Menu</h3>
+                <button class="mobile-nav-close" id="mobileNavClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <ul>
+                <li><a href="index.html">Trang Chủ</a></li>
+                <li><a href="listings.html">Sản Phẩm</a></li>
+                <li><a href="about.html">Giới Thiệu</a></li>
+                <li><a href="news.html">Tin Tức-Sự Kiện</a></li>
+                <li><a href="promotion.html">Khuyến Mãi</a></li>
+                <li><a href="contact.html">Liên Hệ</a></li>
+                <li><a href="service.html">Dịch Vụ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div id="cart-panel">
+        <div class="flex justify-between items-center p-4 border-b">
+            <h3 class="text-xl font-bold">Giỏ hàng của bạn</h3>
+            <button id="close-cart-panel" class="text-gray-700 text-2xl"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="cart-items" class="flex-grow overflow-y-auto p-4">
+            <p id="empty-cart-message" class="text-gray-500 text-center hidden">Giỏ hàng của bạn đang trống.</p>
+        </div>
+        <div class="p-4 border-t">
+            <div class="flex justify-between items-center mb-4">
+                <span class="font-semibold text-lg">Tổng cộng:</span>
+                <span id="cart-total" class="font-bold text-honda-red text-lg">0 VNĐ</span>
+            </div>
+            <button id="checkout-button"
+                class="bg-honda-red text-white w-full py-3 rounded-md text-lg font-semibold hover:bg-red-700 transition duration-200">
+                Xem giỏ hàng
+            </button>
+        </div>
+    </div>
+
+    <div class="bg-gray-100 py-3 px-4">
+        <div class="container mx-auto text-sm text-gray-600 flex items-center space-x-2">
+            <a href="/" class="hover:underline">Trang chủ</a>
+            <span>/</span>
+            <a href="#" class="hover:underline">Xe máy</a>
+            <span>/</span>
+            <span>Phụ tùng</span>
+        </div>
+    </div>
+
+    <div class="bg-white shadow-sm py-4">
+        <div
+            class="container mx-auto px-4 flex justify-center space-x-4 md:space-x-8 text-gray-700 text-sm md:text-base font-semibold overflow-x-auto whitespace-nowrap">
+            <a href="accessory.html" class="pb-2 border-b-2 border-transparent hover:border-honda-red">Mũ bảo hiểm</a>
+            <a href="custome.html" class="pb-2 border-b-2 border-transparent hover:border-honda-red">Trang phục</a>
+            <a href="accessories.html" class="pb-2 border-b-2 border-transparent hover:border-honda-red">Phụ kiện</a>
+            <a href="spareparts.html" class="pb-2 border-b-2 border-honda-red text-honda-red">Phụ tùng</a>
+            <a href="chemicals.html" class="pb-2 border-b-2 border-transparent hover:border-honda-red">Dầu nhờn và
+                hóa chất</a>
+        </div>
+    </div>
+
+    <main class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-8 text-center">Phụ Tùng Honda</h1>
+
+        <div id="product-list" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div class="product-card bg-white rounded-lg shadow-md hover:shadow-lg transition duration-200 cursor-pointer"
+                data-product-id="29" data-product-name="Tấm lọc gió" data-product-price="51000"
+                data-product-image="https://cdn.honda.com.vn/spare-parts/December2019/IuMc99XSVWuHCu2O6LnY.png"
+                data-product-description="Tấm lọc gió chính hiệu Honda giúp động cơ hoạt động hiệu quả, kéo dài tuổi thọ xe.">
+                <div class="overflow-hidden rounded-t-lg">
+                    <img src="https://cdn.honda.com.vn/spare-parts/December2019/IuMc99XSVWuHCu2O6LnY.png"
+                        alt="Tấm lọc gió" class="w-full h-64 object-contain p-2">
+                </div>
+                <div class="p-4">
+                    <p class="font-semibold text-sm md:text-base mb-1">Tấm lọc gió</p>
+                    <p class="text-honda-red font-bold text-sm md:text-base mb-2">51.000 VNĐ</p>
+                    <div class="flex space-x-1 justify-center color-options">
+                        <span class="w-4 h-4 rounded-full border border-gray-300 cursor-pointer"
+                            style="background-color: #000000;"></span>
+                        <span class="w-4 h-4 rounded-full border border-gray-300 cursor-pointer"
+                            style="background-color: #808080;"></span>
+                    </div>
+                </div>
+                <button
+                    class="add-to-cart-btn mt-2 bg-honda-red text-white py-2 px-4 rounded-md w-full font-semibold hover:bg-red-700 transition duration-200"
+                    data-product-id="29">
+                    <i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng
+                </button>
+            </div>
+
+            <div class="product-card bg-white rounded-lg shadow-md hover:shadow-lg transition duration-200 cursor-pointer"
+                data-product-id="15" data-product-name="Bugi" data-product-price="40000"
+                data-product-image="https://cdn.honda.com.vn/spare-parts/November2019/UH9foJbR9vdARzbsUEkz.jpg"
+                data-product-description="Bugi đánh lửa chất lượng cao, giúp khởi động xe dễ dàng và tiết kiệm nhiên liệu.">
+                <div class="overflow-hidden rounded-t-lg">
+                    <img src="https://cdn.honda.com.vn/spare-parts/November2019/UH9foJbR9vdARzbsUEkz.jpg" alt="Bugi"
+                        class="w-full h-64 object-contain p-2">
+                </div>
+                <div class="p-4">
+                    <p class="font-semibold text-sm md:text-base mb-1">Bugi</p>
+                    <p class="text-honda-red font-bold text-sm md:text-base mb-2">40.000 VNĐ</p>
+                    <div class="flex space-x-1 justify-center color-options">
+                        <span class="w-4 h-4 rounded-full border border-gray-300 cursor-pointer"
+                            style="background-color: #000000;"></span>
+                        <span class="w-4 h-4 rounded-full border border-gray-300 cursor-pointer"
+                            style="background-color: #808080;"></span>
+                    </div>
+                </div>
+                <button
+                    class="add-to-cart-btn mt-2 bg-honda-red text-white py-2 px-4 rounded-md w-full font-semibold hover:bg-red-700 transition duration-200"
+                    data-product-id="15">
+                    <i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng
+                </button>
+            </div>
+
+            <div class="product-card bg-white rounded-lg shadow-md hover:shadow-lg transition duration-200 cursor-pointer"
+                data-product-id="14" data-product-name="Bộ má phanh" data-product-price="61000"
+                data-product-image="https://cdn.honda.com.vn/spare-parts/November2019/Vk29zWeOYRWZQsFd0Rnz.jpg"
+                data-product-description="Bộ má phanh chính hiệu Honda đảm bảo hiệu suất phanh tối ưu, an toàn trên mọi nẻo đường.">
+                <div class="overflow-hidden rounded-t-lg">
+                    <img src="https://cdn.honda.com.vn/spare-parts/November2019/Vk29zWeOYRWZQsFd0Rnz.jpg"
+                        alt="Bộ má phanh" class="w-full h-64 object-contain p-2">
+                </div>
+                <div class="p-4">
+                    <p class="font-semibold text-sm md:text-base mb-1">Bộ má phanh</p>
+                    <p class="text-honda-red font-bold text-sm md:text-base mb-2">61.000 VNĐ</p>
+                    <div class="flex space-x-1 justify-center color-options">
+                        <span class="w-4 h-4 rounded-full border border-gray-300 cursor-pointer"
+                            style="background-color: #000000;"></span>
+                        <span class="w-4 h-4 rounded-full border border-gray-300 cursor-pointer"
+                            style="background-color: #808080;"></span>
+                    </div>
+                </div>
+                <button
+                    class="add-to-cart-btn mt-2 bg-honda-red text-white py-2 px-4 rounded-md w-full font-semibold hover:bg-red-700 transition duration-200"
+                    data-product-id="14">
+                    <i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng
+                </button>
+            </div>
+
+            <div class="product-card bg-white rounded-lg shadow-md hover:shadow-lg transition duration-200 cursor-pointer"
+                data-product-id="13" data-product-name="Bộ má phanh dầu" data-product-price="113000"
+                data-product-image="https://cdn.honda.com.vn/spare-parts/November2019/EnCJqb5bQvQweyKwiCjp.jpg"
+                data-product-description="Bộ má phanh dầu cao cấp, bền bỉ, mang lại cảm giác phanh mượt mà.">
+                <div class="overflow-hidden rounded-t-lg">
+                    <img src="https://cdn.honda.com.vn/spare-parts/November2019/EnCJqb5bQvQweyKwiCjp.jpg"
+                        alt="Bộ má phanh dầu" class="w-full h-64 object-contain p-2">
+                </div>
+                <div class="p-4">
+                    <p class="font-semibold text-sm md:text-base mb-1">Bộ má phanh dầu</p>
+                    <p class="text-honda-red font-bold text-sm md:text-base mb-2">113.000 VNĐ</p>
+                    <div class="flex space-x-1 justify-center color-options">
+                        <span class="w-4 h-4 rounded-full border border-gray-300 cursor-pointer"
+                            style="background-color: #000000;"></span>
+                        <span class="w-4 h-4 rounded-full border border-gray-300 cursor-pointer"
+                            style="background-color: #808080;"></span>
+                    </div>
+                </div>
+                <button
+                    class="add-to-cart-btn mt-2 bg-honda-red text-white py-2 px-4 rounded-md w-full font-semibold hover:bg-red-700 transition duration-200"
+                    data-product-id="13">
+                    <i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng
+                </button>
+            </div>
+
+            <div class="product-card bg-white rounded-lg shadow-md hover:shadow-lg transition duration-200 cursor-pointer"
+                data-product-id="12" data-product-name="Bộ nhông, xích" data-product-price="175000"
+                data-product-image="https://cdn.honda.com.vn/spare-parts/October2022/HQwAel7UTAj7BiwLzM3a.png"
+                data-product-description="Bộ nhông, xích chính hiệu Honda, vận hành êm ái, truyền động hiệu quả.">
+                <div class="overflow-hidden rounded-t-lg">
+                    <img src="https://cdn.honda.com.vn/spare-parts/October2022/HQwAel7UTAj7BiwLzM3a.png"
+                        alt="Bộ nhông, xích" class="w-full h-64 object-contain p-2">
+                </div>
+                <div class="p-4">
+                    <p class="font-semibold text-sm md:text-base mb-1">Bộ nhông, xích</p>
+                    <p class="text-honda-red font-bold text-sm md:text-base mb-2">175.000 VNĐ</p>
+                    <div class="flex space-x-1 justify-center color-options">
+                        <span class="w-4 h-4 rounded-full border border-gray-300 cursor-pointer"
+                            style="background-color: #000000;"></span>
+                        <span class="w-4 h-4 rounded-full border border-gray-300 cursor-pointer"
+                            style="background-color: #808080;"></span>
+                    </div>
+                </div>
+                <button
+                    class="add-to-cart-btn mt-2 bg-honda-red text-white py-2 px-4 rounded-md w-full font-semibold hover:bg-red-700 transition duration-200"
+                    data-product-id="12">
+                    <i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng
+                </button>
+            </div>
+
+            <div class="product-card bg-white rounded-lg shadow-md hover:shadow-lg transition duration-200 cursor-pointer"
+                data-product-id="11" data-product-name="Ắc quy" data-product-price="239000"
+                data-product-image="https://cdn.honda.com.vn/spare-parts/October2022/hS2ywfhges1kRN8CQzr3.png"
+                data-product-description="Ắc quy chính hãng Honda, khởi động mạnh mẽ, bền bỉ theo thời gian.">
+                <div class="overflow-hidden rounded-t-lg">
+                    <img src="https://cdn.honda.com.vn/spare-parts/October2022/hS2ywfhges1kRN8CQzr3.png" alt="Ắc quy"
+                        class="w-full h-64 object-contain p-2">
+                </div>
+                <div class="p-4">
+                    <p class="font-semibold text-sm md:text-base mb-1">Ắc quy</p>
+                    <p class="text-honda-red font-bold text-sm md:text-base mb-2">239.000 VNĐ</p>
+                    <div class="flex space-x-1 justify-center color-options">
+                        <span class="w-4 h-4 rounded-full border border-gray-300 cursor-pointer"
+                            style="background-color: #000000;"></span>
+                        <span class="w-4 h-4 rounded-full border border-gray-300 cursor-pointer"
+                            style="background-color: #808080;"></span>
+                    </div>
+                </div>
+                <button
+                    class="add-to-cart-btn mt-2 bg-honda-red text-white py-2 px-4 rounded-md w-full font-semibold hover:bg-red-700 transition duration-200"
+                    data-product-id="11">
+                    <i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng
+                </button>
+            </div>
+
+            <div class="product-card bg-white rounded-lg shadow-md hover:shadow-lg transition duration-200 cursor-pointer"
+                data-product-id="10" data-product-name="Lốp sau" data-product-price="228000"
+                data-product-image="https://cdn.honda.com.vn/spare-parts/October2022/6WLgbhMy0WTks3PZKPOb.png"
+                data-product-description="Lốp sau chính hãng, bám đường tốt, an toàn khi di chuyển.">
+                <div class="overflow-hidden rounded-t-lg">
+                    <img src="https://cdn.honda.com.vn/spare-parts/October2022/6WLgbhMy0WTks3PZKPOb.png" alt="Lốp sau"
+                        class="w-full h-64 object-contain p-2">
+                </div>
+                <div class="p-4">
+                    <p class="font-semibold text-sm md:text-base mb-1">Lốp sau</p>
+                    <p class="text-honda-red font-bold text-sm md:text-base mb-2">228.000 VNĐ</p>
+                    <div class="flex space-x-1 justify-center color-options">
+                        <span class="w-4 h-4 rounded-full border border-gray-300 cursor-pointer"
+                            style="background-color: #000000;"></span>
+                        <span class="w-4 h-4 rounded-full border border-gray-300 cursor-pointer"
+                            style="background-color: #808080;"></span>
+                    </div>
+                </div>
+                <button
+                    class="add-to-cart-btn mt-2 bg-honda-red text-white py-2 px-4 rounded-md w-full font-semibold hover:bg-red-700 transition duration-200"
+                    data-product-id="10">
+                    <i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng
+                </button>
+            </div>
+
+            <div class="product-card bg-white rounded-lg shadow-md hover:shadow-lg transition duration-200 cursor-pointer"
+                data-product-id="9" data-product-name="Lốp trước" data-product-price="191000"
+                data-product-image="https://cdn.honda.com.vn/spare-parts/November2019/EGbwXNR047t7w3rV3kYN.jpg"
+                data-product-description="Lốp trước chính hãng, giúp xe vận hành ổn định, an toàn.">
+                <div class="overflow-hidden rounded-t-lg">
+                    <img src="https://cdn.honda.com.vn/spare-parts/November2019/EGbwXNR047t7w3rV3kYN.jpg"
+                        alt="Lốp trước" class="w-full h-64 object-contain p-2">
+                </div>
+                <div class="p-4">
+                    <p class="font-semibold text-sm md:text-base mb-1">Lốp trước</p>
+                    <p class="text-honda-red font-bold text-sm md:text-base mb-2">191.000 VNĐ</p>
+                    <div class="flex space-x-1 justify-center color-options">
+                        <span class="w-4 h-4 rounded-full border border-gray-300 cursor-pointer"
+                            style="background-color: #000000;"></span>
+                        <span class="w-4 h-4 rounded-full border border-gray-300 cursor-pointer"
+                            style="background-color: #808080;"></span>
+                    </div>
+                </div>
+                <button
+                    class="add-to-cart-btn mt-2 bg-honda-red text-white py-2 px-4 rounded-md w-full font-semibold hover:bg-red-700 transition duration-200"
+                    data-product-id="9">
+                    <i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <div id="product-detail-panel">
+        <div class="flex items-center justify-between p-4 border-b">
+            <h3 class="text-xl font-bold" id="product-detail-name">Tên sản phẩm</h3>
+            <button id="close-product-detail-panel" class="text-gray-700 text-2xl"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="p-4">
+            <img id="product-detail-image" src="" alt="Hình ảnh sản phẩm"
+                class="w-full h-64 object-contain mb-4 bg-gray-100 rounded-lg">
+            <p class="text-honda-red font-bold text-2xl mb-4" id="product-detail-price">Giá: 0 VNĐ</p>
+            <p class="text-gray-700 mb-6" id="product-detail-description">Mô tả chi tiết sản phẩm.</p>
+
+            <h4 class="font-semibold mb-2">Chọn màu sắc:</h4>
+            <div id="product-detail-colors" class="flex space-x-2 mb-6">
+            </div>
+
+            <div class="flex items-center mb-4">
+                <label class="mr-2 font-semibold">Số lượng:</label>
+                <input type="number" id="product-detail-quantity" value="1" min="1"
+                    class="border border-gray-300 rounded px-2 py-1 w-16">
+            </div>
+
+            <button id="add-to-cart-from-modal"
+                class="bg-honda-red text-white w-full py-3 rounded-md text-lg font-semibold hover:bg-red-700 transition duration-200">
+                <i class="fas fa-shopping-cart mr-2"></i> Thêm vào giỏ hàng
+            </button>
+        </div>
+    </div>
+
+    <div id="backdrop-overlay" class="backdrop-overlay"></div>
+
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+                <img src="https://www.honda.com.vn/images/logo_honda_v1.png?v=20250826" alt="HONDA Việt Nam"
+                    class="h-8 md:h-10 mb-4">
+                <p class="text-sm">Hơn cả một phương tiện, đó là sự tiện nghi, hiện đại và bền bỉ trong từng hành
+                    trình.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-bold text-lg mb-4">Về Honda</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="hover:text-honda-red transition">Hành trình kiến tạo giá trị</a></li>
+                    <li><a href="#" class="hover:text-honda-red transition">Lịch sử phát triển</a></li>
+                    <li><a href="#" class="hover:text-honda-red transition">Tin tức</a></li>
+                    <li><a href="#" class="hover:text-honda-red transition">Cơ hội nghề nghiệp</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-lg mb-4">Sản phẩm</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="hover:text-honda-red transition">Ô tô</a></li>
+                    <li><a href="#" class="hover:text-honda-red transition">Xe máy</a></li>
+                    <li><a href="#" class="hover:text-honda-red transition">Honda Power Products</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-lg mb-4">Liên hệ</h4>
+                <p class="text-sm">Email: cskh@honda.com.vn</p>
+                <p class="text-sm">Hotline: 1800 8001</p>
+                <div class="flex space-x-4 mt-4 text-xl">
+                    <a href="#" class="hover:text-honda-red transition"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="hover:text-honda-red transition"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="hover:text-honda-red transition"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="container mx-auto px-4 mt-8 text-center text-xs text-gray-400">
+            <p>&copy; 2025 HONDA Việt Nam. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get all necessary DOM elements
+            const body = document.body;
+            const cartIconButton = document.getElementById('cart-icon-button');
+            const cartPanel = document.getElementById('cart-panel');
+            const closeCartPanelButton = document.getElementById('close-cart-panel');
+            const backdropOverlay = document.getElementById('backdrop-overlay');
+            const cartItemsContainer = document.getElementById('cart-items');
+            const emptyCartMessage = document.getElementById('empty-cart-message');
+            const cartTotalSpan = document.getElementById('cart-total');
+            const cartItemCountSpan = document.getElementById('cart-item-count');
+            const notificationContainer = document.querySelector('.notification-container');
+            // Product Detail Modal elements
+            const productDetailPanel = document.getElementById('product-detail-panel');
+            const closeDetailPanelButton = document.getElementById('close-product-detail-panel');
+            const detailProductImage = document.getElementById('product-detail-image');
+            const detailProductName = document.getElementById('product-detail-name');
+            const detailProductPrice = document.getElementById('product-detail-price');
+            const detailProductDescription = document.getElementById('product-detail-description');
+            const detailColorOptions = document.getElementById('product-detail-colors');
+            const detailQuantityInput = document.getElementById('product-detail-quantity');
+            const addToCartFromModalButton = document.getElementById('add-to-cart-from-modal');
+            // Cart state - Load from localStorage or initialize empty
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+            // Save cart to localStorage
+            function saveCart() {
+                localStorage.setItem('cart', JSON.stringify(cart));
+            }
+
+            // Add item to cart
+            function addItemToCart(product) {
+                const existingItem = cart.find(item => item.id === product.id);
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push({ ...product, quantity: 1 });
+                }
+                saveCart();
+                renderCart();
+                showNotification(`Đã thêm ${product.name} vào giỏ hàng!`);
+            }
+
+            // Format currency
+            function formatCurrency(amount) {
+                return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            }
+
+            // Show notification
+            function showNotification(message, type = 'success') {
+                const notification = document.createElement('div');
+                notification.className = `notification ${type === 'error' ? 'error' : ''}`;
+                notification.textContent = message;
+                notificationContainer.appendChild(notification);
+                setTimeout(() => {
+                    notification.remove();
+                }, 3000);
+            }
+
+            // Render cart items
+            function renderCart() {
+                cartItemsContainer.innerHTML = '';
+                let total = 0;
+                let itemCount = 0;
+
+                if (cart.length === 0) {
+                    emptyCartMessage.classList.remove('hidden');
+                    cartTotalSpan.textContent = '0 VNĐ';
+                    cartItemCountSpan.classList.add('hidden');
+                } else {
+                    emptyCartMessage.classList.add('hidden');
+                    cartItemCountSpan.classList.remove('hidden');
+
+                    cart.forEach((item, index) => {
+                        const itemElement = document.createElement('div');
+                        itemElement.className = 'cart-item';
+                        itemElement.innerHTML = `
+                            <img src="${item.image}" alt="${item.name}">
+                            <div class="cart-item-details">
+                                <div class="cart-item-name">${item.name}</div>
+                                <div class="cart-item-price">${formatCurrency(item.price)} VNĐ</div>
+                                <div class="cart-item-quantity">
+                                    <button class="quantity-change-btn" data-index="${index}" data-change="-1">-</button>
+                                    <span>${item.quantity}</span>
+                                    <button class="quantity-change-btn" data-index="${index}" data-change="1">+</button>
+                                </div>
+                            </div>
+                            <button class="cart-item-remove" data-index="${index}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        `;
+                        cartItemsContainer.appendChild(itemElement);
+                        total += item.price * item.quantity;
+                        itemCount += item.quantity;
+                    });
+
+                    cartTotalSpan.textContent = formatCurrency(total) + ' VNĐ';
+                    cartItemCountSpan.textContent = itemCount;
+                }
+            }
+
+            // Handle quantity change and remove item from cart
+            cartItemsContainer.addEventListener('click', (e) => {
+                const quantityChangeBtn = e.target.closest('.quantity-change-btn');
+                const removeItemBtn = e.target.closest('.cart-item-remove');
+
+                if (quantityChangeBtn) {
+                    const index = parseInt(quantityChangeBtn.dataset.index);
+                    const change = parseInt(quantityChangeBtn.dataset.change);
+                    if (cart[index]) {
+                        cart[index].quantity += change;
+                        if (cart[index].quantity <= 0) {
+                            const itemName = cart[index].name;
+                            cart.splice(index, 1);
+                            showNotification(`Đã xóa ${itemName} khỏi giỏ hàng.`);
+                        } else {
+                            showNotification('Cập nhật số lượng thành công.');
+                        }
+                        saveCart();
+                        renderCart();
+                    }
+                } else if (removeItemBtn) {
+                    const index = parseInt(removeItemBtn.dataset.index);
+                    const itemName = cart[index].name;
+                    cart.splice(index, 1);
+                    saveCart();
+                    renderCart();
+                    showNotification(`Đã xóa ${itemName} khỏi giỏ hàng.`);
+                }
+            });
+            // Open/Close Cart Panel
+            cartIconButton.addEventListener('click', () => {
+                openCartPanel();
+            });
+            closeCartPanelButton.addEventListener('click', () => {
+                closeCartPanel();
+            });
+            function openCartPanel() {
+                cartPanel.classList.add('open');
+                backdropOverlay.classList.add('active');
+                body.style.overflow = 'hidden';
+            }
+
+            function closeCartPanel() {
+                cartPanel.classList.remove('open');
+                backdropOverlay.classList.remove('active');
+                body.style.overflow = '';
+            }
+
+            // Event listener for products
+            const productList = document.getElementById('product-list');
+            productList.addEventListener('click', (e) => {
+                const addToCartBtn = e.target.closest('.add-to-cart-btn');
+                const productCard = e.target.closest('.product-card');
+
+                if (addToCartBtn) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    const productId = productCard.dataset.productId;
+                    const product = {
+                        id: productId,
+                        name: productCard.dataset.productName,
+                        price: parseInt(productCard.dataset.productPrice),
+                        image: productCard.dataset.productImage,
+                    };
+                    addItemToCart(product);
+                    openCartPanel();
+                } else if (productCard && !e.target.closest('button')) {
+                    openProductDetail(productCard);
+                }
+            });
+            // Open product detail modal
+            function openProductDetail(productCard) {
+                detailProductImage.src = productCard.dataset.productImage;
+                detailProductName.textContent = productCard.dataset.productName;
+                detailProductPrice.textContent = `Giá: ${formatCurrency(parseInt(productCard.dataset.productPrice))} VNĐ`;
+                detailProductDescription.textContent = productCard.dataset.productDescription;
+                // Store product data for modal button
+                addToCartFromModalButton.dataset.productId = productCard.dataset.productId;
+                addToCartFromModalButton.dataset.productPrice = productCard.dataset.productPrice;
+                addToCartFromModalButton.dataset.productName = productCard.dataset.productName;
+                addToCartFromModalButton.dataset.productImage = productCard.dataset.productImage;
+
+                // Handle color options
+                detailColorOptions.innerHTML = '';
+                productCard.querySelectorAll('.color-options span').forEach(dot => {
+                    const newDot = document.createElement('span');
+                    newDot.className = 'w-6 h-6 rounded-full border border-gray-300 cursor-pointer';
+                    newDot.style.backgroundColor = dot.style.backgroundColor;
+                    detailColorOptions.appendChild(newDot);
+                });
+
+                productDetailPanel.classList.add('open');
+                backdropOverlay.classList.add('active');
+                body.style.overflow = 'hidden';
+            }
+
+            // Close product detail modal
+            function closeProductDetailPanel() {
+                productDetailPanel.classList.remove('open');
+                backdropOverlay.classList.remove('active');
+                body.style.overflow = '';
+            }
+
+            // Close modal when clicking close button
+            closeDetailPanelButton.addEventListener('click', () => {
+                closeProductDetailPanel();
+            });
+            // Close modal when clicking backdrop
+            backdropOverlay.addEventListener('click', (e) => {
+                if (e.target === backdropOverlay) {
+                    if (cartPanel.classList.contains('open')) {
+                        closeCartPanel();
+                    } else if (productDetailPanel.classList.contains('open')) {
+                        closeProductDetailPanel();
+                    }
+                }
+            });
+            // Handle add to cart from modal
+            addToCartFromModalButton.addEventListener('click', () => {
+                const quantity = parseInt(detailQuantityInput.value) || 1;
+                const product = {
+                    id: addToCartFromModalButton.dataset.productId,
+                    name: addToCartFromModalButton.dataset.productName,
+                    price: parseInt(addToCartFromModalButton.dataset.productPrice),
+                    image: addToCartFromModalButton.dataset.productImage,
+                };
+
+                // Add the specified quantity
+                const existingItem = cart.find(item => item.id === product.id);
+                if (existingItem) {
+                    existingItem.quantity += quantity;
+                } else {
+                    cart.push({ ...product, quantity: quantity });
+                }
+
+                saveCart();
+                renderCart();
+                showNotification(`Đã thêm ${quantity} ${product.name} vào giỏ hàng!`);
+                closeProductDetailPanel();
+                openCartPanel();
+            });
+
+            // Handle checkout button - Navigate to shopping cart page
+            const checkoutButton = document.getElementById('checkout-button');
+            checkoutButton.addEventListener('click', () => {
+                if (cart.length > 0) {
+                    // Cart data is already saved to localStorage
+                    // Navigate to shopping cart page
+                    window.location.href = 'shoppingcart.html';
+                } else {
+                    showNotification('Giỏ hàng của bạn đang trống!', 'error');
+                }
+            });
+            // Initialize cart on page load
+            renderCart();
+        });
+    </script>
+
+</body>
+
+</html>

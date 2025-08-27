@@ -2,1275 +2,639 @@
 <html lang="vi">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Danh mục Sản Phẩm</title>
-    <link rel="stylesheet" href="listing.css" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="listing.css">
+    <style>
+        /* Custom styles to match the website's aesthetic */
+        body {
+            font-family: "Inter", sans-serif;
+            color: #393939;
+        }
+
+        .text-honda-red {
+            color: #de0000;
+        }
+
+        /* Ẩn submenu mặc định */
+        .main-nav ul li .submenu {
+            display: none;
+            position: absolute;
+            background: #fff;
+            list-style: none;
+            padding: 10px 0;
+            margin: 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            min-width: 180px;
+            z-index: 999;
+        }
+
+        .main-nav ul li .submenu li {
+            padding: 8px 20px;
+        }
+
+        .main-nav ul li .submenu li a {
+            color: #333;
+            text-decoration: none;
+            display: block;
+        }
+
+        .main-nav ul li .submenu li a:hover {
+            background: #f0f0f0;
+        }
+
+        /* Hiển thị submenu khi hover */
+        .main-nav ul li.has-submenu:hover .submenu {
+            display: block;
+        }
+
+        /* Thêm icon mũi tên */
+        .main-nav ul li.has-submenu>a i {
+            margin-left: 6px;
+            font-size: 0.8em;
+        }
+
+        .bg-honda-red {
+            background-color: #de0000;
+        }
+
+        .main-header {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            padding: 1rem 2rem;
+        }
+
+        .main-header .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: #393939;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 40px;
+        }
+
+        .main-nav ul {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .main-nav a {
+            text-decoration: none;
+            color: #393939;
+            font-weight: 500;
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: #de0000;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 0.75rem;
+        }
+
+        .cart-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            width: 300px;
+            display: none;
+            z-index: 100;
+        }
+
+        .cart-dropdown.show {
+            display: block;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .cart-item img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+        }
+
+        .cart-btn {
+            background-color: #de0000;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        .cart-btn:hover {
+            background-color: #b30000;
+        }
+
+        /* Modal styles */
+        .cart-modal,
+        .product-detail-modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cart-modal-content,
+        .product-detail-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            width: 80%;
+            max-width: 600px;
+            position: relative;
+        }
+
+        .close-cart-modal,
+        .close-detail-modal {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close-cart-modal:hover,
+        .close-detail-modal:hover,
+        .close-cart-modal:focus,
+        .close-detail-modal:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        #full-cart-items img {
+            width: 80px;
+            height: 80px;
+        }
+
+        .product-detail-content img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .color-dot {
+            height: 25px;
+            width: 25px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+            border: 2px solid #ccc;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .color-dot.active {
+            border-color: #eee;
+            transform: scale(1.1);
+        }
+
+        .product-detail-content .price {
+            font-size: 24px;
+        }
+
+        footer {
+            background: linear-gradient(135deg, #333333, #34495e);
+            color: white;
+            padding: 60px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h3 {
+            color: #de0000;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+        }
+
+        .footer-col {
+            margin-left: 50px;
+        }
+
+        .footer-col p,
+        .footer-col ul li a {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.8;
+            transition: color 0.3s;
+        }
+
+        .footer-col ul li a:hover {
+            color: white;
+        }
+
+        .social-links a {
+            color: white;
+            margin-right: 15px;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: #de0000;
+        }
+
+        .copyright {
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: 20px;
+        }
+
+        .mobile-menu-toggle,
+        .mobile-nav,
+        .mobile-nav-overlay {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .main-nav {
+                display: none;
+            }
+
+            .header-container {
+                justify-content: flex-start;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                cursor: pointer;
+                margin-right: 20px;
+                color: #393939;
+            }
+
+            .mobile-nav-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+            }
+
+            .mobile-nav {
+                position: fixed;
+                top: 0;
+                left: -300px;
+                /* Start off-screen */
+                width: 250px;
+                height: 100%;
+                background-color: #fff;
+                box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+                transition: left 0.3s ease;
+                z-index: 1000;
+            }
+
+            .mobile-nav.open {
+                left: 0;
+            }
+
+            .mobile-nav-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1rem;
+                border-bottom: 1px solid #eee;
+            }
+
+            .mobile-nav-close {
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                cursor: pointer;
+                color: #393939;
+            }
+
+            .mobile-nav ul {
+                list-style: none;
+                padding: 0;
+            }
+
+            .mobile-nav li a {
+                display: block;
+                padding: 1rem;
+                text-decoration: none;
+                color: #393939;
+                border-bottom: 1px solid #eee;
+            }
+        }
+
+        /* New style for the buttons */
+        .cart-modal-footer .button-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cart-modal-footer .button-group button,
+        .cart-modal-footer .button-group a {
+            flex: 1;
+        }
+    </style>
 </head>
 
 <body>
-
+    <!-- ========== HEADER ========== -->
     <header class="main-header">
         <div class="container">
-            <div class="logo">
-                <a href="index.html">
-                    <h1><img fetchpriority="high" decoding="async" src="image/logo-removebg-preview.png" height="100"
-                            alt="Yamaha revs your heart"> </h1>
+            <div class="header-container">
+                <!-- Mobile Menu Toggle -->
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">
+                        <img src="https://placehold.co/100x100/de0000/ffffff?text=LOGO" alt="AnhEm Motor">
+                    </div>
+                    <span class="logo-text">AnhEm Motor</span>
                 </a>
+
+                <!-- Desktop Navigation -->
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="index.html">Trang Chủ</a></li>
+                        <li class="has-submenu">
+                            <a href="listings.html">
+                                Sản Phẩm <i class="fas fa-chevron-down"></i>
+                            </a>
+                            <ul class="submenu">
+                                <li><a href="accessory.html">Nón Bảo Hiểm</a></li>
+                                <li><a href="custome.html">Quần Áo</a></li>
+                                <li><a href="chemicals.html">Hóa Chất</a></li>
+                                <li><a href="spareparts.html">Phụ Tùng</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="about.html">Giới Thiệu</a></li>
+                        <li><a href="news.html">Tin Tức-Sự Kiện</a></li>
+                        <li><a href="promotion.html">Khuyến Mãi</a></li>
+                        <li><a href="contact.html">Liên Hệ</a></li>
+                        <li><a href="service.html">Dịch Vụ</a></li>
+                    </ul>
+                </nav>
+
             </div>
+        </div>
+        <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
 
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="index.html">Trang Chủ</a></li>
-                    <li><a href="listings.html">Sản Phẩm</a></li>
-                    <li><a href="about.html">Giới Thiệu</a></li>
-                    <li><a href="news.html">Tin Tức-Sự Kiện</a></li>
-                    <li><a href="promotion.html">Khuyến Mãi</a></li>
-                    <li><a href="contact.html">Liên Hệ</a></li>
-                    <li><a href="service.html">Dịch Vụ</a></li>
-                </ul>
-            </nav>
+        <!-- Mobile Navigation Menu -->
+        <nav class="mobile-nav" id="mobileNav">
+            <div class="mobile-nav-header">
+                <h3>Menu</h3>
+                <button class="mobile-nav-close" id="mobileNavClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <ul>
+                <li><a href="index.html">Trang Chủ</a></li>
+                <li><a href="listings.html">Sản Phẩm</a></li>
+                <li><a href="about.html">Giới Thiệu</a></li>
+                <li><a href="news.html">Tin Tức-Sự Kiện</a></li>
+                <li><a href="promotion.html">Khuyến Mãi</a></li>
+                <li><a href="contact.html">Liên Hệ</a></li>
+                <li><a href="service.html">Dịch Vụ</a></li>
+            </ul>
+        </nav>
 
-
-            <!-- Shopping Cart -->
-            <div class="cart-container">
-                <div class="cart-icon">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-count">0</span>
-                </div>
-                <!-- Cart Dropdown -->
-                <div class="cart-dropdown">
-                    <div class="cart-items">
-                        <!-- Cart items will be added here dynamically -->
-                    </div>
-                    <div class="cart-total">
-                        Tổng cộng: <span class="total-amount">0 VNĐ</span>
-                    </div>
-                    <div class="cart-actions">
-                        <a href="shoppingcart.html"><button class="cart-btn view-cart">Xem giỏ hàng</button></a>
-                        <!-- <button class="cart-btn checkout">Thanh toán</button> -->
-                    </div>
+        <!-- Cart -->
+        <div class="cart-container">
+            <div class="cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count">0</span>
+            </div>
+            <div class="cart-dropdown">
+                <div class="cart-items"></div>
+                <div class="cart-total">Tổng cộng: <span class="total-amount">0 VNĐ</span></div>
+                <div class="cart-actions">
+                    <a href="shoppingcart.html"><button class="cart-btn view-cart">Xem giỏ hàng</button></a>
                 </div>
             </div>
         </div>
+        </div>
     </header>
-    <!-- Shopping Cart Modal -->
+
+    <!-- CART MODAL -->
     <div id="cart-modal" class="cart-modal">
         <div class="cart-modal-content">
             <div class="cart-modal-header">
-                <h2><i class="fas fa-shopping-cart"></i> Giỏ hàng của bạn</h2>
+                <h2><i class="fas fa-shopping-cart"></i> Giỏ hàng</h2>
                 <button class="close-cart-modal">&times;</button>
             </div>
             <div class="cart-modal-body">
-                <div id="full-cart-items">
-                    <!-- Full cart items will be displayed here -->
-                </div>
+                <div id="full-cart-items"></div>
             </div>
             <div class="cart-modal-footer">
-                <div class="cart-modal-total">
-                    <h3>Tổng cộng: <span id="modal-total-amount">0 VNĐ</span></h3>
-                </div>
-                <div class="cart-modal-actions">
+                <h3>Tổng cộng: <span id="modal-total-amount">0 VNĐ</span></h3>
+                <div class="button-group">
                     <button class="btn-continue-shopping">Tiếp tục mua sắm</button>
-                    <!-- <button class="btn-checkout-modal">Thanh toán</button> -->
+                    <a href="shoppingcart.html">
+                        <button class="cart-btn view-cart">Xem giỏ hàng</button>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="product-detail-modal" class="product-detail-modal">
+        <div class="product-detail-content">
+            <button class="close-detail-modal">&times;</button>
+            <div class="row">
+                <div class="col-md-6 text-center">
+                    <img id="detail-image" src="" alt="Product Image">
+                </div>
+                <div class="col-md-6">
+                    <h2 id="detail-name"></h2>
+                    <h4 id="detail-price" class="price"></h4>
+                    <p id="detail-desc"></p>
+                    <div class="color-options">
+                        Màu sắc:
+                        <span class="color-dot" style="background-color: #ADD8E6;" data-color="cyan"></span>
+                        <span class="color-dot" style="background-color: #FFD700;" data-color="yellow"></span>
+                        <span class="color-dot" style="background-color: #f49a1d;" data-color="orange"></span>
+                        <span class="color-dot" style="background-color: #b17c64;" data-color="milky"></span>
+                        <span class="color-dot" style="background-color: #2f562c;" data-color="green"></span>
+                        <span class="color-dot" style="background-color: #000000;" data-color="black"></span>
+                        <span class="color-dot" style="background-color: #6699CC;" data-color="anhbac"></span>
+                        <span class="color-dot" style="background-color: #696969;" data-color="xamden"></span>
+                        <span class="color-dot" style="background-color: blue;" data-color="xanhduong"></span>
+                        <span class="color-dot" style="background-color: #F0F8FF;" data-color="whiteblue"></span>
+                        <span class="color-dot" style="background-color: #F5FFFA;" data-color="whitemint"></span>
+                        <span class="color-dot" style="background-color: #800000;" data-color="maroon"></span>
+                        <span class="color-dot" style="background-color: #6699CC;" data-color="bluegray"></span>
+                        <span class="color-dot" style="background-color: #3D0C02;" data-color="darkred"></span>
+                        <span class="color-dot" style="background-color: #eee;" data-color="whiteblack"></span>
+                        <span class="color-dot" style="background-color: #D3D3D3;" data-color="lightgray"></span>
+                        <span class="color-dot" style="background-color: #696969;" data-color="dimgray"></span>
+                        <span class="color-dot" style="background-color: #722F37;" data-color="winered"></span>
+                        <span class="color-dot" style="background-color: #FFF0F5;" data-color="pink"></span>
+                        <span class="color-dot" style="background-color: #D4AF37;" data-color="gold"></span>
+                        <span class="color-dot" style="background-color: #E5E4E2;" data-color="metalicwhite"></span>
+                        <span class="color-dot" style="background-color: #8A9A5B;" data-color="mossgray"></span>
+                        <span class="color-dot" style="background-color: #ACE1AF;" data-color="celedon"></span>
+                        <span class="color-dot" style="background-color: #708090;" data-color="slategray"></span>
+                        <span class="color-dot" style="background-color: #C7EA46;" data-color="lime"></span>
+                        <span class="color-dot" style="background-color: darkblue;" data-color="darkblue"></span>
+                        <span class="color-dot" style="background-color: #5F9EA0;" data-color="cadet"></span>
+                        <span class="color-dot" style="background-color: #1F3A3D;" data-color="charcoal"></span>
+                        <span class="color-dot" style="background-color: #FF4500;" data-color="redorange"></span>
+                    </div>
+                    <button id="add-to-cart-from-detail" class="add-to-cart mt-3">Thêm vào giỏ</button>
                 </div>
             </div>
         </div>
     </div>
-    <main>
 
-        <section class="container my-5">
-            <h2>Xe số</h2>
-            <div class="swiper-container-wrapper">
-                <div class="swiper mySwiper" id="swiperXeso">
-                    <div class="swiper-wrapper">
-
-                        <div class="swiper-slide">
-                            <div class="product-card" data-product-url="productdetails.html">
-                                <div class="product-info">
-                                    <h3>PG-1</h3>
-                                    <p class="price">Giá từ <strong>30.437.000 VNĐ</strong></p>
-                                    <p class="desc">Yamaha PG-1 là sự kết hợp từ sự vận hành dễ dàng của một chiếc
-                                        xe
-                                        đô thị
-                                        cùng
-                                        khả năng off-road của một mẫu xe việt dã...</p>
-                                </div>
-                                <div class="product-image">
-                                    <img src="image/PG1-2024-Black-Mat-004-1-1024x860.png" alt="PG-1" />
-                                </div>
-                                <div class="color-dots">
-                                    <span class="dot" style="background: black;"></span>
-                                    <span class="dot" style="background: blue;"></span>
-                                    <span class="dot" style="background: yellow;"></span>
-                                    <span class="dot" style="background: green;"></span>
-                                    <span class="dot" style="background: red;"></span>
-                                </div>
-                                <button class="add-to-cart" data-id="1" data-name="PG-1" data-price="30437000">Thêm
-                                    vào giỏ</button>
-                            </div>
-                        </div>
-
-                        <div class="swiper-slide">
-                            <div class="product-card">
-                                <div class="product-info">
-                                    <h3>Sirius FI</h3>
-                                    <p class="price">Giá từ <strong>21.208.000 VNĐ</strong></p>
-                                    <p class="desc">Nhờ trang bị hệ thống phun xăng điện tử FI, xe Sirius FI có mức tiêu
-                                        thụ
-                                        nhiên
-                                        liệu cực kì tiết kiệm chỉ 1,65 lít/100km...</p>
-                                </div>
-                                <div class="product-image">
-                                    <img src="image/Si-Fi-RC-Silver-Blue-Mat-004-1-1024x859.png" alt="Sirius FI" />
-                                </div>
-                                <div class="color-dots">
-                                    <span class="dot" style="background: black;"></span>
-                                    <span class="dot" style="background: blue;"></span>
-                                    <span class="dot" style="background: yellow;"></span>
-                                    <span class="dot" style="background: green;"></span>
-                                    <span class="dot" style="background: red;"></span>
-                                </div>
-                                <button class="add-to-cart" data-id="2" data-name="Sirius FI" data-price="21208000">Thêm
-                                    vào
-                                    giỏ</button>
-                            </div>
-                        </div>
-
-                        <div class="swiper-slide">
-                            <div class="product-card">
-                                <div class="product-info">
-                                    <h3>Exciter</h3>
-                                    <p class="price">Giá từ <strong>45.800.000 VNĐ</strong></p>
-                                    <p class="desc">Yamaha Exciter là mẫu xe côn tay được ưa chuộng nhất tại thị trường
-                                        Việt
-                                        Nam.
-                                        Bên cạnh phiên bản Exciter 150 rất được yêu thích...</p>
-                                </div>
-                                <div class="product-image">
-                                    <img src="image/Exciter-155-VVA-Black-Standard_004-1024x860.png"
-                                        alt="Exciter 155 VVA" />
-                                </div>
-                                <div class="color-dots">
-                                    <span class="dot" style="background: black;"></span>
-                                    <span class="dot" style="background: blue;"></span>
-                                    <span class="dot" style="background: yellow;"></span>
-                                    <span class="dot" style="background: green;"></span>
-                                    <span class="dot" style="background: red;"></span>
-                                </div>
-                                <button class="add-to-cart" data-id="3" data-name="Exciter 155 VVA"
-                                    data-price="45800000">Thêm
-                                    vào giỏ</button>
-                            </div>
-                        </div>
-
-                        <div class="swiper-slide">
-                            <div class="product-card">
-                                <div class="product-info">
-                                    <h3>Sirius</h3>
-                                    <p class="price">Giá từ <strong>21.993.000 VNĐ</strong></p>
-                                    <p class="desc">Yamaha Sirius là mẫu xe số bền bỉ đã có mặt tại thị trường Việt Nam
-                                        từ hơn
-                                        20 năm trước. Cho đến nay, dòng xe này đã được cải tiến đáng kể về thiết kế...
-                                    </p>
-                                </div>
-                                <div class="product-image">
-                                    <img src="image/Sirius-RC-Mat-Red-004-1024x768.png" alt="Sirius" />
-                                </div>
-                                <div class="color-dots">
-                                    <span class="dot" style="background: black;"></span>
-                                    <span class="dot" style="background: blue;"></span>
-                                    <span class="dot" style="background: yellow;"></span>
-                                    <span class="dot" style="background: green;"></span>
-                                    <span class="dot" style="background: red;"></span>
-                                </div>
-                                <button class="add-to-cart" data-id="4" data-name="Sirius" data-price="21993000">Thêm
-                                    vào giỏ</button>
-                            </div>
-                        </div>
-
-                        <div class="swiper-slide">
-                            <div class="product-card">
-                                <div class="product-info">
-                                    <h3>Wave Alpha</h3>
-                                    <p class="price">Giá từ <strong>18.742.909 VNĐ</strong></p>
-                                    <p class="desc">Wave Alpha được trang bị động cơ 110cc bền bỉ, hiệu suất vượt trội
-                                        mà vẫn
-                                        đảm bảo khả năng tiết kiệm nhiên liệu một cách tối ưu, từ đó đem lại cảm giác...
-                                    </p>
-                                </div>
-                                <div class="product-image">
-                                    <img src="image/Wave-Alpha.png" alt="Wave Alpha" />
-                                </div>
-                                <div class="color-dots">
-                                    <span class="dot" style="background: black;"></span>
-                                    <span class="dot" style="background: blue;"></span>
-                                    <span class="dot" style="background: yellow;"></span>
-                                    <span class="dot" style="background: green;"></span>
-                                    <span class="dot" style="background: red;"></span>
-                                </div>
-                                <button class="add-to-cart" data-id="5" data-name="Wave Alpha"
-                                    data-price="18742909">Thêm
-                                    vào giỏ</button>
-                            </div>
-                        </div>
-
+    <!-- ========== MAIN CONTENT ========== -->
+    <main class="container-fluid my-5">
+        <div class="row">
+            <!-- Sidebar -->
+            <aside class="col-lg-3 col-md-4 sidebar">
+                <h4>Bộ lọc</h4>
+                <div class="filter-section">
+                    <h5>Loại xe</h5>
+                    <div>
+                        <input type="checkbox" class="filter-type" value="xeso"> Xe số<br>
+                        <input type="checkbox" class="filter-type" value="xetayga"> Xe tay ga<br>
+                        <input type="checkbox" class="filter-type" value="xedien"> Xe điện<br>
+                        <input type="checkbox" class="filter-type" value="xepkl"> Xe phân khối lớn
                     </div>
                 </div>
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
-            </div>
-        </section>
 
-        <hr>
-
-        <section class="container my-5">
-            <h2>Xe tay ga</h2>
-            <div class="swiper-container-wrapper">
-                <div class="swiper mySwiper" id="swiperXetayga">
-                    <div class="swiper-wrapper">
-
-                        <div class="swiper-slide">
-                            <div class="product-card">
-                                <div class="product-info">
-                                    <h3>NVX</h3>
-                                    <p class="price">Giá từ <strong>69.000.000 VNĐ</strong></p>
-                                    <p class="desc">Tái định nghĩa lại thị trường xe tay ga thể thao tại Việt Nam, NVX
-                                        155 Hoàn
-                                        Toàn Mới ra mắt với khối động cơ đột phá YECVT...</p>
-                                </div>
-                                <div class="product-image">
-                                    <img src="image/Bac-Anh-Xanh-G8-2_1-768x645.png" alt="NVX" />
-                                </div>
-                                <div class="color-dots">
-                                    <span class="dot" style="background: black;"></span>
-                                    <span class="dot" style="background: blue;"></span>
-                                    <span class="dot" style="background: yellow;"></span>
-                                    <span class="dot" style="background: green;"></span>
-                                    <span class="dot" style="background: red;"></span>
-                                </div>
-                                <button class="add-to-cart" data-id="6" data-name="NVX" data-price="69000000">Thêm
-                                    vào giỏ</button>
-                            </div>
-                        </div>
-
-                        <div class="swiper-slide">
-                            <div class="product-card">
-                                <div class="product-info">
-                                    <h3>Janus 125</h3>
-                                    <p class="price">Giá từ <strong>29.151.000 VNĐ</strong></p>
-                                    <p class="desc">Xe máy Janus Yamaha 125 Hoàn toàn mới được nâng cấp toàn diện từ
-                                        thiết kế đến
-                                        tính năng. Thiết kế sắc nét thời thượng với thân xe vuốt gọn...</p>
-                                </div>
-                                <div class="product-image">
-                                    <img src="image/Ja-Std-2024-Red-Metallic-004-1024x860.png" alt="Janus 125" />
-                                </div>
-                                <div class="color-dots">
-                                    <span class="dot" style="background: black;"></span>
-                                    <span class="dot" style="background: blue;"></span>
-                                    <span class="dot" style="background: yellow;"></span>
-                                    <span class="dot" style="background: green;"></span>
-                                    <span class="dot" style="background: red;"></span>
-                                </div>
-                                <button class="add-to-cart" data-id="7" data-name="Janus 125" data-price="29151000">Thêm
-                                    vào giỏ</button>
-                            </div>
-                        </div>
-
-                        <div class="swiper-slide">
-                            <div class="product-card">
-                                <div class="product-info">
-                                    <h3>Janus</h3>
-                                    <p class="price">Giá từ <strong>28.669.000 VNĐ</strong></p>
-                                    <p class="desc">Xe máy Janus Yamaha có thiết kế trẻ trung cùng khả năng vận hành
-                                        mượt mà với
-                                        mức giá rất phải chăng cùng mức tiêu thụ chỉ 1,87 lít/100km...</p>
-                                </div>
-                                <div class="product-image">
-                                    <img src="image/Janus-standard-White-Metallic_004-1024x860.png" alt="Janus" />
-                                </div>
-                                <div class="color-dots">
-                                    <span class="dot" style="background: black;"></span>
-                                    <span class="dot" style="background: blue;"></span>
-                                    <span class="dot" style="background: yellow;"></span>
-                                    <span class="dot" style="background: green;"></span>
-                                    <span class="dot" style="background: red;"></span>
-                                </div>
-                                <button class="add-to-cart" data-id="8" data-name="Janus" data-price="28669000">Thêm
-                                    vào giỏ</button>
-                            </div>
-                        </div>
-
-                        <div class="swiper-slide">
-                            <div class="product-card">
-                                <div class="product-info">
-                                    <h3>Freego</h3>
-                                    <p class="price">Giá từ <strong>30.340.000 VNĐ</strong></p>
-                                    <p class="desc">Xe máy Freego Yamaha là mẫu xe tay ga thể thao đời mới có mức giá
-                                        rất hợp
-                                        lý, được trang bị toàn diện các tính năng như: khóa thông minh Smart Key, phanh
-                                        ABS, cốp
-                                        xe rộng 25 lít, tích hợp cộng sạc điện thoại tiện lợi...</p>
-                                </div>
-                                <div class="product-image">
-                                    <img src="image/FreeGo-Black-Red-SMK-004-768x645.png" alt="LEXI" />
-                                </div>
-                                <div class="color-dots">
-                                    <span class="dot" style="background: black;"></span>
-                                    <span class="dot" style="background: blue;"></span>
-                                    <span class="dot" style="background: yellow;"></span>
-                                    <span class="dot" style="background: green;"></span>
-                                    <span class="dot" style="background: red;"></span>
-                                </div>
-                                <button class="add-to-cart" data-id="9" data-name="LEXI" data-price="30340000">Thêm
-                                    vào giỏ</button>
-                            </div>
-                        </div>
-
-                        <div class="swiper-slide">
-                            <div class="product-card">
-                                <div class="product-info">
-                                    <h3>LEXI</h3>
-                                    <p class="price">Giá từ <strong>48.500.000 VNĐ</strong></p>
-                                    <p class="desc">Xuất phát từ khái niệm "kết hợp phong cách thể thao và sự tinh tế
-                                        thời thượng",
-                                        LEXi 2024 hoàn toàn mới mang lại sức hấp dẫn khó cưỡng với kiểu dáng hiện đại và
-                                        sang
-                                        trọng...</p>
-                                </div>
-                                <div class="product-image">
-                                    <img src="image/Lexi-155_Mat-Black-4-768x645.png" alt="LEXI" />
-                                </div>
-                                <div class="color-dots">
-                                    <span class="dot" style="background: black;"></span>
-                                    <span class="dot" style="background: blue;"></span>
-                                    <span class="dot" style="background: yellow;"></span>
-                                    <span class="dot" style="background: green;"></span>
-                                    <span class="dot" style="background: red;"></span>
-                                </div>
-                                <button class="add-to-cart" data-id="10" data-name="LEXI" data-price="48500000">Thêm
-                                    vào giỏ</button>
-                            </div>
-                        </div>
-
-                        <div class="swiper-slide">
-                            <div class="product-card">
-                                <div class="product-info">
-                                    <h3>Grande</h3>
-                                    <p class="price">Giá từ <strong>46.047.000 VNĐ</strong></p>
-                                    <p class="desc">Với thiết kế thời trang, thanh lịch và thiết kế cốp xe siêu rộng 27
-                                        lít,
-                                        Yamaha Grande còn là mẫu xe tay ga tiết kiệm xăng số 1 Việt Nam với mức tiêu thụ
-                                        chỉ 1,66
-                                        lít/100km,...</p>
-                                </div>
-                                <div class="product-image">
-                                    <img src="image/Grande-Pre-Dark-Red-Metallic-004-1024x860.png" alt="Grande" />
-                                </div>
-                                <div class="color-dots">
-                                    <span class="dot" style="background: black;"></span>
-                                    <span class="dot" style="background: blue;"></span>
-                                    <span class="dot" style="background: yellow;"></span>
-                                    <span class="dot" style="background: green;"></span>
-                                    <span class="dot" style="background: red;"></span>
-                                </div>
-                                <button class="add-to-cart" data-id="11" data-name="Grande" data-price="46047000">Thêm
-                                    vào giỏ</button>
-                            </div>
-                        </div>
-
-                    </div>
+                <div class="filter-section">
+                    <h5>Giá (VNĐ)</h5>
+                    <input type="number" id="min-price" placeholder="Từ" class="form-control mb-2">
+                    <input type="number" id="max-price" placeholder="Đến" class="form-control">
                 </div>
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
-            </div>
-        </section>
 
-        <hr>
-
-        <section class="container my-5">
-            <h2>Xe điện</h2>
-            <div class="swiper-container-wrapper">
-                <div class="swiper mySwiper" id="swiperXedien">
-                    <div class="swiper-wrapper">
-
-                        <div class="swiper-slide">
-                            <div class="product-card">
-                                <div class="product-info">
-                                    <h3>NEO'S</h3>
-                                    <p class="price">Giá từ <strong>49.091.000 VNĐ</strong></p>
-                                    <p class="desc">Yamaha NEO’s là dòng xe điện đang được xuất khẩu và bán ở thị trường
-                                        Châu Âu,
-                                        nay đã chính thức có mặt tại Việt Nam...</p>
-                                </div>
-                                <div class="product-image">
-                                    <img src="image/Neos-Cyan-Metallic-Metallic-004-1-1024x860.png" alt="NEO'S" />
-                                </div>
-                                <div class="color-dots">
-                                    <span class="dot" style="background: black;"></span>
-                                    <span class="dot" style="background: blue;"></span>
-                                    <span class="dot" style="background: yellow;"></span>
-                                    <span class="dot" style="background: green;"></span>
-                                    <span class="dot" style="background: red;"></span>
-                                </div>
-                                <button class="add-to-cart" data-id="12" data-name="NEO'S" data-price="49091000">Thêm
-                                    vào giỏ</button>
-                            </div>
-                        </div>
-
-                        <div class="swiper-slide">
-                            <div class="product-card">
-                                <div class="product-info">
-                                    <h3>ICON e</h3>
-                                    <p class="price">Giá từ <strong>26.803.637 VNĐ</strong></p>
-                                    <p class="desc">ICON e với thiết kế trẻ trung và mang tính biểu tượng, có thể khiến
-                                        khách
-                                        hàng dễ dàng nhận ra và nổi bật giữa đám đông...</p>
-                                </div>
-                                <div class="product-image">
-                                    <img src="image/ICON e.png" alt="ICON e" />
-                                </div>
-                                <div class="color-dots">
-                                    <span class="dot" style="background: black;"></span>
-                                    <span class="dot" style="background: blue;"></span>
-                                    <span class="dot" style="background: yellow;"></span>
-                                    <span class="dot" style="background: green;"></span>
-                                    <span class="dot" style="background: red;"></span>
-                                </div>
-                                <button class="add-to-cart" data-id="13" data-name="ICON e" data-price="26803637">Thêm
-                                    vào giỏ</button>
-                            </div>
-                        </div>
-
-                        <div class="swiper-slide">
-                            <div class="product-card">
-                                <div class="product-info">
-                                    <h3>Vento NEO</h3>
-                                    <p class="price">Giá từ <strong>32.000.000 VNĐ</strong></p>
-                                    <p class="desc">An toàn tối ưu, tự động chẩn đoán lỗi và cảnh báo lỗi giúp người cầm
-                                        lái
-                                        chủ động trên mọi hành trình...</p>
-                                </div>
-                                <div class="product-image">
-                                    <img src="image/YER.png" alt="Vento NEO" />
-                                </div>
-                                <div class="color-dots">
-                                    <span class="dot" style="background: black;"></span>
-                                    <span class="dot" style="background: blue;"></span>
-                                    <span class="dot" style="background: yellow;"></span>
-                                    <span class="dot" style="background: green;"></span>
-                                    <span class="dot" style="background: red;"></span>
-                                </div>
-                                <button class="add-to-cart" data-id="14" data-name="Vento NEO"
-                                    data-price="32000000">Thêm
-                                    vào giỏ</button>
-                            </div>
-                        </div>
-
-                        <div class="swiper-slide">
-                            <div class="product-card">
-                                <div class="product-info">
-                                    <h3>Klara NEO</h3>
-                                    <p class="price">Giá từ <strong>28.800.000 VNĐ</strong></p>
-                                    <p class="desc">Tiêu chuẩn chống nước IP67. Động cơ có khả năng chống nước vượt trội
-                                        ở mức nước ngập sâu 0,5m trong thời gian 30 phút...</p>
-                                </div>
-                                <div class="product-image">
-                                    <img src="image/img_klara_neo.png" alt="Klara NEO" />
-                                </div>
-                                <div class="color-dots">
-                                    <span class="dot" style="background: black;"></span>
-                                    <span class="dot" style="background: blue;"></span>
-                                    <span class="dot" style="background: yellow;"></span>
-                                    <span class="dot" style="background: green;"></span>
-                                    <span class="dot" style="background: red;"></span>
-                                </div>
-                                <button class="add-to-cart" data-id="15" data-name="Klara NEO"
-                                    data-price="28800000">Thêm
-                                    vào giỏ</button>
-                            </div>
-                        </div>
-
-                        <div class="swiper-slide">
-                            <div class="product-card">
-                                <div class="product-info">
-                                    <h3>Felix NEO</h3>
-                                    <p class="price">Giá từ <strong>22.400.000 VNĐ</strong></p>
-                                    <p class="desc">Hệ thống phanh an toàn. Bộ giảm xóc trước/sau giúp xe vận hành êm
-                                        ái.
-                                        Động cơ điện được nâng cấp với công suất tối đa 2500 W...</p>
-                                </div>
-                                <div class="product-image">
-                                    <img src="image/img_feliz_neo.png" alt="Felix NEO" />
-                                </div>
-                                <div class="color-dots">
-                                    <span class="dot" style="background: black;"></span>
-                                    <span class="dot" style="background: blue;"></span>
-                                    <span class="dot" style="background: yellow;"></span>
-                                    <span class="dot" style="background: green;"></span>
-                                    <span class="dot" style="background: red;"></span>
-                                </div>
-                                <button class="add-to-cart" data-id="16" data-name="Felix NEO"
-                                    data-price="22400000">Thêm
-                                    vào giỏ</button>
-                            </div>
-                        </div>
-
-                        <div class="swiper-slide">
-                            <div class="product-card">
-                                <div class="product-info">
-                                    <h3>EvoGrand</h3>
-                                    <p class="price">Giá từ <strong>21.000.000 VNĐ</strong></p>
-                                    <p class="desc">EvoGrand sử dụng Pin LFP với các ưu điểm vượt trội. Trải nghiệm hành
-                                        trình
-                                        di chuyển lên tới 262km trong một lần sạc...</p>
-                                </div>
-                                <div class="product-image">
-                                    <img src="image/img_evo_grand_lite.png" alt="EvoGrand" />
-                                </div>
-                                <div class="color-dots">
-                                    <span class="dot" style="background: black;"></span>
-                                    <span class="dot" style="background: blue;"></span>
-                                    <span class="dot" style="background: yellow;"></span>
-                                    <span class="dot" style="background: green;"></span>
-                                    <span class="dot" style="background: red;"></span>
-                                </div>
-                                <button class="add-to-cart" data-id="17" data-name="EvoGrand" data-price="21000000">Thêm
-                                    vào giỏ</button>
-                            </div>
-                        </div>
-
-                    </div>
+                <div class="filter-section">
+                    <h5>Sắp xếp</h5>
+                    <select id="sort-price" class="form-select">
+                        <option value="">Mặc định</option>
+                        <option value="asc">Giá tăng dần</option>
+                        <option value="desc">Giá giảm dần</option>
+                    </select>
                 </div>
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
-            </div>
-        </section>
 
-        <hr>
+            </aside>
 
-        <section class="container my-5">
-            <h2>Xe phân khối lớn</h2>
-            <div class="swiper-container-wrapper">
-                <div class="swiper mySwiper" id="swiperXepkl">
-                    <div class="swiper-wrapper">
-
-                        <div class="swiper-slide">
-                            <div class="product-card">
-                                <div class="product-info">
-                                    <h3>MT-15</h3>
-                                    <p class="price">Giá từ <strong>69.000.000 VNĐ</strong></p>
-                                    <p class="desc">Yamaha MT-15 có thiết kế ấn tượng mang dáng vóc của "chiến binh"
-                                        mạnh mẽ, kế
-                                        thừa tinh hoa của thế hệ trước...</p>
-                                </div>
-                                <div class="product-image">
-                                    <img src="image/MT-15-Black-004-1024x860.png" alt="MT-15" />
-                                </div>
-                                <div class="color-dots">
-                                    <span class="dot" style="background: black;"></span>
-                                    <span class="dot" style="background: blue;"></span>
-                                    <span class="dot" style="background: yellow;"></span>
-                                    <span class="dot" style="background: green;"></span>
-                                    <span class="dot" style="background: red;"></span>
-                                </div>
-                                <button class="add-to-cart" data-id="18" data-name="MT-15" data-price="69000000">Thêm
-                                    vào giỏ</button>
-                            </div>
-                        </div>
-
-                        <div class="swiper-slide">
-                            <div class="product-card">
-                                <div class="product-info">
-                                    <h3>XS155R</h3>
-                                    <p class="price">Giá từ <strong>78.000.000 VNĐ</strong></p>
-                                    <p class="desc">Yamaha XS155R được Yamaha Motor Việt Nam phân phối chính hãng từ đầu
-                                        năm 2023.
-                                        Đây là dòng xe rất đáng được mong chờ nhờ thiết kế cổ điển đẹp mắt...</p>
-                                </div>
-                                <div class="product-image">
-                                    <img src="image/XSR-155-Black-Metallic-004-768x645.png" alt="XS155R" />
-                                </div>
-                                <div class="color-dots">
-                                    <span class="dot" style="background: black;"></span>
-                                    <span class="dot" style="background: blue;"></span>
-                                    <span class="dot" style="background: yellow;"></span>
-                                    <span class="dot" style="background: green;"></span>
-                                    <span class="dot" style="background: red;"></span>
-                                </div>
-                                <button class="add-to-cart" data-id="19" data-name=" XS155R" data-price="78000000">Thêm
-                                    vào giỏ</button>
-                            </div>
-                        </div>
-
-                        <div class="swiper-slide">
-                            <div class="product-card">
-                                <div class="product-info">
-                                    <h3>YZF-R15M</h3>
-                                    <p class="price">Giá từ <strong>87.000.000 VNĐ</strong></p>
-                                    <p class="desc">Yamaha YZF-R15 là mẫu xe thể thao dung tích xy lanh 155cc, sở hữu
-                                        những đường
-                                        nét thừa hưởng DNA từ "đàn anh" YZF-R1...</p>
-                                </div>
-                                <div class="product-image">
-                                    <img src="image/R15M-Monster-004-1024x860.png" alt="YZF-R15M" />
-                                </div>
-                                <div class="color-dots">
-                                    <span class="dot" style="background: black;"></span>
-                                    <span class="dot" style="background: blue;"></span>
-                                    <span class="dot" style="background: yellow;"></span>
-                                    <span class="dot" style="background: green;"></span>
-                                    <span class="dot" style="background: red;"></span>
-                                </div>
-                                <button class="add-to-cart" data-id="20" data-name="YZF-R15M" data-price="87000000">Thêm
-                                    vào giỏ</button>
-                            </div>
-                        </div>
-
-                        <div class="swiper-slide">
-                            <div class="product-card">
-                                <div class="product-info">
-                                    <h3>MT-07</h3>
-                                    <p class="price">Giá từ <strong>239.000.000 VNĐ</strong></p>
-                                    <p class="desc">MT-07 mới mang lại một diện mạo mạnh mẽ, kết hợp với thiết kế đặc
-                                        trưng của
-                                        dòng Hyper Naked như kết cấu gọn gàng,...</p>
-                                </div>
-                                <div class="product-image">
-                                    <img src="image/MT-07-5817.png" alt="LEXI" />
-                                </div>
-                                <div class="color-dots">
-                                    <span class="dot" style="background: black;"></span>
-                                    <span class="dot" style="background: blue;"></span>
-                                    <span class="dot" style="background: yellow;"></span>
-                                    <span class="dot" style="background: green;"></span>
-                                    <span class="dot" style="background: red;"></span>
-                                </div>
-                                <button class="add-to-cart" data-id="21" data-name="LEXI" data-price="239000000">Thêm
-                                    vào giỏ</button>
-                            </div>
-                        </div>
-
-                        <div class="swiper-slide">
-                            <div class="product-card">
-                                <div class="product-info">
-                                    <h3>YZF-R7</h3>
-                                    <p class="price">Giá từ <strong>269.000.000 VNĐ</strong></p>
-                                    <p class="desc">Yamaha R7 được lấy cảm hứng từ phiên bản huyền thoại năm 1999, vốn
-                                        được chế
-                                        tạo để mô phỏng mẫu xe thi đấu Supersport của Yamaha với số lượng 500 chiếc...
-                                    </p>
-                                </div>
-                                <div class="product-image">
-                                    <img src="image/R7-Group-5821.png" alt="YZF-R7" />
-                                </div>
-                                <div class="color-dots">
-                                    <span class="dot" style="background: black;"></span>
-                                    <span class="dot" style="background: blue;"></span>
-                                    <span class="dot" style="background: yellow;"></span>
-                                    <span class="dot" style="background: green;"></span>
-                                    <span class="dot" style="background: red;"></span>
-                                </div>
-                                <button class="add-to-cart" data-id="22" data-name="YZF-R7" data-price="269000000">Thêm
-                                    vào giỏ</button>
-                            </div>
-                        </div>
-
-                        <div class="swiper-slide">
-                            <div class="product-card">
-                                <div class="product-info">
-                                    <h3>MT-10-SP</h3>
-                                    <p class="price">Giá từ <strong>569.000.000 VNĐ</strong></p>
-                                    <p class="desc">Với 166 mã lực và 112 Nm mô-men xoắn, cùng hệ thống phuộc điện tử
-                                        Ohlins
-                                        Electronic Racing và nhiều công nghệ tiên tiến khác, MT-10 SP là sự lựa chọn
-                                        không thể bỏ
-                                        qua cho các tín đồ Yamaha...</p>
-                                </div>
-                                <div class="product-image">
-                                    <img src="image/MT-10-SP.png" alt="Grande" />
-                                </div>
-                                <div class="color-dots">
-                                    <span class="dot" style="background: black;"></span>
-                                    <span class="dot" style="background: blue;"></span>
-                                    <span class="dot" style="background: yellow;"></span>
-                                    <span class="dot" style="background: green;"></span>
-                                    <span class="dot" style="background: red;"></span>
-                                </div>
-                                <button class="add-to-cart" data-id="23" data-name="Grande" data-price="569000000">Thêm
-                                    vào giỏ</button>
-                            </div>
-                        </div>
-
-                    </div>
+            <!-- Product Content -->
+            <section class="col-lg-9 col-md-8">
+                <div id="product-sections">
+                    <!-- Sections will be generated dynamically -->
                 </div>
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
-            </div>
-        </section>
+            </section>
+        </div>
     </main>
-
     <footer>
-        <p>&copy; Cửa Hàng Xe Máy AnhEm Motor. Mọi quyền được bảo lưu.</p>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <h3>Thông Tin Liên Hệ</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 193 Đỗ Văn Thi, Phường Trấn Biên, TP. Biên Hoà, Tỉnh Đồng
+                        Nai</p>
+                    <p><i class="fas fa-phone"></i> 012 3456 7890</p>
+                    <p><i class="fas fa-envelope"></i> anhemmotor@gmail.com</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Sản Phẩm</h3>
+                    <ul>
+                        <li><a href="#">Xe máy Honda</a></li>
+                        <li><a href="#">Xe máy Yamaha</a></li>
+                        <li><a href="#">Xe máy Suzuki</a></li>
+                        <li><a href="#">Xe máy Kawasaki</a></li>
+                        <li><a href="#">Phụ kiện xe máy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Dịch Vụ</h3>
+                    <ul>
+                        <li><a href="#">Bảo dưỡng định kỳ</a></li>
+                        <li><a href="#">Sửa chữa xe máy</a></li>
+                        <li><a href="#">Đăng ký xe</a></li>
+                        <li><a href="#">Bảo hiểm xe máy</a></li>
+                        <li><a href="#">Tư vấn mua xe</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Hỗ Trợ</h3>
+                    <ul>
+                        <li><a href="#">Chính sách bảo hành</a></li>
+                        <li><a href="#">Hướng dẫn sử dụng</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Liên hệ hỗ trợ</a></li>
+                        <li><a href="#">Sitemap</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2025 AnhEm Motor. Mọi quyền được bảo lưu. | Thiết kế bởi AnhEm Team</p>
+            </div>
+        </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script>
-        // ========== SWIPER INITIALIZATION ==========
-        function initializeSwiper() {
-            var swiperXeso = new Swiper("#swiperXeso", {
-                slidesPerView: 3,
-                spaceBetween: 30,
-                slidesPerGroup: 1,
-                loop: true,
-                loopFillGroupWithBlank: true,
-                navigation: {
-                    nextEl: "#swiperXeso ~ .swiper-button-next",
-                    prevEl: "#swiperXeso ~ .swiper-button-prev",
-                },
-                // Responsive breakpoints
-                breakpoints: {
-                    320: {
-                        slidesPerView: 1,
-                        spaceBetween: 20
-                    },
-                    768: {
-                        slidesPerView: 2,
-                        spaceBetween: 25
-                    },
-                    1024: {
-                        slidesPerView: 3,
-                        spaceBetween: 30
-                    }
-                }
-            });
-
-            // Có thể thêm các swiper khác nếu cần
-            var swiperXetayga = new Swiper("#swiperXetayga", {
-                slidesPerView: 3,
-                spaceBetween: 30,
-                slidesPerGroup: 1,
-                loop: true,
-                loopFillGroupWithBlank: true,
-                navigation: {
-                    nextEl: "#swiperXetayga ~ .swiper-button-next",
-                    prevEl: "#swiperXetayga ~ .swiper-button-prev",
-                },
-                breakpoints: {
-                    320: {
-                        slidesPerView: 1,
-                        spaceBetween: 20
-                    },
-                    768: {
-                        slidesPerView: 2,
-                        spaceBetween: 25
-                    },
-                    1024: {
-                        slidesPerView: 3,
-                        spaceBetween: 30
-                    }
-                }
-            });
-
-            var swiperXedien = new Swiper("#swiperXedien", {
-                slidesPerView: 3,
-                spaceBetween: 30,
-                slidesPerGroup: 1,
-                loop: true,
-                loopFillGroupWithBlank: true,
-                navigation: {
-                    nextEl: "#swiperXedien ~ .swiper-button-next",
-                    prevEl: "#swiperXedien ~ .swiper-button-prev",
-                },
-                breakpoints: {
-                    320: {
-                        slidesPerView: 1,
-                        spaceBetween: 20
-                    },
-                    768: {
-                        slidesPerView: 2,
-                        spaceBetween: 25
-                    },
-                    1024: {
-                        slidesPerView: 3,
-                        spaceBetween: 30
-                    }
-                }
-            });
-
-            var swiperXepkl = new Swiper("#swiperXepkl", {
-                slidesPerView: 3,
-                spaceBetween: 30,
-                slidesPerGroup: 1,
-                loop: true,
-                loopFillGroupWithBlank: true,
-                navigation: {
-                    nextEl: "#swiperXepkl ~ .swiper-button-next",
-                    prevEl: "#swiperXepkl ~ .swiper-button-prev",
-                },
-                breakpoints: {
-                    320: {
-                        slidesPerView: 1,
-                        spaceBetween: 20
-                    },
-                    768: {
-                        slidesPerView: 2,
-                        spaceBetween: 25
-                    },
-                    1024: {
-                        slidesPerView: 3,
-                        spaceBetween: 30
-                    }
-                }
-            });
-        }
-
-        // ========== CART FUNCTIONALITY - Updated with localStorage ==========
-        class ShoppingCart {
-            constructor() {
-                this.cart = [];
-                this.cartIcon = document.querySelector('.cart-icon');
-                this.cartDropdown = document.querySelector('.cart-dropdown');
-                this.cartItemsContainer = document.querySelector('.cart-items');
-                this.cartCount = document.querySelector('.cart-count');
-                this.totalAmount = document.querySelector('.total-amount');
-
-                this.init();
-            }
-
-            init() {
-                // Load cart from localStorage
-                this.loadCartFromStorage();
-                this.updateCartUI();
-
-                // Bind events
-                this.bindCartEvents();
-                this.bindProductEvents();
-            }
-
-            // Load cart data from localStorage
-            loadCartFromStorage() {
-                try {
-                    const savedCart = localStorage.getItem('cart');
-                    if (savedCart) {
-                        this.cart = JSON.parse(savedCart);
-                    }
-                } catch (error) {
-                    console.error('Error loading cart from localStorage:', error);
-                    this.cart = [];
-                }
-            }
-
-            // Save cart data to localStorage
-            saveCartToStorage() {
-                try {
-                    localStorage.setItem('cart', JSON.stringify(this.cart));
-                } catch (error) {
-                    console.error('Error saving cart to localStorage:', error);
-                }
-            }
-
-            addToCart(id, name, price, image) {
-                // Check if item already exists in cart
-                const existingItem = this.cart.find(item => item.id === id);
-
-                if (existingItem) {
-                    existingItem.quantity += 1;
-                } else {
-                    this.cart.push({
-                        id,
-                        name,
-                        price,
-                        quantity: 1,
-                        image
-                    });
-                }
-
-                // Save to localStorage
-                this.saveCartToStorage();
-
-                // Update cart UI
-                this.updateCartUI();
-
-                // Show cart dropdown
-                this.cartDropdown.classList.add('show');
-
-                // Show notification
-                this.showAddedNotification(name);
-            }
-
-            removeFromCart(id) {
-                this.cart = this.cart.filter(item => item.id !== id);
-
-                // Save to localStorage
-                this.saveCartToStorage();
-
-                this.updateCartUI();
-                this.updateFullCartItems(); // Cập nhật modal cart
-            }
-
-            updateQuantity(id, quantity) {
-                const item = this.cart.find(item => item.id === id);
-                if (item) {
-                    if (quantity <= 0) {
-                        this.removeFromCart(id);
-                    } else {
-                        item.quantity = quantity;
-
-                        // Save to localStorage
-                        this.saveCartToStorage();
-
-                        this.updateCartUI();
-                        this.updateFullCartItems(); // Cập nhật modal cart
-                    }
-                }
-            }
-
-            clearCart() {
-                this.cart = [];
-
-                // Save to localStorage (empty cart)
-                this.saveCartToStorage();
-
-                this.updateCartUI();
-            }
-
-            // processCheckout() {
-            //     if (this.cart.length === 0) {
-            //         this.showMessage('Giỏ hàng của bạn đang trống!');
-            //         return;
-            //     }
-
-            //     const total = this.getTotalAmount();
-            //     const itemCount = this.getTotalItems();
-
-            //     const confirmMessage = `Bạn có muốn thanh toán ${itemCount} sản phẩm với tổng số tiền ${this.formatCurrency(total)} VNĐ không?`;
-
-            //     if (confirm(confirmMessage)) {
-            //         // Xử lý thanh toán ở đây
-            //         this.showMessage(`Cảm ơn bạn đã đặt hàng! Tổng số tiền: ${this.formatCurrency(total)} VNĐ`);
-
-            //         // Clear giỏ hàng sau khi thanh toán thành công
-            //         this.clearCart();
-            //         this.hideCartModal();
-            //     }
-            // }
-
-            // Các phương thức khác giữ nguyên như cũ...
-            bindCartEvents() {
-                // Toggle cart dropdown
-                this.cartIcon.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    this.cartDropdown.classList.toggle('show');
-                });
-
-                // Close cart when clicking outside
-                document.addEventListener('click', () => {
-                    this.cartDropdown.classList.remove('show');
-                });
-
-                // Prevent cart dropdown from closing when clicking inside
-                this.cartDropdown.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                });
-
-                // VIEW CART BUTTON
-                document.querySelector('.view-cart').addEventListener('click', () => {
-                    this.showCartModal();
-                });
-
-                // CHECKOUT BUTTON
-                // document.querySelector('.checkout').addEventListener('click', () => {
-                //     if (this.cart.length === 0) {
-                //         this.showMessage('Giỏ hàng của bạn đang trống!');
-                //         return;
-                //     }
-                //     this.processCheckout();
-                // });
-
-                // CART MODAL EVENTS
-                const cartModal = document.getElementById('cart-modal');
-                const closeModalBtn = document.querySelector('.close-cart-modal');
-                const continueShoppingBtn = document.querySelector('.btn-continue-shopping');
-                // const checkoutModalBtn = document.querySelector('.btn-checkout-modal');
-
-                if (closeModalBtn) {
-                    closeModalBtn.addEventListener('click', () => this.hideCartModal());
-                }
-
-                if (continueShoppingBtn) {
-                    continueShoppingBtn.addEventListener('click', () => this.hideCartModal());
-                }
-
-                // if (checkoutModalBtn) {
-                //     checkoutModalBtn.addEventListener('click', () => this.processCheckout());
-                // }
-
-                // Close modal when clicking outside
-                if (cartModal) {
-                    cartModal.addEventListener('click', (e) => {
-                        if (e.target === cartModal) {
-                            this.hideCartModal();
-                        }
-                    });
-                }
-            }
-
-            showCartModal() {
-                const cartModal = document.getElementById('cart-modal');
-                if (!cartModal) {
-                    console.error('Cart modal not found');
-                    return;
-                }
-
-                this.updateFullCartItems();
-                cartModal.classList.add('show');
-                this.cartDropdown.classList.remove('show');
-            }
-
-            hideCartModal() {
-                const cartModal = document.getElementById('cart-modal');
-                if (cartModal) {
-                    cartModal.classList.remove('show');
-                }
-            }
-
-            updateFullCartItems() {
-                const fullCartItems = document.getElementById('full-cart-items');
-                const modalTotalAmount = document.getElementById('modal-total-amount');
-
-                if (!fullCartItems || !modalTotalAmount) return;
-
-                fullCartItems.innerHTML = '';
-
-                if (this.cart.length === 0) {
-                    fullCartItems.innerHTML = `
-            <div class="empty-cart-message">
-                <i class="fas fa-shopping-cart"></i>
-                <p>Giỏ hàng của bạn đang trống</p>
-                <p>Hãy thêm sản phẩm để tiếp tục mua sắm!</p>
-            </div>
-        `;
-                    modalTotalAmount.textContent = '0 VNĐ';
-                    return;
-                }
-
-                let total = 0;
-
-                this.cart.forEach(item => {
-                    const cartItem = document.createElement('div');
-                    cartItem.className = 'full-cart-item';
-
-                    cartItem.innerHTML = `
-            <img src="${item.image}" alt="${item.name}" />
-            <div class="full-cart-item-info">
-                <div class="full-cart-item-title">${item.name}</div>
-                <div class="full-cart-item-price">${this.formatCurrency(item.price)} VNĐ × ${item.quantity}</div>
-                <div class="cart-item-controls" style="margin-top: 0.5rem;">
-                    <button onclick="cart.updateQuantity('${item.id}', ${item.quantity - 1})" style="background: #f0f0f0; border: 1px solid #ddd; padding: 4px 8px; font-size: 14px; cursor: pointer; border-radius: 4px;">-</button>
-                    <span style="margin: 0 10px; font-weight: 500;">${item.quantity}</span>
-                    <button onclick="cart.updateQuantity('${item.id}', ${item.quantity + 1})" style="background: #f0f0f0; border: 1px solid #ddd; padding: 4px 8px; font-size: 14px; cursor: pointer; border-radius: 4px;">+</button>
-                    <button onclick="cart.removeFromCart('${item.id}')" style="background: #dc3545; color: white; border: none; padding: 4px 8px; font-size: 14px; cursor: pointer; margin-left: 15px; border-radius: 4px;">Xóa</button>
-                </div>
-            </div>
-            <div style="text-align: right; font-weight: 600; color: var(--primary-color);">
-                ${this.formatCurrency(item.price * item.quantity)} VNĐ
-            </div>
-        `;
-
-                    fullCartItems.appendChild(cartItem);
-                    total += item.price * item.quantity;
-                });
-
-                modalTotalAmount.textContent = this.formatCurrency(total) + ' VNĐ';
-            }
-
-            bindProductEvents() {
-                // Handle product card clicks for navigation to detail page
-                document.querySelectorAll('.product-card').forEach(card => {
-                    const productUrl = card.getAttribute('data-product-url');
-
-                    if (productUrl) {
-                        card.addEventListener('click', (e) => {
-                            // Only navigate if the click is not on the add-to-cart button
-                            if (!e.target.classList.contains('add-to-cart')) {
-                                window.location.href = productUrl;
-                            }
-                        });
-
-                        // Make the card appear clickable
-                        card.style.cursor = 'pointer';
-                    }
-                });
-
-                // Handle add to cart button clicks
-                document.querySelectorAll('.add-to-cart').forEach(button => {
-                    button.addEventListener('click', (e) => {
-                        e.stopPropagation(); // Prevent card click event
-
-                        const id = button.getAttribute('data-id');
-                        const name = button.getAttribute('data-name');
-                        const price = parseInt(button.getAttribute('data-price'));
-                        const image = button.closest('.product-card').querySelector('img').src;
-
-                        this.addToCart(id, name, price, image);
-                    });
-                });
-            }
-
-            updateCartUI() {
-                // Clear cart items container
-                this.cartItemsContainer.innerHTML = '';
-
-                if (this.cart.length === 0) {
-                    this.cartItemsContainer.innerHTML = '<div style="text-align: center; color: #666; padding: 20px;">Giỏ hàng trống</div>';
-                    this.totalAmount.textContent = '0 VNĐ';
-                    this.cartCount.textContent = '0';
-                    return;
-                }
-
-                let total = 0;
-
-                // Add each item to cart dropdown
-                this.cart.forEach(item => {
-                    const cartItem = document.createElement('div');
-                    cartItem.className = 'cart-item';
-
-                    cartItem.innerHTML = `
-                <img src="${item.image}" alt="${item.name}" />
-                <div class="cart-item-details">
-                    <div class="cart-item-title">${item.name}</div>
-                    <div class="cart-item-price">${this.formatCurrency(item.price)} VNĐ × ${item.quantity}</div>
-                    <div class="cart-item-controls" style="margin-top: 5px;">
-                        <button onclick="cart.updateQuantity('${item.id}', ${item.quantity - 1})" style="background: #f0f0f0; border: 1px solid #ddd; padding: 2px 6px; font-size: 12px; cursor: pointer;">-</button>
-                        <span style="margin: 0 8px; font-size: 12px;">${item.quantity}</span>
-                        <button onclick="cart.updateQuantity('${item.id}', ${item.quantity + 1})" style="background: #f0f0f0; border: 1px solid #ddd; padding: 2px 6px; font-size: 12px; cursor: pointer;">+</button>
-                        <button onclick="cart.removeFromCart('${item.id}')" style="background: #ff4757; color: white; border: none; padding: 2px 6px; font-size: 12px; cursor: pointer; margin-left: 10px;">Xóa</button>
-                    </div>
-                </div>
-            `;
-
-                    this.cartItemsContainer.appendChild(cartItem);
-
-                    // Calculate total
-                    total += item.price * item.quantity;
-                });
-
-                // Update total and count
-                this.totalAmount.textContent = this.formatCurrency(total) + ' VNĐ';
-                this.cartCount.textContent = this.cart.reduce((sum, item) => sum + item.quantity, 0);
-            }
-
-            showAddedNotification(productName) {
-                const notification = document.createElement('div');
-                notification.textContent = `${productName} đã được thêm vào giỏ hàng!`;
-                notification.style.cssText = `
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            padding: 15px 25px;
-            background-color: var(--primary-color);
-            color: white;
-            border-radius: 8px;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            animation: slideInUp 0.3s ease;
-        `;
-
-                document.body.appendChild(notification);
-
-                setTimeout(() => {
-                    notification.style.animation = 'slideOutDown 0.3s ease';
-                    setTimeout(() => {
-                        notification.remove();
-                    }, 300);
-                }, 3000);
-            }
-
-            showMessage(message) {
-                alert(message);
-            }
-
-            formatCurrency(amount) {
-                return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-            }
-
-            getTotalItems() {
-                return this.cart.reduce((sum, item) => sum + item.quantity, 0);
-            }
-
-            getTotalAmount() {
-                return this.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            }
-        }
-        document.addEventListener('DOMContentLoaded', function () {
-            // Thêm CSS cho modal
-            const style = document.createElement('style');
-            style.textContent = cartModalStyles;
-            document.head.appendChild(style);
-
-            // Thêm HTML cho modal
-            document.querySelector('main').insertAdjacentHTML('beforeend', cartModalHTML);
-
-            // Initialize Swiper
-            initializeSwiper();
-
-            // Initialize Shopping Cart
-            window.cart = new ShoppingCart();
-
-            console.log('✅ Page initialized with working cart modal!');
-        });
-        // ========== UTILITY FUNCTIONS ==========
-        function addNotificationStyles() {
-            const style = document.createElement('style');
-            style.textContent = `
-        @keyframes slideInUp {
-            from {
-                transform: translateY(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-        
-        @keyframes slideOutDown {
-            from {
-                transform: translateY(0);
-                opacity: 1;
-            }
-            to {
-                transform: translateY(100%);
-                opacity: 0;
-            }
-        }
-    `;
-            document.head.appendChild(style);
-        }
-
-        // ========== MAIN INITIALIZATION ==========
-        document.addEventListener('DOMContentLoaded', function () {
-            // Initialize Swiper
-            initializeSwiper();
-
-            // Initialize Shopping Cart
-            window.cart = new ShoppingCart();
-
-            // Add CSS animations for notifications
-            addNotificationStyles();
-
-            console.log('✅ Listing page initialized successfully!');
-        });
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="listing.js"></script>
 </body>
 
 </html>

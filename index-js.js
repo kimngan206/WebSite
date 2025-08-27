@@ -588,4 +588,4 @@ const originalCloseBanner = closeBanner;
 closeBanner = function () {
     logBannerClose();
     originalCloseBanner();
-};
+};s

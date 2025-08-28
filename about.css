@@ -41,7 +41,6 @@ a {
 }
 
 a:hover {
-    text-decoration: underline;
     color: darken(var(--primary-color), 10%);
     /* Thay đổi màu khi hover */
 }
@@ -200,21 +199,19 @@ a:hover {
 .mobile-nav {
     position: fixed;
     top: 0;
-    right: -300px;
-    /* Ban đầu ẩn ngoài màn hình */
+    left: -300px;
     width: 280px;
-    height: 100%;
-    background: var(--white);
-    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+    height: 100vh;
+    background: var(--primary-color);
+    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2);
     z-index: 1100;
-    transition: right 0.3s ease;
+    transition: left 0.3s ease;
     display: flex;
     flex-direction: column;
 }
 
 .mobile-nav.active {
-    right: 0;
-    /* Hiện menu khi active */
+    left: 0;
 }
 
 .mobile-nav-header {
@@ -222,12 +219,12 @@ a:hover {
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .mobile-nav-header h3 {
     margin: 0;
-    color: var(--dark-text);
+    color: var(--white);
     font-size: 1.5rem;
 }
 
@@ -235,7 +232,7 @@ a:hover {
     background: none;
     border: none;
     font-size: 1.5rem;
-    color: var(--secondary-color);
+    color: var(--white);
     cursor: pointer;
     padding: 5px;
     border-radius: 5px;
@@ -243,8 +240,8 @@ a:hover {
 }
 
 .mobile-nav-close:hover {
-    color: var(--primary-color);
-    background: var(--light-bg);
+    color: var(--white);
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .mobile-nav ul {
@@ -252,25 +249,32 @@ a:hover {
     padding: 20px;
     margin: 0;
     flex-grow: 1;
+    background: white;
 }
 
 .mobile-nav ul li {
-    margin-bottom: 15px;
+    margin-bottom: 0;
 }
 
 .mobile-nav ul li a {
     display: block;
-    padding: 10px 15px;
+    padding: 15px 20px;
     color: var(--dark-text);
-    font-weight: 500;
-    border-radius: 8px;
+    font-weight: 600;
+    border-radius: 0;
     transition: all 0.3s ease;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    text-decoration: none;
 }
 
 .mobile-nav ul li a:hover {
     background: var(--light-bg);
     color: var(--primary-color);
-    text-decoration: none;
+}
+
+/* CSS cho body khi mobile nav mở */
+body.mobile-nav-open {
+    overflow: hidden;
 }
 
 /* Các section nội dung khác */
@@ -567,68 +571,66 @@ main ul li {
 }
 
 
-/* FOOTER */
+/* ========== FOOTER ========== */
 footer {
-    background-color: var(--dark-text);
-    color: var(--white);
-    padding: 50px 0 20px;
-    text-align: center;
+    background: linear-gradient(135deg, #333333, #34495e);
+    color: white;
+    padding: 60px 0 20px;
 }
 
-footer .container {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    text-align: left;
-    gap: 20px;
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    margin-bottom: 40px;
 }
 
-footer .footer-col {
-    flex: 1;
-    min-width: 250px;
-    margin-bottom: 30px;
-}
-
-footer .footer-col h3 {
+.footer-col h3 {
     color: var(--primary-color);
     margin-bottom: 20px;
-    font-size: 1.6em;
+    font-size: 1.4rem;
 }
 
-footer .footer-col p,
-footer .footer-col ul li a {
-    color: #ccc;
+.footer-col p,
+.footer-col ul li a {
+    color: rgba(255, 255, 255, 0.8);
     line-height: 1.8;
+    transition: color 0.3s ease;
 }
 
-footer .footer-col ul {
-    list-style: none;
-    padding: 0;
+.footer-col ul li a:hover {
+    color: var(--primary-color);
 }
 
-footer .footer-col ul li a:hover {
-    color: var(--white);
+.social-links {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
 }
 
 .social-links a {
-    display: inline-block;
-    color: var(--white);
-    font-size: 26px;
-    margin-right: 18px;
-    transition: color 0.3s ease, transform 0.2s ease;
+    width: 45px;
+    height: 45px;
+    background: rgba(231, 76, 60, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: white;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
 }
 
 .social-links a:hover {
-    color: var(--primary-color);
+    background: var(--primary-color);
     transform: translateY(-3px);
 }
 
 .copyright {
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid #444;
-    font-size: 0.9em;
-    color: #aaa;
+    text-align: center;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.6);
 }
 
 

@@ -4,79 +4,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tin tức, sự kiện | AnhEm Motor</title>
-    <!-- Tải Font Awesome cho các biểu tượng (menu mobile) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <!-- Tải Tailwind CSS để tạo kiểu nhanh chóng và hiệu quả (nếu có sử dụng các class tailwind cho các phần khác của trang) -->
+    <title>Tin tức, sự kiện | White-Red Version</title>
+    <link rel="stylesheet" href="news.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Tải Tailwind CSS để tạo kiểu nhanh chóng và hiệu quả -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Tải Google Fonts cho phông chữ Inter để có giao diện hiện đại -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
-    <!-- Liên kết đến file CSS tùy chỉnh (news.css) -->
-    <link rel="stylesheet" href="news.css">
+
 </head>
 
 <body class="bg-white text-gray-800">
 
     <!-- Header Section - Cập nhật để có giao diện hiện đại và đáp ứng tốt hơn -->
-    <header class="main-header">
-        <div class="container">
-            <div class="header-container">
-                <!-- Mobile Menu Toggle -->
-                <button class="mobile-menu-toggle" id="mobileMenuToggle">
-                    <i class="fas fa-bars"></i>
-                </button>
-
-                <!-- Logo -->
+    <header class="bg-white border-b border-red-600 fixed top-0 w-full z-50 shadow-md">
+        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+            <!-- Logo - Thay thế placeholder bằng hình ảnh đã tải lên -->
+            <div class="logo flex-shrink-0">
                 <a href="index.html" class="logo">
                     <div class="logo-icon">
-                        <!-- Đảm bảo đường dẫn hình ảnh logo đúng -->
                         <img src="image/logo.png" alt="AnhEm Motor">
                     </div>
                     <span class="logo-text">AnhEm Motor</span>
                 </a>
+            </div>
 
-                <!-- Desktop Navigation -->
-                <nav class="main-nav">
-                    <ul>
-                        <li><a href="index.html">Trang Chủ</a></li>
-                        <li><a href="listings.html">Sản Phẩm</a></li>
-                        <li><a href="about.html">Giới Thiệu</a></li>
-                        <li><a href="news.html">Tin Tức-Sự Kiện</a></li>
-                        <li><a href="promotion.html">Khuyến Mãi</a></li>
-                        <li><a href="contact.html">Liên Hệ</a></li>
-                        <li><a href="service.html">Dịch Vụ</a></li>
-                    </ul>
-                </nav>
+            <!-- Navigation Links - Chỉ hiển thị trên màn hình lớn (md) -->
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Trang Chủ</a></li>
+                    <li><a href="listings.html">Sản Phẩm</a></li>
+                    <li><a href="about.html">Giới Thiệu</a></li>
+                    <li><a href="news.html">Tin Tức-Sự Kiện</a></li>
+                    <li><a href="promotion.html">Khuyến Mãi</a></li>
+                    <li><a href="contact.html">Liên Hệ</a></li>
+                    <li><a href="service.html">Dịch Vụ</a></li>
+                </ul>
+            </nav>
+
+            <!-- Search Icon and Mobile Menu Button -->
+            <div class="flex items-center space-x-4">
+                <button class="text-gray-800 hover:text-red-600 focus:outline-none">
+                    <!-- Search Icon SVG -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </button>
+                <button id="mobile-menu-button" class="md:hidden text-gray-800 focus:outline-none">
+                    <!-- Hamburger Icon SVG -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16m-7 6h7" />
+                    </svg>
+                </button>
             </div>
         </div>
 
-        <!-- Mobile Navigation Overlay -->
-        <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
 
-        <!-- Mobile Navigation Menu -->
-        <nav class="mobile-nav" id="mobileNav">
-            <div class="mobile-nav-header">
-                <h3>Menu</h3>
-                <button class="mobile-nav-close" id="mobileNavClose">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <ul>
-                <li><a href="index.html">Trang Chủ</a></li>
-                <li><a href="listings.html">Sản Phẩm</a></li>
-                <li><a href="about.html">Giới Thiệu</a></li>
-                <li><a href="news.html">Tin Tức-Sự Kiện</a></li>
-                <li><a href="promotion.html">Khuyến Mãi</a></li>
-                <li><a href="contact.html">Liên Hệ</a></li>
-                <li><a href="service.html">Dịch Vụ</a></li>
-            </ul>
-        </nav>
+
+
     </header>
 
-    <main class="pt-24" , style="padding-top: 1rem;">
+    <main class="pt-24">
         <!-- Hero Section/Main Banner -->
         <section
-            class="w-full h-96 bg-cover bg-center flex items-center justify-center relative transition-all duration-1000"
+            class="w-full h-[650px] bg-cover bg-center flex items-center justify-center relative transition-all duration-1000"
             style="background-image: url('https://images7.alphacoders.com/106/thumb-1920-1062408.jpg');">
             <div class="absolute inset-0 bg-white opacity-60"></div>
             <div class="text-center z-10 p-4 fade-in-up">
@@ -104,7 +100,7 @@
                             nghệ đột phá</h3>
                         <p class="text-gray-600 text-sm">Chúng tôi tự hào giới thiệu mẫu xe thể thao mới, hứa hẹn mang
                             đến trải nghiệm lái xe tuyệt vời nhất. Xem thêm chi tiết tại đây...</p>
-                        <a href="#" class="text-red-600 font-medium mt-4 inline-block hover:underline">Đọc thêm
+                        <a href="tin2.html" class="text-red-600 font-medium mt-4 inline-block hover:underline">Đọc thêm
                             &rarr;</a>
                     </div>
                 </div>
@@ -121,7 +117,7 @@
                             2025</h3>
                         <p class="text-gray-600 text-sm">Đội đua của chúng tôi đã xuất sắc giành vị trí dẫn đầu trong
                             giải đấu năm nay. Cùng nhìn lại những khoảnh khắc đáng nhớ...</p>
-                        <a href="#" class="text-red-600 font-medium mt-4 inline-block hover:underline">Đọc thêm
+                        <a href="tin3.html" class="text-red-600 font-medium mt-4 inline-block hover:underline">Đọc thêm
                             &rarr;</a>
                     </div>
                 </div>
@@ -130,15 +126,16 @@
                 <div class="bg-gray-100 rounded-lg overflow-hidden shadow-lg border border-gray-300 transform hover:scale-105 transition duration-300 ease-in-out fade-in-up"
                     style="transition-delay: 200ms;">
                     <!-- Hình ảnh đã được giữ nguyên và đảm bảo kích thước đồng đều với h-48 -->
-                    <img src="https://yamaha-motor.com.vn/wp/wp-content/uploads/2025/07/Infographic-Yamalube-1-scaled.jpg"
+                    <img src="https://yamaha-motor.com.vn/wp/wp-content/uploads/2025/07/xe-dien-yamaha-neos.jpg"
                         alt="Hoạt động cộng đồng" class="w-full h-48 object-cover">
                     <div class="p-6">
-                        <span class="text-sm text-gray-500">10 tháng 8, 2025</span>
-                        <h3 class="text-xl font-semibold text-gray-800 mt-2 mb-4">Hoạt động tình nguyện "Lái xe an toàn"
-                            tại các trường học</h3>
-                        <p class="text-gray-600 text-sm">Chiến dịch của chúng tôi đã mang lại những bài học quý giá về
-                            an toàn giao thông cho hàng ngàn học sinh...</p>
-                        <a href="#" class="text-red-600 font-medium mt-4 inline-block hover:underline">Đọc thêm
+                        <span class="text-sm text-gray-500">17 tháng 7, 2025</span>
+                        <h3 class="text-xl font-semibold text-gray-800 mt-2 mb-4">Yamaha NEO’s – Dòng xe điện dẫn đầu xu
+                            hướng di chuyển xanh</h3>
+                        <p class="text-gray-600 text-sm">Thị trường xe tay ga giá rẻ tại Việt Nam rất “sôi động” với sự
+                            góp mặt của nhiều thương hiệu khác nhau. Trong đó, Yamaha là một trong những hãng xe uy tín,
+                            ...</p>
+                        <a href="tin4.html" class="text-red-600 font-medium mt-4 inline-block hover:underline">Đọc thêm
                             &rarr;</a>
                     </div>
                 </div>
@@ -147,6 +144,7 @@
             <!-- Additional News from Image -->
             <div class="mt-12 space-y-8">
                 <!-- News 1 from image -->
+
                 <div
                     class="flex flex-col md:flex-row bg-gray-100 rounded-lg overflow-hidden shadow-lg border border-gray-300 fade-in-up">
                     <!-- Thay đổi: thêm class h-48 vào thẻ img để đồng đều kích thước chiều cao với các ảnh khác -->
@@ -158,11 +156,15 @@
                             <span class="text-gray-500">|</span>
                             <span class="text-gray-500">03.08.2025</span>
                         </div>
-                        <h3 class="text-2xl font-bold text-gray-900 mb-2">KHAI TRƯƠNG YAMAHA TOWN THANH VƯƠNG PHÁT 8 TẠI
-                            TP. HỒ CHÍ MINH"</h3>
+                        <a href="tin1.html" style="font-weight: bold;">KHAI TRƯƠNG
+                            YAMAHA TOWN THANH VƯƠNG PHÁT 8
+                            TẠI
+                            TP. HỒ CHÍ MINH</a>
+
                         <p class="text-gray-700 text-sm">Yamaha tiếp tục tăng tốc, rộn ràng chào đón đại lý mới khai
                             trương tại Thành phố Hồ Chí Minh với hàng ngàn ưu đãi hấp dẫn. Ngày 23/07/2025 vừa qua,
-                            Yamaha Town Thanh Vương Phát 8 đã chính thức khai trương tại 336 Đường số 1, khu 2, phường
+                            Yamaha Town Thanh Vương Phát 8 đã chính thức khai trương tại 336 Đường số 1, khu 2,
+                            phường
                             Bình Dương, thành phố Hồ Chí...</p>
                     </div>
                 </div>
@@ -179,11 +181,16 @@
                             <span class="text-gray-500">|</span>
                             <span class="text-gray-500">10.08.2025</span>
                         </div>
-                        <h3 class="text-2xl font-bold text-gray-900 mb-2">TOP XE TAY GA GIÁ RẺ, CHẤT LƯỢNG CAO NÊN MUA
-                            HIỆN NAY</h3>
-                        <p class="text-gray-700 text-sm">Thị trường xe tay ga giá rẻ tại Việt Nam rất "sôi động" với sự
-                            góp mặt của nhiều thương hiệu khác nhau. Trong đó, Yamaha là một trong những hãng xe uy tín,
-                            nổi tiếng với mẫu xe có thiết kế thời thượng, màu sắc cuốn hút. Đặc biệt, ở phân khúc 20 -
+                        <a href="tin5.html" style="font-weight: bold;">TOP XE TAY GA GIÁ RẺ, CHẤT LƯỢNG CAO NÊN
+                            MUA
+                            HIỆN NAY</a>
+
+                        <p class="text-gray-700 text-sm">Thị trường xe tay ga giá rẻ tại Việt Nam rất "sôi động" với
+                            sự
+                            góp mặt của nhiều thương hiệu khác nhau. Trong đó, Yamaha là một trong những hãng xe uy
+                            tín,
+                            nổi tiếng với mẫu xe có thiết kế thời thượng, màu sắc cuốn hút. Đặc biệt, ở phân khúc 20
+                            -
                             40 triệu đồng, Yamaha đã chinh phục được...</p>
                     </div>
                 </div>
@@ -191,52 +198,69 @@
         </section>
     </main>
 
-    <!-- Footer Section -->
+    <!-- Footer -->
+
     <footer>
         <div class="container">
-            <p>&copy; 2024 Cửa Hàng Xe Máy AnhEm Motor. Tất cả quyền được bảo lưu.</p>
+            <div class="footer-content">
+                <div class="footer-col">
+                    <h3>Thông Tin Liên Hệ</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 193 Đỗ Văn Thi, Phường Trấn Biên, TP. Biên Hoà, Tỉnh Đồng
+                        Nai</p>
+                    <p><i class="fas fa-phone"></i> 012 3456 7890</p>
+                    <p><i class="fas fa-envelope"></i> anhemmotor@gmail.com</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Sản Phẩm</h3>
+                    <ul>
+                        <li><a href="#">Xe máy Honda</a></li>
+                        <li><a href="#">Xe máy Yamaha</a></li>
+                        <li><a href="#">Xe máy Suzuki</a></li>
+                        <li><a href="#">Xe máy Kawasaki</a></li>
+                        <li><a href="#">Phụ kiện xe máy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Dịch Vụ</h3>
+                    <ul>
+                        <li><a href="#">Bảo dưỡng định kỳ</a></li>
+                        <li><a href="#">Sửa chữa xe máy</a></li>
+                        <li><a href="#">Đăng ký xe</a></li>
+                        <li><a href="#">Bảo hiểm xe máy</a></li>
+                        <li><a href="#">Tư vấn mua xe</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Hỗ Trợ</h3>
+                    <ul>
+                        <li><a href="#">Chính sách bảo hành</a></li>
+                        <li><a href="#">Hướng dẫn sử dụng</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Liên hệ hỗ trợ</a></li>
+                        <li><a href="#">Sitemap</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2025 AnhEm Motor. Mọi quyền được bảo lưu. | Thiết kế bởi AnhEm Team</p>
+            </div>
         </div>
     </footer>
 
     <script>
         // JavaScript để bật/tắt menu di động
-        document.addEventListener('DOMContentLoaded', function () {
-            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-            const mobileNav = document.getElementById('mobileNav');
-            const mobileNavClose = document.getElementById('mobileNavClose');
-            const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
 
-            // Mở menu mobile
-            mobileMenuToggle.addEventListener('click', function () {
-                mobileNav.classList.add('active');
-                mobileNavOverlay.classList.add('active');
-                document.body.style.overflow = 'hidden'; // Ngăn cuộn trang khi menu mở
-            });
-
-            // Đóng menu mobile
-            mobileNavClose.addEventListener('click', function () {
-                mobileNav.classList.remove('active');
-                mobileNavOverlay.classList.remove('active');
-                document.body.style.overflow = ''; // Cho phép cuộn trang trở lại
-            });
-
-            // Đóng menu mobile khi click ra ngoài overlay
-            mobileNavOverlay.addEventListener('click', function () {
-                mobileNav.classList.remove('active');
-                mobileNavOverlay.classList.remove('active');
-                document.body.style.overflow = '';
-            });
-
-            // Đóng menu khi click vào một liên kết trong menu mobile (tùy chọn)
-            mobileNav.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', function () {
-                    mobileNav.classList.remove('active');
-                    mobileNavOverlay.classList.remove('active');
-                    document.body.style.overflow = '';
-                });
-            });
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
         });
-
 
         // JavaScript để tạo hiệu ứng cuộn mượt mà
         const observerOptions = {

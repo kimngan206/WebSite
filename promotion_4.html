@@ -8,7 +8,21 @@
     <title>Yamaha | Sở Hữu NVX155 Thế Hệ Mới, Nhận Bảo Hành 5 Năm</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tải Font Awesome cho các biểu tượng (menu mobile) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
+        /* Định nghĩa biến CSS root */
+        :root {
+            --primary-color: #E65151;
+            --secondary-color: #6c757d;
+            --accent-color: #E65151;
+            --light-bg: #F8EBEA;
+            --dark-text: #333333;
+            --white: #ffffff;
+            --border-color: #CCCCCC;
+            --placeholder-text: #AAAAAA;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f0f2f5;
@@ -24,27 +38,229 @@
             padding: 5px;
         }
 
-        .header {
-            background: linear-gradient(to right, #002ca5, #0056e3);
-            /* Yamaha blue gradient */
-            color: white;
-            padding: 0.7rem 0;
-            text-align: center;
-            border-radius: 0.6rem;
-            margin-bottom: 0.7rem;
-            box-shadow: 0 3px 6px rgba(0, 44, 165, 0.3);
+        /* ========== HEADER (Đã căn chỉnh lại) ========== */
+        .main-header {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(248, 235, 234, 0.95));
+            backdrop-filter: blur(10px);
+            padding: 10px 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.3s ease;
         }
 
-        .header h1 {
+        .header-container {
+            display: flex;
+            justify-content: center;
+            /* Căn chỉnh các mục từ đầu */
+            align-items: center;
+            height: 80px;
+            position: relative;
+            gap: 30px;
+            /* Khoảng cách giữa logo và menu */
+        }
+
+        /* Nút bật/tắt menu mobile (ẩn trên desktop) */
+        .mobile-menu-toggle {
+            display: none;
+            /* Mặc định ẩn trên desktop */
+            background: none;
+            border: none;
             font-size: 1.8rem;
-            /* Larger font size */
-            font-weight: 800;
-            letter-spacing: 0.05em;
+            color: var(--primary-color);
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
         }
 
-        .header p {
-            font-size: 0.9rem;
-            /* Larger font size */
+        .mobile-menu-toggle:hover {
+            background: rgba(231, 76, 60, 0.1);
+        }
+
+        /* Logo */
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.2em;
+            font-weight: 800;
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: transform 0.3s ease;
+            white-space: nowrap;
+            /* Ngăn chặn văn bản logo bị xuống dòng */
+        }
+
+        .logo:hover {
+            transform: scale(1.03);
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--primary-color);
+            /* Màu nền logo icon */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            /* Đảm bảo ảnh nằm gọn trong khung tròn */
+        }
+
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* Giữ tỷ lệ khung hình và bao phủ vùng chứa */
+        }
+
+        .logo-text {
+            font-size: 1.9rem;
+            /* Đã thu nhỏ chữ 'AnhEm Motor' */
+            font-weight: 800;
+            color: var(--primary-color);
+        }
+
+        /* Điều hướng chính (desktop) */
+        .main-nav {
+            margin-left: auto;
+            /* Đẩy menu sang phải, căn chỉnh ngang hàng */
+        }
+
+        .main-nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            /* Đã giảm khoảng cách giữa các mục menu */
+            margin: 0;
+            padding: 0;
+        }
+
+        .main-nav ul li {
+            white-space: nowrap;
+            /* Đảm bảo các mục menu không bị xuống dòng */
+        }
+
+        .main-nav a {
+            text-decoration: none;
+            color: var(--dark-text);
+            font-weight: 600;
+            font-size: 1em;
+            /* Đã thu nhỏ kích thước chữ cho menu */
+            padding: 8px 15px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .main-nav a:hover {
+            color: var(--primary-color);
+            background: rgba(230, 81, 81, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* ===== MOBILE NAVIGATION ===== */
+        .mobile-nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1050;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .mobile-nav-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 280px;
+            height: 100vh;
+            background: var(--primary-color);
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2);
+            z-index: 1100;
+            transition: left 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mobile-nav.active {
+            left: 0;
+        }
+
+        .mobile-nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .mobile-nav-header h3 {
+            margin: 0;
+            color: var(--white);
+            font-size: 1.5rem;
+        }
+
+        .mobile-nav-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--white);
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-nav-close:hover {
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .mobile-nav ul {
+            list-style: none;
+            padding: 20px;
+            margin: 0;
+            flex-grow: 1;
+            background: white;
+        }
+
+        .mobile-nav ul li {
+            margin-bottom: 0;
+        }
+
+        .mobile-nav ul li a {
+            display: block;
+            padding: 15px 20px;
+            color: var(--dark-text);
+            font-weight: 600;
+            border-radius: 0;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            text-decoration: none;
+        }
+
+        .mobile-nav ul li a:hover {
+            background: var(--light-bg);
+            color: var(--primary-color);
+        }
+
+        /* CSS cho body khi mobile nav mở */
+        body.mobile-nav-open {
+            overflow: hidden;
         }
 
         .breadcrumb {
@@ -65,6 +281,8 @@
         }
 
         .content-section {
+            max-width: 1200px;
+            margin: auto;
             background-color: white;
             padding: 1.2rem;
             border-radius: 0.6rem;
@@ -73,6 +291,7 @@
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            margin-top: 80px;
         }
 
         .content-section.animate-fade-in {
@@ -99,6 +318,8 @@
         }
 
         .publish-date {
+            max-width: 900px;
+            margin: auto;
             font-size: 0.8rem;
             /* Larger font size */
             color: #6b7280;
@@ -106,6 +327,8 @@
         }
 
         .title-detail {
+            max-width: 900px;
+            margin: auto;
             font-size: 1.5rem;
             /* Larger font size */
             font-weight: bold;
@@ -160,6 +383,8 @@
         }
 
         .editable p {
+            max-width: 900px;
+            margin: auto;
             margin-bottom: 0.6rem;
             line-height: 1.7;
             text-align: justify;
@@ -168,7 +393,9 @@
         }
 
         .editable img {
-            max-width: 100%;
+            max-width: 900px;
+            margin: auto;
+            /* max-width: 100%; */
             height: auto;
             border-radius: 0.4rem;
             margin: 0.9rem auto;
@@ -187,6 +414,8 @@
         }
 
         .editable li {
+            max-width: 900px;
+            margin: auto;
             margin-bottom: 0.3rem;
             line-height: 1.6;
         }
@@ -237,17 +466,67 @@
             text-decoration: none;
         }
 
-        .footer {
+        /* ========== FOOTER ========== */
+        footer {
+            background: linear-gradient(135deg, #333333, #34495e);
+            color: white;
+            padding: 60px 0 20px;
+            margin-top: 40px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h3 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+        }
+
+        .footer-col p,
+        .footer-col ul li a {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.8;
+            transition: color 0.3s ease;
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            width: 45px;
+            height: 45px;
+            background: rgba(231, 76, 60, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
             text-align: center;
-            padding: 0.9rem 0;
-            color: #6b7280;
-            font-size: 0.75rem;
-            /* Larger font size */
-            background-color: #e2e8f0;
-            border-top-left-radius: 0.6rem;
-            border-top-right-radius: 0.6rem;
-            margin-top: 1.4rem;
-            box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.05);
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
         }
 
         .scroll-to-top {
@@ -289,15 +568,100 @@
             width: 16px;
             height: 16px;
         }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-nav {
+                display: none;
+                /* Ẩn navigation desktop */
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+                /* Hiển thị nút menu mobile */
+                order: -1;
+                /* Đặt nút ở đầu hàng */
+                font-size: 1.3rem;
+            }
+
+            .header-container {
+                justify-content: space-between;
+                /* Giữ logo và nút toggle tách biệt */
+                gap: 15px;
+            }
+
+            .logo-text {
+                font-size: 1.5rem;
+                /* Giảm kích thước logo nhỏ hơn trên mobile */
+            }
+
+            .logo-icon {
+                width: 40px;
+                height: 40px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
     </style>
 </head>
 
 <body>
-    <header class="header">
+    <!-- Header -->
+    <header class="main-header">
         <div class="container">
-            <h1>Yamaha Motor Việt Nam</h1>
-            <p class="text-base mt-1">Trang khuyến mãi</p>
+            <div class="header-container">
+                <!-- Mobile Menu Toggle -->
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <!-- Logo -->
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">
+                        <!-- Đảm bảo đường dẫn hình ảnh logo đúng -->
+                        <img src="image/logo.png" alt="AnhEm Motor">
+                    </div>
+                    <span class="logo-text">AnhEm Motor</span>
+                </a>
+
+                <!-- Desktop Navigation -->
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="index.html">Trang Chủ</a></li>
+                        <li><a href="listings.html">Sản Phẩm</a></li>
+                        <li><a href="about.html">Giới Thiệu</a></li>
+                        <li><a href="news.html">Tin Tức-Sự Kiện</a></li>
+                        <li><a href="promotion.html">Khuyến Mãi</a></li>
+                        <li><a href="contact.html">Liên Hệ</a></li>
+                        <li><a href="service.html">Dịch Vụ</a></li>
+                    </ul>
+                </nav>
+            </div>
         </div>
+
+        <!-- Mobile Navigation Overlay -->
+        <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+
+        <!-- Mobile Navigation Menu -->
+        <nav class="mobile-nav" id="mobileNav">
+            <div class="mobile-nav-header">
+                <h3>Menu</h3>
+                <button class="mobile-nav-close" id="mobileNavClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <ul>
+                <li><a href="index.html">Trang Chủ</a></li>
+                <li><a href="listings.html">Sản Phẩm</a></li>
+                <li><a href="about.html">Giới Thiệu</a></li>
+                <li><a href="news.html">Tin Tức-Sự Kiện</a></li>
+                <li><a href="promotion.html">Khuyến Mãi</a></li>
+                <li><a href="contact.html">Liên Hệ</a></li>
+                <li><a href="service.html">Dịch Vụ</a></li>
+            </ul>
+        </nav>
     </header>
 
     <main class="container">
@@ -419,8 +783,57 @@
         </svg>
     </a>
 
-    <footer class="footer">
-        <p>© 2024. Bản quyền thuộc về Yamaha Motor Việt Nam</p>
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <h3>Thông Tin Liên Hệ</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 193 Đỗ Văn Thi, Phường Trấn Biên, TP. Biên Hoà, Tỉnh Đồng
+                        Nai</p>
+                    <p><i class="fas fa-phone"></i> (024) 8582 0808</p>
+                    <p><i class="fas fa-envelope"></i> anhemmotor@gmail.com</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Sản Phẩm</h3>
+                    <ul>
+                        <li><a href="#">Xe máy Honda</a></li>
+                        <li><a href="#">Xe máy Yamaha</a></li>
+                        <li><a href="#">Xe máy Suzuki</a></li>
+                        <li><a href="#">Xe máy Kawasaki</a></li>
+                        <li><a href="#">Phụ kiện xe máy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Dịch Vụ</h3>
+                    <ul>
+                        <li><a href="#">Bảo dưỡng định kỳ</a></li>
+                        <li><a href="#">Sửa chữa xe máy</a></li>
+                        <li><a href="#">Đăng ký xe</a></li>
+                        <li><a href="#">Bảo hiểm xe máy</a></li>
+                        <li><a href="#">Tư vấn mua xe</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Hỗ Trợ</h3>
+                    <ul>
+                        <li><a href="#">Chính sách bảo hành</a></li>
+                        <li><a href="#">Hướng dẫn sử dụng</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Liên hệ hỗ trợ</a></li>
+                        <li><a href="#">Sitemap</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2025 AnhEm Motor. Mọi quyền được bảo lưu. | Thiết kế bởi AnhEm Team</p>
+            </div>
+        </div>
     </footer>
 
     <!-- jQuery CDN (required for Slick Carousel) -->
@@ -467,6 +880,27 @@
             sections.forEach(section => {
                 observer.observe(section);
             });
+        });
+
+        // Thêm vào event listener của mobile menu toggle
+        document.getElementById('mobileMenuToggle').addEventListener('click', function () {
+            document.getElementById('mobileNav').classList.add('active');
+            document.getElementById('mobileNavOverlay').classList.add('active');
+            document.body.classList.add('mobile-nav-open');  // Thêm class cho body
+        });
+
+        // Thêm vào event listener của mobile nav close
+        document.getElementById('mobileNavClose').addEventListener('click', function () {
+            document.getElementById('mobileNav').classList.remove('active');
+            document.getElementById('mobileNavOverlay').classList.remove('active');
+            document.body.classList.remove('mobile-nav-open');  // Xóa class khỏi body
+        });
+
+        // Thêm vào event listener của overlay
+        document.getElementById('mobileNavOverlay').addEventListener('click', function () {
+            document.getElementById('mobileNav').classList.remove('active');
+            document.getElementById('mobileNavOverlay').classList.remove('active');
+            document.body.classList.remove('mobile-nav-open');  // Xóa class khỏi body
         });
     </script>
 </body>

@@ -5,74 +5,87 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hồ Sơ Của Tôi</title>
-    <link rel="stylesheet" href="profile.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-    <style>
-        /* (Tùy chọn) Một chút style nhỏ cho nhóm Ngày sinh mới, vẫn dùng chung profile.css của bạn */
-        .dob-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: .75rem;
-        }
-
-        .dob-hint {
-            font-size: .85rem;
-            color: #9e9e9e;
-            margin-top: .25rem;
-        }
-
-        .error-text {
-            color: #E53935;
-            font-size: .9rem;
-            margin-top: .4rem;
-            display: none;
-        }
-
-        .form-group .inline {
-            display: flex;
-            gap: .5rem;
-            align-items: center;
-        }
-    </style>
+    <link rel="stylesheet" href="profile.css">
 </head>
 
 <body>
-    <!-- ===== HEADER MỚI ===== -->
+    <!-- ===== HEADER ===== -->
     <header class="main-header">
-        <div class="container header-container">
-            <!-- Logo -->
-            <a href="#" class="logo">
-                <div class="logo-icon">
-                    <img src="images/logo.png" alt="Logo AnhEm Motor" />
-                </div>
-                <span class="logo-text">AnhEm Motor</span>
-            </a>
+        <div class="container">
+            <div class="header-container">
+                <!-- Nút bật/tắt menu mobile -->
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
 
-            <!-- Navigation -->
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="index.html">Trang Chủ</a></li>
-                    <li><a href="listings.html">Sản Phẩm</a></li>
-                    <li><a href="about.html">Giới Thiệu</a></li>
-                    <li><a href="news.html">Tin Tức</a></li>
-                    <li><a href="promotion.html">Khuyến Mãi</a></li>
-                    <li><a href="service.html">Dịch Vụ</a></li>
-                    <li><a href="contact.html">Liên Hệ</a></li>
-                </ul>
-            </nav>
+                <!-- Logo của trang web -->
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">
+                        <img src="image/logo.png" alt="AnhEm Motor">
+                    </div>
+                    <span class="logo-text">AnhEm Motor</span>
+                </a>
 
-            <!-- User Actions -->
-            <div class="user-actions" id="user-actions-container">
-                <a href="login.html">Đăng Nhập</a>
-                <a href="register.html">Đăng Ký</a>
+                <!-- Thanh điều hướng dành cho desktop -->
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="index.html">Trang Chủ</a></li>
+                        <li><a href="listings.html">Sản Phẩm</a></li>
+                        <li><a href="about.html">Giới Thiệu</a></li>
+                        <li><a href="news.html">Tin Tức-Sự Kiện</a></li>
+                        <li><a href="promotion.html">Khuyến Mãi</a></li>
+                        <li><a href="contact.html">Liên Hệ</a></li>
+                        <li><a href="service.html">Dịch Vụ</a></li>
+                    </ul>
+                </nav>
             </div>
+        </div>
 
-            <!-- Mobile toggle -->
-            <button class="mobile-menu-toggle" id="mobileMenuToggle">
-                <i class="fas fa-bars"></i>
+        <!-- Lớp phủ cho menu mobile -->
+        <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+
+        <!-- Menu điều hướng mobile -->
+        <nav class="mobile-nav" id="mobileNav">
+            <div class="mobile-nav-header">
+                <h3>Menu</h3>
+                <button class="mobile-nav-close" id="mobileNavClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <ul>
+                <li><a href="index.html">Trang Chủ</a></li>
+                <li><a href="listings.html">Sản Phẩm</a></li>
+                <li><a href="about.html">Giới Thiệu</a></li>
+                <li><a href="news.html">Tin Tức-Sự Kiện</a></li>
+                <li><a href="promotion.html">Khuyến Mãi</a></li>
+                <li><a href="contact.html">Liên Hệ</a></li>
+                <li><a href="service.html">Dịch Vụ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Mobile Navigation Overlay -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav-header">
+            <span class="logo-text">AnhEm Motor</span>
+            <button class="mobile-nav-close" id="mobileNavClose">
+                <i class="fas fa-times"></i>
             </button>
         </div>
-    </header>
+        <ul>
+            <li><a href="index.html">Trang Chủ</a></li>
+            <li><a href="listings.html">Sản Phẩm</a></li>
+            <li><a href="about.html">Giới Thiệu</a></li>
+            <li><a href="news.html">Tin Tức</a></li>
+            <li><a href="promotion.html">Khuyến Mãi</a></li>
+            <li><a href="service.html">Dịch Vụ</a></li>
+            <li><a href="contact.html">Liên Hệ</a></li>
+        </ul>
+    </nav>
 
     <div class="container">
         <div class="profile-container">
@@ -91,72 +104,108 @@
                             </label>
                         </div>
                         <div class="avatar-upload-info">
-                            <div>Ảnh đại diện</div>
-                            <div style="font-size: 0.8rem; color: #BDBDBD;">Dung lượng tối đa 1 MB</div>
-                            <div style="font-size: 0.8rem; color: #BDBDBD;">Định dạng: .JPEG, .PNG</div>
+                            <div><strong>Ảnh đại diện</strong></div>
+                            <div>Dung lượng tối đa 1 MB</div>
+                            <div>Định dạng: JPEG, PNG</div>
                         </div>
                     </div>
 
                     <div class="profile-form">
-                        <!-- \u26A0\uFE0F ĐÃ BỎ: NHÓM 'Tên đăng nhập'  -->
-
                         <div class="form-group">
-                            <label class="form-label" for="fullname">Tên</label>
-                            <input type="text" id="fullname" class="form-control" placeholder="Nhập tên của bạn" />
+                            <label class="form-label" for="fullname">Tên đầy đủ</label>
+                            <input type="text" id="fullname" class="form-control"
+                                placeholder="Nhập tên đầy đủ của bạn" />
                         </div>
 
-                        <div class="form-group has-link">
+                        <div class="form-group">
                             <label class="form-label" for="email">Email</label>
                             <div class="inline">
-                                <input type="email" id="email" class="form-control" placeholder="**********@gmail.com"
+                                <input type="email" id="email" class="form-control" placeholder="example@gmail.com"
                                     disabled />
                                 <a href="#" class="change-link">Thay Đổi</a>
                             </div>
                         </div>
 
-                        <div class="form-group has-link">
+                        <div class="form-group">
                             <label class="form-label" for="phone">Số điện thoại</label>
                             <div class="inline">
-                                <input type="tel" id="phone" class="form-control" disabled />
+                                <input type="tel" id="phone" class="form-control" placeholder="+84 XXX XXX XXX"
+                                    disabled />
                                 <a href="#" class="change-link">Thay Đổi</a>
                             </div>
                         </div>
 
-                        <!-- \u26A0\uFE0F ĐÃ BỎ: NHÓM 'Giới tính'  -->
-
-                        <!-- \uD83D\uDCC5 NGÀY SINH (thiết kế lại) -->
                         <div class="form-group form-group-full">
                             <label class="form-label">Ngày sinh</label>
                             <div class="dob-row">
-                                <select id="daySelect" class="form-control"></select>
-                                <select id="monthSelect" class="form-control"></select>
-                                <select id="yearSelect" class="form-control"></select>
+                                <select id="daySelect" class="form-control">
+                                    <option value="">Ngày</option>
+                                </select>
+                                <select id="monthSelect" class="form-control">
+                                    <option value="">Tháng</option>
+                                </select>
+                                <select id="yearSelect" class="form-control">
+                                    <option value="">Năm</option>
+                                </select>
                             </div>
-                            <div class="dob-hint">Chỉ cho phép ngày hợp lệ (ví dụ: không có 31/2) và không vượt quá ngày
-                                hiện tại.</div>
+                            <div class="dob-hint">Chỉ cho phép ngày hợp lệ và không vượt quá ngày hiện tại.</div>
                             <div id="dobError" class="error-text">Ngày sinh không hợp lệ. Vui lòng kiểm tra lại.</div>
                         </div>
 
-                        <button class="save-btn" id="saveBtn">Lưu Hồ Sơ</button>
+                        <button class="save-btn" id="saveBtn">
+                            <i class="fas fa-save"></i> Lưu Hồ Sơ
+                        </button>
+
+                        <div class="success-message" id="successMessage">
+                            <i class="fas fa-check-circle"></i> Thông tin đã được lưu thành công!
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <input type="file" id="fileInput" accept=".jpg,.jpeg,.png" style="display: none;" />
+    <input type="file" id="fileInput" accept="image/jpeg,image/png,image/jpg" style="display: none;" />
 
     <script>
-        // ===== DOB Helpers =====
+        // ===== Mobile Navigation =====
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const mobileNav = document.getElementById('mobileNav');
+        const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+        const mobileNavClose = document.getElementById('mobileNavClose');
+
+        function openMobileNav() {
+            mobileNav.classList.add('active');
+            mobileNavOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMobileNav() {
+            mobileNav.classList.remove('active');
+            mobileNavOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        mobileMenuToggle?.addEventListener('click', openMobileNav);
+        mobileNavClose?.addEventListener('click', closeMobileNav);
+        mobileNavOverlay?.addEventListener('click', closeMobileNav);
+
+        // Close mobile nav when clicking nav links
+        document.querySelectorAll('.mobile-nav a').forEach(link => {
+            link.addEventListener('click', closeMobileNav);
+        });
+
+        // ===== Date of Birth Functionality =====
         const daySelect = document.getElementById('daySelect');
         const monthSelect = document.getElementById('monthSelect');
         const yearSelect = document.getElementById('yearSelect');
         const dobError = document.getElementById('dobError');
 
         function fillYears() {
+            if (!yearSelect) return;
             const currentYear = new Date().getFullYear();
             yearSelect.innerHTML = '<option value="">Năm</option>';
-            for (let y = currentYear; y >= 1900; y--) {
+            for (let y = currentYear; y >= 1930; y--) {
                 const opt = document.createElement('option');
                 opt.value = String(y);
                 opt.textContent = String(y);
@@ -165,9 +214,11 @@
         }
 
         function fillMonths() {
+            if (!monthSelect) return;
             const months = [
-                'Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6',
-                'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'
+                'Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4',
+                'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8',
+                'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'
             ];
             monthSelect.innerHTML = '<option value="">Tháng</option>';
             months.forEach((m, i) => {
@@ -179,56 +230,71 @@
         }
 
         function daysInMonth(year, month) {
-            // month: 1-12
+            if (!year || !month) return 31;
             return new Date(year, month, 0).getDate();
         }
 
         function refillDays() {
+            if (!daySelect || !yearSelect || !monthSelect) return;
+
             const y = parseInt(yearSelect.value, 10);
             const m = parseInt(monthSelect.value, 10);
+            const currentDay = parseInt(daySelect.value, 10);
 
             daySelect.innerHTML = '<option value="">Ngày</option>';
 
+            let maxDays = 31; // mặc định
             if (!isNaN(y) && !isNaN(m)) {
-                const max = daysInMonth(y, m);
-                for (let d = 1; d <= max; d++) {
-                    const opt = document.createElement('option');
-                    opt.value = String(d);
-                    opt.textContent = String(d);
-                    daySelect.appendChild(opt);
-                }
+                maxDays = daysInMonth(y, m); // nếu có tháng+năm thì tính chính xác
+            }
+
+            for (let d = 1; d <= maxDays; d++) {
+                const opt = document.createElement('option');
+                opt.value = String(d);
+                opt.textContent = String(d);
+                daySelect.appendChild(opt);
+            }
+
+            // Restore previous selection nếu hợp lệ
+            if (!isNaN(currentDay) && currentDay <= maxDays) {
+                daySelect.value = String(currentDay);
             }
         }
 
+
         function isValidDOB() {
+            if (!daySelect || !monthSelect || !yearSelect) return false;
+
             const d = parseInt(daySelect.value, 10);
             const m = parseInt(monthSelect.value, 10);
             const y = parseInt(yearSelect.value, 10);
 
             if (isNaN(d) || isNaN(m) || isNaN(y)) return false;
 
-            // Kiểm tra tồn tại ngày (chặn 31/2, 30/2, v.v.)
-            const max = daysInMonth(y, m);
-            if (d < 1 || d > max) return false;
+            // Check if date exists
+            const maxDays = daysInMonth(y, m);
+            if (d < 1 || d > maxDays) return false;
 
-            // Không cho phép ngày trong tương lai
-            const picked = new Date(y, m - 1, d);
+            // Check if date is not in the future
+            const selectedDate = new Date(y, m - 1, d);
             const today = new Date();
-            // Bỏ phần thời gian để so sánh ngày-tháng-năm thuần
-            picked.setHours(0, 0, 0, 0);
+            selectedDate.setHours(0, 0, 0, 0);
             today.setHours(0, 0, 0, 0);
-            if (picked > today) return false;
 
-            // Giới hạn tối thiểu (tuỳ chỉnh): từ 01/01/1900
-            const min = new Date(1900, 0, 1);
-            if (picked < min) return false;
+            if (selectedDate > today) return false;
+
+            // Minimum date check
+            const minDate = new Date(1930, 0, 1);
+            if (selectedDate < minDate) return false;
 
             return true;
         }
 
         function updateDOBValidityUI() {
+            if (!dobError) return;
             const valid = isValidDOB();
             dobError.style.display = valid ? 'none' : 'block';
+            return valid;
         }
 
         function initDOB() {
@@ -236,48 +302,293 @@
             fillMonths();
             refillDays();
 
-            yearSelect.addEventListener('change', () => { refillDays(); updateDOBValidityUI(); });
-            monthSelect.addEventListener('change', () => { refillDays(); updateDOBValidityUI(); });
-            daySelect.addEventListener('change', updateDOBValidityUI);
+            yearSelect?.addEventListener('change', () => {
+                refillDays();
+                updateDOBValidityUI();
+            });
+            monthSelect?.addEventListener('change', () => {
+                refillDays();
+                updateDOBValidityUI();
+            });
+            daySelect?.addEventListener('change', updateDOBValidityUI);
         }
 
-        // ===== Avatar upload handler =====
-        document.getElementById('fileInput').addEventListener('change', function (e) {
-            const file = e.target.files[0];
-            if (file) {
-                // Kiểm soát kích thước 1MB
-                const ONE_MB = 1024 * 1024;
-                if (file.size > ONE_MB) {
-                    alert('Ảnh vượt quá 1MB. Vui lòng chọn ảnh khác.');
-                    e.target.value = '';
-                    return;
-                }
-                const reader = new FileReader();
-                reader.onload = function (evt) {
-                    const avatar = document.getElementById('avatarPreview');
-                    avatar.style.backgroundImage = `url(${evt.target.result})`;
-                    avatar.style.backgroundSize = 'cover';
-                    avatar.style.backgroundPosition = 'center';
-                    avatar.textContent = '';
-                };
-                reader.readAsDataURL(file);
-            }
-        });
+        // ✅ Gọi trực tiếp ở đây
+        initDOB();
 
-        // ===== Save button handler =====
-        document.getElementById('saveBtn').addEventListener('click', function () {
-            if (!isValidDOB()) {
-                dobError.style.display = 'block';
-                // Cuộn tới nhóm ngày sinh nếu có lỗi
-                document.querySelector('.form-group-full').scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        // ===== Avatar Upload =====
+        const fileInput = document.getElementById('fileInput');
+        const avatarPreview = document.getElementById('avatarPreview');
+
+        fileInput?.addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            // File size check (1MB)
+            const ONE_MB = 1024 * 1024;
+            if (file.size > ONE_MB) {
+                alert('Ảnh vượt quá 1MB. Vui lòng chọn ảnh khác.');
+                e.target.value = '';
                 return;
             }
-            alert('Thông tin đã được lưu thành công!');
+
+            // File type check
+            const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+            if (!validTypes.includes(file.type)) {
+                alert('Định dạng không hợp lệ. Vui lòng chọn file JPEG hoặc PNG.');
+                e.target.value = '';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (evt) {
+                if (avatarPreview) {
+                    avatarPreview.style.backgroundImage = `url(${evt.target.result})`;
+                    avatarPreview.style.backgroundSize = 'cover';
+                    avatarPreview.style.backgroundPosition = 'center';
+                    avatarPreview.textContent = '';
+                }
+            };
+            reader.readAsDataURL(file);
         });
 
-        // ===== Kick-off =====
-        initDOB();
+        // ===== Save Profile =====
+        const saveBtn = document.getElementById('saveBtn');
+        const successMessage = document.getElementById('successMessage');
+        const fullnameInput = document.getElementById('fullname');
+
+        saveBtn?.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            let isValid = true;
+            let errorMessage = '';
+
+            // Validate full name
+            if (!fullnameInput?.value.trim()) {
+                errorMessage = 'Vui lòng nhập tên đầy đủ.';
+                isValid = false;
+            }
+
+            // Validate date of birth
+            if (!updateDOBValidityUI()) {
+                if (!errorMessage) {
+                    errorMessage = 'Ngày sinh không hợp lệ. Vui lòng kiểm tra lại.';
+                }
+                isValid = false;
+            }
+
+            if (!isValid) {
+                if (errorMessage && errorMessage.includes('tên')) {
+                    fullnameInput?.focus();
+                } else {
+                    // Scroll to date of birth section
+                    document.querySelector('.form-group-full')?.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                }
+                return;
+            }
+
+            // Show loading state
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang lưu...';
+
+            // Simulate save process
+            setTimeout(() => {
+                // Reset button
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<i class="fas fa-save"></i> Lưu Hồ Sơ';
+
+                // Show success message
+                if (successMessage) {
+                    successMessage.style.display = 'block';
+                    setTimeout(() => {
+                        successMessage.style.display = 'none';
+                    }, 3000);
+                }
+
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 1500);
+        });
+
+        // ===== Form Validation =====
+        fullnameInput?.addEventListener('input', function () {
+            // Remove any numbers or special characters, keep only letters and spaces
+            this.value = this.value.replace(/[^a-zA-ZÀ-ỹ\s]/g, '');
+        });
+
+        // ===== Change Links =====
+        document.querySelectorAll('.change-link').forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                const input = this.parentElement.querySelector('input');
+                if (input) {
+                    if (input.disabled) {
+                        input.disabled = false;
+                        input.focus();
+                        this.textContent = 'Hủy';
+                    } else {
+                        input.disabled = true;
+                        this.textContent = 'Thay Đổi';
+                    }
+                }
+            });
+        });
+
+        // ===== Initialize =====
+        document.addEventListener('DOMContentLoaded', function () {
+
+
+            // Set initial avatar letter
+            if (avatarPreview && fullnameInput) {
+                function updateAvatarLetter() {
+                    const name = fullnameInput.value.trim();
+                    if (name && !avatarPreview.style.backgroundImage) {
+                        avatarPreview.textContent = name.charAt(0).toUpperCase();
+                    }
+                }
+
+                fullnameInput.addEventListener('input', updateAvatarLetter);
+                updateAvatarLetter();
+            }
+
+            // Add smooth scroll behavior to all links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+        });
+
+        // ===== Keyboard Navigation =====
+        document.addEventListener('keydown', function (e) {
+            // ESC to close mobile nav
+            if (e.key === 'Escape') {
+                closeMobileNav();
+            }
+        });
+
+        // ===== Enhanced UX =====
+        // Add focus styles for keyboard navigation
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Tab') {
+                document.body.classList.add('keyboard-nav');
+            }
+        });
+
+        document.addEventListener('mousedown', function () {
+            document.body.classList.remove('keyboard-nav');
+        });
+
+        // Auto-resize text inputs based on content
+        function autoResize(input) {
+            input.style.height = 'auto';
+            input.style.height = input.scrollHeight + 'px';
+        }
+
+        // Add loading states to form inputs
+        document.querySelectorAll('.form-control').forEach(input => {
+            input.addEventListener('focus', function () {
+                this.parentElement.classList.add('focused');
+            });
+
+            input.addEventListener('blur', function () {
+                this.parentElement.classList.remove('focused');
+                if (this.value.trim()) {
+                    this.parentElement.classList.add('has-value');
+                } else {
+                    this.parentElement.classList.remove('has-value');
+                }
+            });
+        });
+
+        // Giả sử mỗi user có một ID duy nhất (vd: email)
+        let currentUserId = "example@gmail.com"; // bạn có thể lấy từ backend hoặc session
+
+        // ===== Save Profile =====
+        saveBtn?.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            let isValid = true;
+
+            if (!fullnameInput?.value.trim()) {
+                fullnameInput?.focus();
+                isValid = false;
+            }
+
+            if (!updateDOBValidityUI()) {
+                document.querySelector('.form-group-full')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                isValid = false;
+            }
+
+            if (!isValid) return;
+
+            // Dữ liệu cần lưu
+            const profileData = {
+                fullname: fullnameInput.value.trim(),
+                email: document.getElementById('email').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                day: daySelect.value,
+                month: monthSelect.value,
+                year: yearSelect.value,
+                avatar: avatarPreview.style.backgroundImage || "" // lưu ảnh base64 nếu có
+            };
+
+            // Lưu vào localStorage
+            localStorage.setItem("profile_" + currentUserId, JSON.stringify(profileData));
+
+            // Loading + success message
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang lưu...';
+            setTimeout(() => {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<i class="fas fa-save"></i> Lưu Hồ Sơ';
+                successMessage.style.display = 'block';
+                setTimeout(() => successMessage.style.display = 'none', 3000);
+            }, 1500);
+        });
+
+        // ===== Load Profile khi mở trang =====
+        function loadProfile() {
+            const saved = localStorage.getItem("profile_" + currentUserId);
+            if (!saved) return;
+            const data = JSON.parse(saved);
+
+            if (data.fullname) fullnameInput.value = data.fullname;
+            if (data.email) document.getElementById('email').value = data.email;
+            if (data.phone) document.getElementById('phone').value = data.phone;
+            if (data.year) yearSelect.value = data.year;
+            if (data.month) monthSelect.value = data.month;
+            refillDays(); // gọi lại để cập nhật số ngày
+            if (data.day) daySelect.value = data.day;
+
+            if (data.avatar) {
+                avatarPreview.style.backgroundImage = data.avatar;
+                avatarPreview.style.backgroundSize = 'cover';
+                avatarPreview.style.backgroundPosition = 'center';
+                avatarPreview.textContent = '';
+            }
+        }
+
+        // ===== Đăng xuất =====
+        function logout() {
+            localStorage.removeItem("profile_" + currentUserId);
+            window.location.href = "login.html"; // chuyển về trang login
+        }
+
+        // Gọi load khi mở trang
+        document.addEventListener('DOMContentLoaded', loadProfile);
+
     </script>
+
+
 </body>
 
 </html>

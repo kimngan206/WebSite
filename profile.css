@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
 
 :root {
     --primary-color: #E53935;
@@ -31,216 +30,264 @@ body {
 
 /* ===== HEADER ===== */
 .main-header {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(12px);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(248, 235, 234, 0.95));
+    backdrop-filter: blur(10px);
+    /* padding: 10px 0; */
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
     position: fixed;
     top: 0;
     width: 100%;
     z-index: 1000;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
 }
 
 .header-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
+    /* Căn chỉnh các mục từ đầu */
     align-items: center;
     height: 70px;
+    position: relative;
+    gap: 30px;
+    /* Khoảng cách giữa logo và menu */
+}
+
+/* Nút bật/tắt menu mobile (ẩn trên desktop) */
+.mobile-menu-toggle {
+    display: none;
+    /* Mặc định ẩn trên desktop */
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.mobile-menu-toggle:hover {
+    background: rgba(231, 76, 60, 0.1);
 }
 
 /* Logo */
 .logo {
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-weight: 700;
-    font-size: 1.3rem;
+    gap: 15px;
+    font-size: 1.2em;
+    font-weight: 800;
     color: var(--primary-color);
     text-decoration: none;
+    transition: transform 0.3s ease;
+    white-space: nowrap;
+    /* Ngăn chặn văn bản logo bị xuống dòng */
+    margin-left: 150px;
+}
+
+.logo:hover {
+    transform: scale(1.03);
 }
 
 .logo-icon {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
+    background: var(--primary-color);
+    /* Màu nền logo icon */
     border-radius: 50%;
-    background: var(--primary-gradient);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #fff;
+    overflow: hidden;
+    /* Đảm bảo ảnh nằm gọn trong khung tròn */
 }
 
-/* Navigation */
+.logo-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Giữ tỷ lệ khung hình và bao phủ vùng chứa */
+}
+
+.logo-text {
+    font-size: 1.6rem;
+    /* Đã thu nhỏ chữ 'AnhEm Motor' */
+    font-weight: 800;
+    color: var(--primary-color);
+}
+
+/* Điều hướng chính (desktop) */
+.main-nav {
+    margin-left: auto;
+    /* Đẩy menu sang phải, căn chỉnh ngang hàng */
+}
+
 .main-nav ul {
-    display: flex;
-    gap: 25px;
     list-style: none;
+    display: flex;
+    gap: 20px;
+    /* Đã giảm khoảng cách giữa các mục menu */
+    margin: 0;
+    padding: 0;
+    margin-right: 150px;
+}
+
+.main-nav ul li {
+    white-space: nowrap;
+    /* Đảm bảo các mục menu không bị xuống dòng */
 }
 
 .main-nav a {
     text-decoration: none;
+    color: var(--dark-text);
     font-weight: 600;
-    color: var(--text-color);
+    font-size: 1em;
+    /* Đã thu nhỏ kích thước chữ cho menu */
+    padding: 8px 15px;
+    border-radius: 25px;
+    transition: all 0.3s ease;
     position: relative;
-    padding: 5px;
-    transition: color 0.3s ease;
-}
-
-.main-nav a::after {
-    content: "";
-    position: absolute;
-    width: 0%;
-    height: 2px;
-    bottom: -4px;
-    left: 0;
-    background: var(--primary-color);
-    transition: width 0.3s ease;
 }
 
 .main-nav a:hover {
     color: var(--primary-color);
-}
-
-.main-nav a:hover::after {
-    width: 100%;
-}
-
-/* User Actions */
-.user-actions {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-.user-actions a,
-.logout-btn {
-    padding: 8px 16px;
-    border-radius: 25px;
-    background: var(--primary-gradient);
-    color: #fff;
-    font-weight: 600;
-    font-size: 0.85rem;
-    text-decoration: none;
-    cursor: pointer;
-    border: none;
-    white-space: nowrap;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.user-actions a:hover,
-.logout-btn:hover {
+    background: rgba(230, 81, 81, 0.1);
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(229, 57, 53, 0.3);
 }
 
-/* Mobile */
-.mobile-menu-toggle {
-    display: none;
-    font-size: 1.4rem;
-    color: var(--primary-color);
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
-/* Mobile Overlay */
+/* ===== MOBILE NAVIGATION ===== */
 .mobile-nav-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(5px);
-    z-index: 1500;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1050;
+    display: none;
     opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
+    transition: opacity 0.3s ease;
 }
 
 .mobile-nav-overlay.active {
+    display: block;
     opacity: 1;
-    visibility: visible;
 }
 
-/* Mobile Sidebar */
 .mobile-nav {
     position: fixed;
     top: 0;
-    left: -300px;
-    width: 260px;
-    height: 100vh;
-    background: #fff;
-    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
-    z-index: 2000;
-    transition: left 0.3s ease;
-    overflow-y: auto;
+    right: -300px;
+    /* Ban đầu ẩn ngoài màn hình */
+    width: 280px;
+    height: 100%;
+    background: var(--white);
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+    z-index: 1100;
+    transition: right 0.3s ease;
+    display: flex;
+    flex-direction: column;
 }
 
 .mobile-nav.active {
-    left: 0;
+    right: 0;
+    /* Hiện menu khi active */
 }
 
 .mobile-nav-header {
-    padding: 20px;
-    background: var(--primary-gradient);
-    color: white;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.mobile-nav-header h3 {
+    margin: 0;
+    color: var(--dark-text);
+    font-size: 1.5rem;
 }
 
 .mobile-nav-close {
     background: none;
     border: none;
-    color: white;
     font-size: 1.5rem;
+    color: var(--secondary-color);
     cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.mobile-nav-close:hover {
+    color: var(--primary-color);
+    background: var(--light-bg);
 }
 
 .mobile-nav ul {
     list-style: none;
-    padding: 20px 0;
+    padding: 20px;
+    margin: 0;
+    flex-grow: 1;
 }
 
-.mobile-nav a {
+.mobile-nav ul li {
+    margin-bottom: 15px;
+}
+
+.mobile-nav ul li a {
     display: block;
-    padding: 15px 20px;
-    color: var(--text-color);
-    font-weight: 600;
-    text-decoration: none;
-    border-bottom: 1px solid #f0f0f0;
+    padding: 10px 15px;
+    color: var(--dark-text);
+    font-weight: 500;
+    border-radius: 8px;
     transition: all 0.3s ease;
 }
 
-.mobile-nav a:hover {
+.mobile-nav ul li a:hover {
+    background: var(--light-bg);
     color: var(--primary-color);
-    padding-left: 30px;
+    text-decoration: none;
 }
 
-/* ===== PROFILE CONTAINER ===== */
+/* Các section nội dung khác */
+main {
+    padding-top: 100px;
+    /* Thêm padding để nội dung không bị header che mất */
+    margin-bottom: 40px;
+}
+
+main h2 {
+    font-size: 2.2rem;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+main ul {
+    list-style: disc;
+    margin-left: 20px;
+    margin-bottom: 30px;
+}
+
+main ul li {
+    margin-bottom: 10px;
+}
+
+/* ===== PROFILE STYLES ===== */
 .profile-container {
     background: var(--card-bg);
-    border-radius: 25px;
+    border-radius: 20px;
     box-shadow: var(--shadow-medium);
     padding: 40px;
-    margin-top: 100px;
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
+    margin: 100px auto 40px;
+    max-width: 1000px;
     animation: fadeIn 0.8s ease-in-out;
 }
 
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(30px);
     }
 
     to {
@@ -249,23 +296,22 @@ body {
     }
 }
 
-/* giữ nguyên phần form, avatar, info... từ code cũ */
 .header {
     text-align: center;
     border-bottom: 2px solid var(--border-color);
     padding-bottom: 25px;
-    margin-bottom: 25px;
+    margin-bottom: 35px;
 }
 
 .header h1 {
-    font-size: 2.2rem;
+    font-size: 2.5rem;
     font-weight: 700;
     color: var(--primary-color);
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
 .header p {
-    font-size: 1rem;
+    font-size: 1.1rem;
     color: var(--light-text-color);
 }
 
@@ -277,23 +323,28 @@ body {
 
 .profile-info {
     display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 40px;
+    grid-template-columns: 300px 1fr;
+    gap: 50px;
     align-items: flex-start;
 }
 
+/* Avatar Section */
 .avatar-section {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px;
+    gap: 20px;
     text-align: center;
+    padding: 20px;
+    border-radius: 15px;
+    background: linear-gradient(145deg, #f8f9fa, #fff);
+    box-shadow: var(--shadow-light);
 }
 
 .avatar-wrapper {
     position: relative;
-    width: 150px;
-    height: 150px;
+    width: 160px;
+    height: 160px;
 }
 
 .avatar {
@@ -303,20 +354,25 @@ body {
     background: var(--primary-gradient);
     color: white;
     font-size: 4rem;
+    font-weight: 600;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 5px solid var(--card-bg);
-    box-shadow: var(--shadow-light);
+    border: 6px solid var(--card-bg);
+    box-shadow: var(--shadow-medium);
     transition: all 0.3s ease;
+}
+
+.avatar:hover {
+    transform: scale(1.05);
 }
 
 .avatar-label {
     position: absolute;
-    bottom: 5px;
-    right: 5px;
-    width: 40px;
-    height: 40px;
+    bottom: 8px;
+    right: 8px;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
     background: var(--primary-color);
     color: #fff;
@@ -324,115 +380,167 @@ body {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    border: 3px solid #fff;
 }
 
 .avatar-label:hover {
     transform: scale(1.1);
+    background: var(--primary-light);
 }
 
 .avatar-upload-info {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: var(--light-text-color);
+    line-height: 1.5;
 }
 
+/* Form Styles */
 .profile-form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-}
-
-.form-row {
-    display: flex;
-    gap: 20px;
-    align-items: center;
+    gap: 25px;
 }
 
 .form-group {
-    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group-full {
+    width: 100%;
 }
 
 .form-label {
-    font-size: 0.95rem;
-    font-weight: 500;
-    margin-bottom: 5px;
-    display: block;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 8px;
 }
 
 .form-control {
     width: 100%;
-    padding: 12px 15px;
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
+    padding: 14px 16px;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
     font-size: 1rem;
-    background: #F9F9F9;
+    background: #fafafa;
     transition: all 0.3s ease;
+    font-family: inherit;
 }
 
 .form-control:focus {
     outline: none;
     border-color: var(--primary-color);
     background: #fff;
-    box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.1);
+    box-shadow: 0 0 0 4px rgba(229, 57, 53, 0.1);
 }
 
 .form-control:disabled {
-    background: #F0F0F0;
+    background: #f0f0f0;
     cursor: not-allowed;
+    color: var(--light-text-color);
 }
 
-.gender-options {
+/* Inline form elements */
+.inline {
     display: flex;
-    gap: 25px;
+    gap: 15px;
+    align-items: center;
 }
 
-.gender-option input[type="radio"] {
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--border-color);
-    border-radius: 50%;
-    position: relative;
+.change-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 6px;
     transition: all 0.2s ease;
+    white-space: nowrap;
+    font-size: 0.95rem;
 }
 
-.gender-option input[type="radio"]:checked {
-    border-color: var(--primary-color);
+.change-link:hover {
+    background-color: rgba(229, 57, 53, 0.1);
 }
 
-.gender-option input[type="radio"]:checked::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: var(--primary-color);
+/* Date of Birth Styles */
+.dob-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px;
 }
 
+.dob-hint {
+    font-size: 0.9rem;
+    color: var(--light-text-color);
+    margin-top: 8px;
+    line-height: 1.4;
+}
+
+.error-text {
+    color: #E53935;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-top: 8px;
+    display: none;
+    padding: 8px 12px;
+    background: rgba(229, 57, 53, 0.1);
+    border-radius: 6px;
+    border-left: 3px solid #E53935;
+}
+
+/* Save Button */
 .save-btn {
     background: var(--primary-gradient);
     color: #fff;
-    padding: 15px 40px;
+    padding: 16px 40px;
     border: none;
     border-radius: 12px;
     font-size: 1.1rem;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
-    box-shadow: 0 5px 20px rgba(229, 57, 53, 0.2);
+    box-shadow: 0 6px 20px rgba(229, 57, 53, 0.3);
     transition: all 0.3s ease;
-    margin-top: 15px;
+    margin-top: 20px;
+    align-self: flex-start;
 }
 
 .save-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(229, 57, 53, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(229, 57, 53, 0.4);
 }
 
-/* Responsive */
+.save-btn:active {
+    transform: translateY(-1px);
+}
+
+/* Success Message */
+.success-message {
+    background: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-top: 15px;
+    display: none;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
     .main-nav {
         display: none;
@@ -442,18 +550,161 @@ body {
         display: block;
     }
 
+    .profile-container {
+        margin: 90px 20px 40px;
+        padding: 25px 20px;
+    }
+
+    .header h1 {
+        font-size: 2rem;
+    }
+
     .profile-info {
         grid-template-columns: 1fr;
         gap: 30px;
     }
 
     .avatar-section {
-        flex-direction: row;
-        justify-content: center;
-        text-align: left;
+        flex-direction: column;
+        align-items: center;
+        padding: 15px;
+    }
+
+    .avatar-wrapper {
+        width: 140px;
+        height: 140px;
+    }
+
+    .avatar {
+        font-size: 3.5rem;
+    }
+
+    .dob-row {
+        gap: 10px;
+    }
+
+    .inline {
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
     }
 
     .save-btn {
         width: 100%;
+        align-self: stretch;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-container {
+        margin: 90px 10px 20px;
+        padding: 20px 15px;
+    }
+
+    .header h1 {
+        font-size: 1.8rem;
+    }
+
+    .header p {
+        font-size: 1rem;
+    }
+
+    .avatar-wrapper {
+        width: 120px;
+        height: 120px;
+    }
+
+    .avatar {
+        font-size: 3rem;
+    }
+
+    .dob-row {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+}
+
+/* Additional CSS for enhanced UX */
+.keyboard-nav *:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+.form-group.focused .form-label {
+    color: var(--primary-color);
+}
+
+.form-group.has-value .form-label {
+    font-weight: 600;
+}
+
+/* Loading spinner animation */
+.fa-spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Enhanced button states */
+.save-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+/* Improved error styling */
+.form-control.error {
+    border-color: #E53935;
+    box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.1);
+}
+
+/* Better mobile touch targets */
+@media (max-width: 768px) {
+
+    .form-control,
+    .save-btn,
+    .change-link {
+        min-height: 48px;
+    }
+
+    .avatar-label {
+        min-width: 48px;
+        min-height: 48px;
+    }
+}
+
+/* Smooth transitions for all interactive elements */
+.form-control,
+.save-btn,
+.change-link,
+.avatar-label,
+.mobile-menu-toggle {
+    transition: all 0.3s ease;
+}
+
+/* Better focus indicators */
+.form-control:focus,
+.save-btn:focus,
+.change-link:focus {
+    transform: translateY(-1px);
+}
+
+/* Improved accessibility */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
     }
 }
